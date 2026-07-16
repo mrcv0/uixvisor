@@ -197,6 +197,24 @@ uixvisor/
 | Dosya isimleri | kebab-case                                   |
 | Test kimliği   | testID yalnızca ihtiyaç halinde ve stabil    |
 
+### 2.5 Git ve Katkı İş Akışı
+
+UIXVISOR açık kaynak bir GitHub deposu olarak yürütülür (`github.com/mrcv0/uixvisor`); geçmişi okunabilir ve otomasyona (changelog, sürümleme) uygun tutmak için aşağıdaki kurallar geçerlidir.
+
+| **Alan**           | **Standart**                                                                          |
+|--------------------|-----------------------------------------------------------------------------------------|
+| Ana branch         | `main` korumalı; doğrudan push yapılmaz                                                |
+| Branch adlandırma  | `feat/*`, `fix/*`, `docs/*`, `chore/*`, `refactor/*`, `test/*`                          |
+| Commit formatı     | Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`)         |
+| Değişiklik süreci  | Her değişiklik PR üzerinden gelir; tek kişilik geliştirmede de self-review + CI yeşili şart |
+| Sürümleme          | Changesets ile semver + otomatik changelog üretimi                                      |
+| Lisans dosyası     | MIT LICENSE kökte bulunur; marka istisnası CONTRIBUTING.md’de belirtilir (bkz. 1.9)     |
+| Katkı dokümanı     | CONTRIBUTING.md — kurulum, branch/commit kuralları, PR şablonu, davranış kuralları      |
+| CI zorunlulukları  | Bölüm 6.3’teki release kapılarıyla aynı: typecheck, lint, unit test, schema validation  |
+| Compatibility branch | Expo SDK veya NativeWind major geçişleri ayrı `compat/*` branch’inde izole edilir (bkz. bölüm 8) |
+
+> **Git ilkesi:** Tek büyük “ilk commit” yerine, her mantıksal adım (schema, tokens, tek bir primitive, CLI komutu vb.) kendi PR’ı ve kendi commit’i olarak ilerler. Böylece açık kaynak katkıda bulunanlar için geçmiş okunabilir kalır ve changelog otomasyonu güvenilir çalışır.
+
 ## 3. Design System PRD
 
 Token modeli, tema, varyantlar ve marka sistemi
