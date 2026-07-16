@@ -1,0 +1,23 @@
+{
+  "name": "uixvisor-monorepo",
+  "private": true,
+  "packageManager": "npm@11.9.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0",
+    "typescript": "^5.7.0"
+  }
+}

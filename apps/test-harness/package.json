@@ -1,0 +1,13 @@
+{
+  "name": "@uixvisor/test-harness",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Expo app used for Jest/RNTL/Maestro device and E2E testing (placeholder - to be scaffolded with create-expo-app, SDK 57)",
+  "scripts": {
+    "build": "echo \"TODO: scaffold Expo SDK 57 app\" && exit 0",
+    "dev": "echo \"TODO: scaffold Expo SDK 57 app\" && exit 0",
+    "lint": "echo \"TODO: scaffold Expo SDK 57 app\" && exit 0",
+    "test": "echo \"TODO: scaffold Expo SDK 57 app\" && exit 0",
+    "typecheck": "echo \"TODO: scaffold Expo SDK 57 app\" && exit 0"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "@uixvisor/showcase-expo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Expo showcase app for registry items (placeholder - to be scaffolded with create-expo-app, SDK 57)",
+  "scripts": {
+    "build": "echo \"TODO: scaffold Expo SDK 57 app\" && exit 0",
+    "dev": "echo \"TODO: scaffold Expo SDK 57 app\" && exit 0",
+    "lint": "echo \"TODO: scaffold Expo SDK 57 app\" && exit 0",
+    "test": "echo \"TODO: scaffold Expo SDK 57 app\" && exit 0",
+    "typecheck": "echo \"TODO: scaffold Expo SDK 57 app\" && exit 0"
+  }
+}

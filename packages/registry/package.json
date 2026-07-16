@@ -1,0 +1,19 @@
+{
+  "name": "@uixvisor/registry",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Registry resolution: dependency graph, fetch, checksum verification",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "dependencies": {
+    "@uixvisor/registry-schema": "*"
+  },
+  "scripts": {
+    "build": "echo \"TODO: build registry\" && exit 0",
+    "lint": "echo \"TODO: lint registry\" && exit 0",
+    "test": "echo \"TODO: test registry\" && exit 0",
+    "typecheck": "tsc --noEmit"
+  }
+}

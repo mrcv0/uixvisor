@@ -1,0 +1,19 @@
+{
+  "name": "@uixvisor/presets",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Theme presets (Default, Fintech, ...) built on @uixvisor/tokens",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "dependencies": {
+    "@uixvisor/tokens": "*"
+  },
+  "scripts": {
+    "build": "echo \"TODO: build presets\" && exit 0",
+    "lint": "echo \"TODO: lint presets\" && exit 0",
+    "test": "echo \"TODO: test presets\" && exit 0",
+    "typecheck": "tsc --noEmit"
+  }
+}

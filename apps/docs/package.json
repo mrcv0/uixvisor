@@ -1,0 +1,13 @@
+{
+  "name": "@uixvisor/docs",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Next.js documentation site (placeholder - to be scaffolded with create-next-app)",
+  "scripts": {
+    "build": "echo \"TODO: scaffold Next.js app\" && exit 0",
+    "dev": "echo \"TODO: scaffold Next.js app\" && exit 0",
+    "lint": "echo \"TODO: scaffold Next.js app\" && exit 0",
+    "test": "echo \"TODO: scaffold Next.js app\" && exit 0",
+    "typecheck": "echo \"TODO: scaffold Next.js app\" && exit 0"
+  }
+}

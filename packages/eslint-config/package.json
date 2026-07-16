@@ -1,0 +1,12 @@
+{
+  "name": "@uixvisor/eslint-config",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Shared ESLint configuration for UIXVISOR packages and apps",
+  "license": "MIT",
+  "type": "module",
+  "main": "./index.js",
+  "scripts": {
+    "lint": "echo \"TODO: lint eslint-config\" && exit 0"
+  }
+}
