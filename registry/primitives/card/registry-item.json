@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "card",
+  "type": "registry:component",
+  "version": "0.1.0",
+  "title": "Card",
+  "description": "Surface container primitive with header/content/footer composition for Expo applications.",
+  "platforms": ["ios", "android"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "card.tsx",
+      "target": "components/ui/card.tsx"
+    }
+  ]
+}

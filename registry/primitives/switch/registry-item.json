@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "switch",
+  "type": "registry:component",
+  "version": "0.1.0",
+  "title": "Switch",
+  "description": "Themeable on/off switch primitive for Expo applications.",
+  "platforms": ["ios", "android"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "switch.tsx",
+      "target": "components/ui/switch.tsx"
+    }
+  ]
+}

@@ -7,9 +7,14 @@ import { ScrollView, View } from 'react-native';
 import { Button } from '../../registry/primitives/button/button';
 import { Text } from '../../registry/primitives/text/text';
 import { Input } from '../../registry/primitives/input/input';
+import { Checkbox } from '../../registry/primitives/checkbox/checkbox';
+import { Switch } from '../../registry/primitives/switch/switch';
+import { Card, CardHeader, CardContent, CardFooter } from '../../registry/primitives/card/card';
 
 export default function App() {
   const [email, setEmail] = useState('');
+  const [agreed, setAgreed] = useState(false);
+  const [notifications, setNotifications] = useState(true);
 
   return (
     <ScrollView
@@ -49,6 +54,37 @@ export default function App() {
         <Input label="Username" error="This field is required" />
         <Input label="Disabled" editable={false} value="Read only" />
       </View>
+
+      <View className="w-full gap-2 mt-4">
+        <Checkbox checked={agreed} onCheckedChange={setAgreed} label="I agree to the terms" />
+        <Checkbox checked disabled onCheckedChange={() => {}} label="Disabled, checked" />
+        <View className="flex-row items-center justify-between">
+          <Text>Push notifications</Text>
+          <Switch checked={notifications} onCheckedChange={setNotifications} />
+        </View>
+      </View>
+
+      <Card className="w-full mt-4">
+        <CardHeader>
+          <Text size="lg" className="font-medium">
+            Account
+          </Text>
+          <Text variant="muted" size="sm">
+            Manage your profile settings
+          </Text>
+        </CardHeader>
+        <CardContent>
+          <Text size="sm">Card content goes here.</Text>
+        </CardContent>
+        <CardFooter>
+          <Button variant="secondary" onPress={() => {}}>
+            Cancel
+          </Button>
+          <Button variant="primary" onPress={() => {}}>
+            Save
+          </Button>
+        </CardFooter>
+      </Card>
 
       <StatusBar style="auto" />
     </ScrollView>
