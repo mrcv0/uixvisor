@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "icon-button",
+  "type": "registry:component",
+  "version": "0.1.0",
+  "title": "Icon Button",
+  "description": "Square, icon-only pressable primitive for Expo applications.",
+  "platforms": ["ios", "android"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "icon-button.tsx",
+      "target": "components/ui/icon-button.tsx"
+    }
+  ]
+}

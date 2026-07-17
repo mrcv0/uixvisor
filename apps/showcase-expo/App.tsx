@@ -11,6 +11,7 @@ import { Checkbox } from '../../registry/primitives/checkbox/checkbox';
 import { Switch } from '../../registry/primitives/switch/switch';
 import { Card, CardHeader, CardContent, CardFooter } from '../../registry/primitives/card/card';
 import { Heading } from '../../registry/primitives/heading/heading';
+import { IconButton } from '../../registry/primitives/icon-button/icon-button';
 
 export default function App() {
   const [email, setEmail] = useState('');
@@ -41,6 +42,27 @@ export default function App() {
       <Button variant="primary" disabled onPress={() => {}}>
         Disabled
       </Button>
+
+      <View className="flex-row gap-3">
+        <IconButton
+          variant="primary"
+          accessibilityLabel="Add"
+          icon={<Text className="text-lg text-primary-foreground">＋</Text>}
+          onPress={() => {}}
+        />
+        <IconButton
+          variant="secondary"
+          accessibilityLabel="Settings"
+          icon={<Text className="text-lg text-secondary-foreground">⚙</Text>}
+          onPress={() => {}}
+        />
+        <IconButton
+          variant="ghost"
+          accessibilityLabel="More"
+          icon={<Text className="text-lg text-foreground">⋯</Text>}
+          onPress={() => {}}
+        />
+      </View>
 
       <Text variant="muted" size="sm" className="mt-4">
         Muted text
