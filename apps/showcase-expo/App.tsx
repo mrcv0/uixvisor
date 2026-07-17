@@ -12,6 +12,7 @@ import { Switch } from '../../registry/primitives/switch/switch';
 import { Card, CardHeader, CardContent, CardFooter } from '../../registry/primitives/card/card';
 import { Heading } from '../../registry/primitives/heading/heading';
 import { IconButton } from '../../registry/primitives/icon-button/icon-button';
+import { Textarea } from '../../registry/primitives/textarea/textarea';
 
 export default function App() {
   const [email, setEmail] = useState('');
@@ -76,6 +77,7 @@ export default function App() {
         <Input label="Password" placeholder="••••••••" secureTextEntry />
         <Input label="Username" error="This field is required" />
         <Input label="Disabled" editable={false} value="Read only" />
+        <Textarea label="Bio" placeholder="Tell us about yourself" />
       </View>
 
       <View className="w-full gap-2 mt-4">
