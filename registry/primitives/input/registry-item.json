@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "input",
+  "type": "registry:component",
+  "version": "0.1.0",
+  "title": "Input",
+  "description": "Accessible, themeable text input primitive with label and error state for Expo applications.",
+  "platforms": ["ios", "android"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "input.tsx",
+      "target": "components/ui/input.tsx"
+    }
+  ]
+}
