@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "heading",
+  "type": "registry:component",
+  "version": "0.1.0",
+  "title": "Heading",
+  "description": "Semantic heading primitive with level-based sizing for Expo applications.",
+  "platforms": ["ios", "android"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "heading.tsx",
+      "target": "components/ui/heading.tsx"
+    }
+  ]
+}

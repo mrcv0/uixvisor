@@ -10,6 +10,7 @@ import { Input } from '../../registry/primitives/input/input';
 import { Checkbox } from '../../registry/primitives/checkbox/checkbox';
 import { Switch } from '../../registry/primitives/switch/switch';
 import { Card, CardHeader, CardContent, CardFooter } from '../../registry/primitives/card/card';
+import { Heading } from '../../registry/primitives/heading/heading';
 
 export default function App() {
   const [email, setEmail] = useState('');
@@ -21,9 +22,9 @@ export default function App() {
       className="flex-1 bg-background"
       contentContainerClassName="items-center gap-3 px-6 py-16"
     >
-      <Text size="lg" className="mb-2 font-medium">
+      <Heading level={2} className="mb-2">
         UIXVISOR showcase
-      </Text>
+      </Heading>
 
       <Button variant="primary" onPress={() => {}}>
         Primary
