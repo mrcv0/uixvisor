@@ -14,6 +14,7 @@ import { Heading } from '../../registry/primitives/heading/heading';
 import { IconButton } from '../../registry/primitives/icon-button/icon-button';
 import { Textarea } from '../../registry/primitives/textarea/textarea';
 import { RadioGroup, RadioGroupItem } from '../../registry/primitives/radio-group/radio-group';
+import { Avatar } from '../../registry/primitives/avatar/avatar';
 
 export default function App() {
   const [email, setEmail] = useState('');
@@ -95,6 +96,12 @@ export default function App() {
         <RadioGroupItem value="monthly" label="Monthly" />
         <RadioGroupItem value="yearly" label="Yearly" />
       </RadioGroup>
+
+      <View className="flex-row items-center gap-3 mt-4">
+        <Avatar size="sm" fallback="Ada Lovelace" />
+        <Avatar size="md" fallback="Grace Hopper" />
+        <Avatar size="lg" fallback="Alan Turing" />
+      </View>
 
       <Card className="w-full mt-4">
         <CardHeader>
