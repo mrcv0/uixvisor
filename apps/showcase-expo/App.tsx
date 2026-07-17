@@ -18,6 +18,7 @@ import { Avatar } from '../../registry/primitives/avatar/avatar';
 import { Badge } from '../../registry/primitives/badge/badge';
 import { Separator } from '../../registry/primitives/separator/separator';
 import { Spinner } from '../../registry/primitives/spinner/spinner';
+import { Skeleton } from '../../registry/primitives/skeleton/skeleton';
 
 export default function App() {
   const [email, setEmail] = useState('');
@@ -119,6 +120,12 @@ export default function App() {
       <View className="flex-row items-center gap-4 mt-4">
         <Spinner size="sm" />
         <Spinner size="lg" />
+      </View>
+
+      <View className="w-full gap-2 mt-4">
+        <Skeleton className="h-4 w-32" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-11 w-11 rounded-full" />
       </View>
 
       <Card className="w-full mt-4">

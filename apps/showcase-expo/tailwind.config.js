@@ -22,6 +22,7 @@ module.exports = {
         border: 'var(--color-border)',
         input: 'var(--color-input)',
         ring: 'var(--color-ring)',
+        skeleton: 'var(--color-skeleton)',
       },
     },
   },

@@ -25,6 +25,8 @@
   --color-border: #e2e8f0;
   --color-input: #e2e8f0;
   --color-ring: #2563eb;
+
+  --color-skeleton: #e2e8f0;
 }
 
 .dark:root {
@@ -50,4 +52,6 @@
   --color-border: #1f2937;
   --color-input: #1f2937;
   --color-ring: #3b82f6;
+
+  --color-skeleton: #1f2937;
 }

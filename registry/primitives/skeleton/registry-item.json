@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "skeleton",
+  "type": "registry:component",
+  "version": "0.1.0",
+  "title": "Skeleton",
+  "description": "Pulsing loading placeholder primitive for Expo applications.",
+  "platforms": ["ios", "android"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "skeleton.tsx",
+      "target": "components/ui/skeleton.tsx"
+    }
+  ]
+}
