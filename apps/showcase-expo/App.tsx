@@ -16,6 +16,7 @@ import { Textarea } from '../../registry/primitives/textarea/textarea';
 import { RadioGroup, RadioGroupItem } from '../../registry/primitives/radio-group/radio-group';
 import { Avatar } from '../../registry/primitives/avatar/avatar';
 import { Badge } from '../../registry/primitives/badge/badge';
+import { Separator } from '../../registry/primitives/separator/separator';
 
 export default function App() {
   const [email, setEmail] = useState('');
@@ -111,6 +112,8 @@ export default function App() {
         <Badge variant="success">Success</Badge>
         <Badge variant="warning">Warning</Badge>
       </View>
+
+      <Separator className="w-full mt-4" />
 
       <Card className="w-full mt-4">
         <CardHeader>
