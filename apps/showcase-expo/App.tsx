@@ -13,11 +13,13 @@ import { Card, CardHeader, CardContent, CardFooter } from '../../registry/primit
 import { Heading } from '../../registry/primitives/heading/heading';
 import { IconButton } from '../../registry/primitives/icon-button/icon-button';
 import { Textarea } from '../../registry/primitives/textarea/textarea';
+import { RadioGroup, RadioGroupItem } from '../../registry/primitives/radio-group/radio-group';
 
 export default function App() {
   const [email, setEmail] = useState('');
   const [agreed, setAgreed] = useState(false);
   const [notifications, setNotifications] = useState(true);
+  const [plan, setPlan] = useState('monthly');
 
   return (
     <ScrollView
@@ -88,6 +90,11 @@ export default function App() {
           <Switch checked={notifications} onCheckedChange={setNotifications} />
         </View>
       </View>
+
+      <RadioGroup value={plan} onValueChange={setPlan} className="w-full mt-4">
+        <RadioGroupItem value="monthly" label="Monthly" />
+        <RadioGroupItem value="yearly" label="Yearly" />
+      </RadioGroup>
 
       <Card className="w-full mt-4">
         <CardHeader>
