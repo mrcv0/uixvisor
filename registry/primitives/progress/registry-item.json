@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "progress",
+  "type": "registry:component",
+  "version": "0.1.0",
+  "title": "Progress",
+  "description": "Determinate progress bar primitive for Expo applications.",
+  "platforms": ["ios", "android"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "progress.tsx",
+      "target": "components/ui/progress.tsx"
+    }
+  ]
+}

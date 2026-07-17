@@ -19,6 +19,7 @@ import { Badge } from '../../registry/primitives/badge/badge';
 import { Separator } from '../../registry/primitives/separator/separator';
 import { Spinner } from '../../registry/primitives/spinner/spinner';
 import { Skeleton } from '../../registry/primitives/skeleton/skeleton';
+import { Progress } from '../../registry/primitives/progress/progress';
 
 export default function App() {
   const [email, setEmail] = useState('');
@@ -126,6 +127,11 @@ export default function App() {
         <Skeleton className="h-4 w-32" />
         <Skeleton className="h-4 w-full" />
         <Skeleton className="h-11 w-11 rounded-full" />
+      </View>
+
+      <View className="w-full gap-2 mt-4">
+        <Progress value={30} />
+        <Progress value={70} />
       </View>
 
       <Card className="w-full mt-4">
