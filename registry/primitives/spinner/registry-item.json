@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "spinner",
+  "type": "registry:component",
+  "version": "0.1.0",
+  "title": "Spinner",
+  "description": "Themeable loading indicator primitive for Expo applications.",
+  "platforms": ["ios", "android"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "spinner.tsx",
+      "target": "components/ui/spinner.tsx"
+    }
+  ]
+}

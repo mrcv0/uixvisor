@@ -17,6 +17,7 @@ import { RadioGroup, RadioGroupItem } from '../../registry/primitives/radio-grou
 import { Avatar } from '../../registry/primitives/avatar/avatar';
 import { Badge } from '../../registry/primitives/badge/badge';
 import { Separator } from '../../registry/primitives/separator/separator';
+import { Spinner } from '../../registry/primitives/spinner/spinner';
 
 export default function App() {
   const [email, setEmail] = useState('');
@@ -114,6 +115,11 @@ export default function App() {
       </View>
 
       <Separator className="w-full mt-4" />
+
+      <View className="flex-row items-center gap-4 mt-4">
+        <Spinner size="sm" />
+        <Spinner size="lg" />
+      </View>
 
       <Card className="w-full mt-4">
         <CardHeader>
