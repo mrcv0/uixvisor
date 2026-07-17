@@ -15,6 +15,7 @@ import { IconButton } from '../../registry/primitives/icon-button/icon-button';
 import { Textarea } from '../../registry/primitives/textarea/textarea';
 import { RadioGroup, RadioGroupItem } from '../../registry/primitives/radio-group/radio-group';
 import { Avatar } from '../../registry/primitives/avatar/avatar';
+import { Badge } from '../../registry/primitives/badge/badge';
 
 export default function App() {
   const [email, setEmail] = useState('');
@@ -101,6 +102,14 @@ export default function App() {
         <Avatar size="sm" fallback="Ada Lovelace" />
         <Avatar size="md" fallback="Grace Hopper" />
         <Avatar size="lg" fallback="Alan Turing" />
+      </View>
+
+      <View className="flex-row flex-wrap gap-2 mt-4">
+        <Badge>Default</Badge>
+        <Badge variant="secondary">Secondary</Badge>
+        <Badge variant="destructive">Destructive</Badge>
+        <Badge variant="success">Success</Badge>
+        <Badge variant="warning">Warning</Badge>
       </View>
 
       <Card className="w-full mt-4">

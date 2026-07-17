@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "badge",
+  "type": "registry:component",
+  "version": "0.1.0",
+  "title": "Badge",
+  "description": "Small pill-shaped label primitive for Expo applications.",
+  "platforms": ["ios", "android"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "badge.tsx",
+      "target": "components/ui/badge.tsx"
+    }
+  ]
+}
