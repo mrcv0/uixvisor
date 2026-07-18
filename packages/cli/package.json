@@ -14,7 +14,7 @@
     "build": "tsc -p tsconfig.json",
     "dev": "echo \"TODO: dev cli\" && exit 0",
     "lint": "echo \"TODO: lint cli\" && exit 0",
-    "test": "npm run build && node --test dist/resolve-dependencies.test.js dist/rewrite-imports.test.js",
+    "test": "npm run build && node --test dist/resolve-dependencies.test.js dist/rewrite-imports.test.js dist/detect-project.test.js",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

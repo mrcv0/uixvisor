@@ -4,19 +4,27 @@ import { resolve } from 'node:path';
 
 import { runList } from './commands/list.js';
 import { runAdd } from './commands/add.js';
+import { runInit } from './commands/init.js';
+import { readConfig } from './config.js';
 
-function resolveRegistryRoot(value: string | undefined): string {
-  const registry = value ?? process.env.UIXVISOR_REGISTRY;
-
-  if (!registry) {
-    console.error(
-      'No registry source configured. Pass --registry <path> or set UIXVISOR_REGISTRY.\n' +
-        '(No hosted registry is deployed yet - point this at a local uixvisor registry checkout.)',
-    );
-    process.exit(1);
+async function resolveRegistryRoot(value: string | undefined): Promise<string> {
+  if (value) {
+    return resolve(value);
+  }
+  if (process.env.UIXVISOR_REGISTRY) {
+    return resolve(process.env.UIXVISOR_REGISTRY);
   }
 
-  return resolve(registry);
+  const config = await readConfig(process.cwd());
+  if (config?.registry) {
+    return resolve(process.cwd(), config.registry);
+  }
+
+  console.error(
+    'No registry source configured. Pass --registry <path>, set UIXVISOR_REGISTRY, or run `uixvisor init`.\n' +
+      '(No hosted registry is deployed yet - point this at a local uixvisor registry checkout.)',
+  );
+  process.exit(1);
 }
 
 const program = new Command();
@@ -30,12 +38,35 @@ function fail(error: unknown): never {
 }
 
 program
+  .command('init')
+  .description('Detect the current project and write uixvisor.config.json')
+  .option('--registry <path>', 'Registry source to record in the config')
+  .option('--force', 'Overwrite an existing config file', false)
+  .action(async (opts: { registry?: string; force: boolean }) => {
+    try {
+      const registry = opts.registry ?? process.env.UIXVISOR_REGISTRY;
+      if (!registry) {
+        throw new Error(
+          'Pass --registry <path> or set UIXVISOR_REGISTRY (no hosted registry is deployed yet).',
+        );
+      }
+      await runInit({
+        projectRoot: process.cwd(),
+        registry: resolve(registry),
+        force: opts.force,
+      });
+    } catch (error) {
+      fail(error);
+    }
+  });
+
+program
   .command('list')
   .description('List available registry items')
   .option('--registry <path>', 'Path to the registry root')
   .action(async (opts: { registry?: string }) => {
     try {
-      await runList(resolveRegistryRoot(opts.registry));
+      await runList(await resolveRegistryRoot(opts.registry));
     } catch (error) {
       fail(error);
     }
@@ -50,7 +81,7 @@ program
   .action(async (items: string[], opts: { registry?: string; target: string; force: boolean }) => {
     try {
       await runAdd(items, {
-        registryRoot: resolveRegistryRoot(opts.registry),
+        registryRoot: await resolveRegistryRoot(opts.registry),
         targetRoot: resolve(opts.target),
         force: opts.force,
       });
