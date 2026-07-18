@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "toast",
+  "type": "registry:component",
+  "version": "0.1.0",
+  "title": "Toast",
+  "description": "ToastProvider and useToast hook for transient status messages in Expo applications.",
+  "platforms": ["ios", "android"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": ["text"],
+  "files": [
+    {
+      "source": "toast.tsx",
+      "target": "components/ui/toast.tsx"
+    }
+  ]
+}

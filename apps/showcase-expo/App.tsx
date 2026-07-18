@@ -23,8 +23,18 @@ import { Progress } from '../../registry/primitives/progress/progress';
 import { OTPInput } from '../../registry/mobile/otp-input/otp-input';
 import { SearchBar } from '../../registry/mobile/search-bar/search-bar';
 import { KeyboardAwareForm } from '../../registry/mobile/keyboard-aware-form/keyboard-aware-form';
+import { ToastProvider, useToast } from '../../registry/mobile/toast/toast';
 
 export default function App() {
+  return (
+    <ToastProvider>
+      <ShowcaseContent />
+    </ToastProvider>
+  );
+}
+
+function ShowcaseContent() {
+  const toast = useToast();
   const [email, setEmail] = useState('');
   const [agreed, setAgreed] = useState(false);
   const [notifications, setNotifications] = useState(true);
@@ -153,6 +163,10 @@ export default function App() {
           <Input label="Field B" placeholder="B" />
         </KeyboardAwareForm>
       </View>
+
+      <Button variant="secondary" onPress={() => toast.show('Saved successfully', 'success')}>
+        Show toast
+      </Button>
 
       <Card className="w-full mt-4">
         <CardHeader>
