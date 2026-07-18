@@ -3,6 +3,7 @@ import './global.css';
 import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { ScrollView, View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { Button } from '../../registry/primitives/button/button';
 import { Text } from '../../registry/primitives/text/text';
@@ -26,12 +27,15 @@ import { KeyboardAwareForm } from '../../registry/mobile/keyboard-aware-form/key
 import { ToastProvider, useToast } from '../../registry/mobile/toast/toast';
 import { EmptyState } from '../../registry/mobile/empty-state/empty-state';
 import { ErrorState } from '../../registry/mobile/error-state/error-state';
+import { SwipeableRow } from '../../registry/mobile/swipeable-row/swipeable-row';
 
 export default function App() {
   return (
-    <ToastProvider>
-      <ShowcaseContent />
-    </ToastProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ToastProvider>
+        <ShowcaseContent />
+      </ToastProvider>
+    </GestureHandlerRootView>
   );
 }
 
@@ -182,6 +186,10 @@ function ShowcaseContent() {
       />
 
       <ErrorState className="w-full" onRetry={() => {}} />
+
+      <SwipeableRow className="w-full border-b border-border py-3" onDelete={() => {}}>
+        <Text>Swipe me left</Text>
+      </SwipeableRow>
 
       <Card className="w-full mt-4">
         <CardHeader>

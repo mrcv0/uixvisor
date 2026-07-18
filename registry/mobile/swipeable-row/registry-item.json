@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "swipeable-row",
+  "type": "registry:component",
+  "version": "0.1.0",
+  "title": "Swipeable Row",
+  "description": "List row with a swipe-to-delete action for Expo applications.",
+  "platforms": ["ios", "android"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": ["react-native-gesture-handler"],
+  "registryDependencies": ["text"],
+  "files": [
+    {
+      "source": "swipeable-row.tsx",
+      "target": "components/ui/swipeable-row.tsx"
+    }
+  ]
+}
