@@ -24,6 +24,7 @@ import { OTPInput } from '../../registry/mobile/otp-input/otp-input';
 import { SearchBar } from '../../registry/mobile/search-bar/search-bar';
 import { KeyboardAwareForm } from '../../registry/mobile/keyboard-aware-form/keyboard-aware-form';
 import { ToastProvider, useToast } from '../../registry/mobile/toast/toast';
+import { EmptyState } from '../../registry/mobile/empty-state/empty-state';
 
 export default function App() {
   return (
@@ -167,6 +168,17 @@ function ShowcaseContent() {
       <Button variant="secondary" onPress={() => toast.show('Saved successfully', 'success')}>
         Show toast
       </Button>
+
+      <EmptyState
+        className="w-full"
+        title="No results"
+        description="Try adjusting your search or filters."
+        action={
+          <Button variant="secondary" onPress={() => {}} className="mt-2">
+            Clear filters
+          </Button>
+        }
+      />
 
       <Card className="w-full mt-4">
         <CardHeader>
