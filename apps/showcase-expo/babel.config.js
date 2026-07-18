@@ -14,6 +14,10 @@ module.exports = function (api) {
           },
         },
       ],
+      // Must be listed last. Required by react-native-reanimated (which
+      // NativeWind's react-native-css-interop depends on internally) even
+      // though this project writes no worklets directly.
+      'react-native-worklets/plugin',
     ],
   };
 };

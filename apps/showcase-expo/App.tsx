@@ -3,7 +3,6 @@ import './global.css';
 import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { ScrollView, View } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { Button } from '../../registry/primitives/button/button';
 import { Text } from '../../registry/primitives/text/text';
@@ -27,16 +26,13 @@ import { KeyboardAwareForm } from '../../registry/mobile/keyboard-aware-form/key
 import { ToastProvider, useToast } from '../../registry/mobile/toast/toast';
 import { EmptyState } from '../../registry/mobile/empty-state/empty-state';
 import { ErrorState } from '../../registry/mobile/error-state/error-state';
-import { SwipeableRow } from '../../registry/mobile/swipeable-row/swipeable-row';
 import { BottomSheet } from '../../registry/mobile/bottom-sheet/bottom-sheet';
 
 export default function App() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <ToastProvider>
-        <ShowcaseContent />
-      </ToastProvider>
-    </GestureHandlerRootView>
+    <ToastProvider>
+      <ShowcaseContent />
+    </ToastProvider>
   );
 }
 
@@ -189,9 +185,10 @@ function ShowcaseContent() {
 
       <ErrorState className="w-full" onRetry={() => {}} />
 
-      <SwipeableRow className="w-full border-b border-border py-3" onDelete={() => {}}>
-        <Text>Swipe me left</Text>
-      </SwipeableRow>
+      {/* SwipeableRow demo temporarily disabled here - GestureHandlerRootView
+      triggers a native Worklets crash (libworklets.so SIGSEGV) via
+      NativeWind's react-native-css-interop on this Expo Go build. The
+      registry component itself is unaffected; see memory/known issue notes. */}
 
       <Button variant="secondary" onPress={() => setSheetVisible(true)}>
         Open bottom sheet

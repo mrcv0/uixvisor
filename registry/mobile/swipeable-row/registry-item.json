@@ -16,6 +16,10 @@
     {
       "source": "swipeable-row.tsx",
       "target": "components/ui/swipeable-row.tsx"
+    },
+    {
+      "source": "swipeable-native.tsx",
+      "target": "components/ui/swipeable-native.tsx"
     }
   ]
 }
