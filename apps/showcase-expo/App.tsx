@@ -28,6 +28,7 @@ import { ToastProvider, useToast } from '../../registry/mobile/toast/toast';
 import { EmptyState } from '../../registry/mobile/empty-state/empty-state';
 import { ErrorState } from '../../registry/mobile/error-state/error-state';
 import { SwipeableRow } from '../../registry/mobile/swipeable-row/swipeable-row';
+import { BottomSheet } from '../../registry/mobile/bottom-sheet/bottom-sheet';
 
 export default function App() {
   return (
@@ -47,6 +48,7 @@ function ShowcaseContent() {
   const [plan, setPlan] = useState('monthly');
   const [otp, setOtp] = useState('');
   const [query, setQuery] = useState('');
+  const [sheetVisible, setSheetVisible] = useState(false);
 
   return (
     <ScrollView
@@ -190,6 +192,19 @@ function ShowcaseContent() {
       <SwipeableRow className="w-full border-b border-border py-3" onDelete={() => {}}>
         <Text>Swipe me left</Text>
       </SwipeableRow>
+
+      <Button variant="secondary" onPress={() => setSheetVisible(true)}>
+        Open bottom sheet
+      </Button>
+      <BottomSheet visible={sheetVisible} onClose={() => setSheetVisible(false)}>
+        <Heading level={4}>Sheet title</Heading>
+        <Text variant="muted" size="sm">
+          Sheet content goes here.
+        </Text>
+        <Button variant="primary" onPress={() => setSheetVisible(false)}>
+          Close
+        </Button>
+      </BottomSheet>
 
       <Card className="w-full mt-4">
         <CardHeader>

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "bottom-sheet",
+  "type": "registry:component",
+  "version": "0.1.0",
+  "title": "Bottom Sheet",
+  "description": "Lightweight, dependency-free bottom sheet modal for Expo applications.",
+  "platforms": ["ios", "android"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "bottom-sheet.tsx",
+      "target": "components/ui/bottom-sheet.tsx"
+    }
+  ]
+}
