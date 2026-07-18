@@ -5,6 +5,7 @@ import { resolve } from 'node:path';
 import { runList } from './commands/list.js';
 import { runAdd } from './commands/add.js';
 import { runInit } from './commands/init.js';
+import { runDiff } from './commands/diff.js';
 import { readConfig } from './config.js';
 
 async function resolveRegistryRoot(value: string | undefined): Promise<string> {
@@ -85,6 +86,25 @@ program
         targetRoot: resolve(opts.target),
         force: opts.force,
       });
+    } catch (error) {
+      fail(error);
+    }
+  });
+
+program
+  .command('diff <items...>')
+  .description('Show differences between local files and the registry source')
+  .option('--registry <path>', 'Path to the registry root')
+  .option('--target <path>', 'Target project root', '.')
+  .action(async (items: string[], opts: { registry?: string; target: string }) => {
+    try {
+      const hasDifferences = await runDiff(items, {
+        registryRoot: await resolveRegistryRoot(opts.registry),
+        targetRoot: resolve(opts.target),
+      });
+      if (hasDifferences) {
+        process.exitCode = 1;
+      }
     } catch (error) {
       fail(error);
     }
