@@ -20,12 +20,14 @@ import { Separator } from '../../registry/primitives/separator/separator';
 import { Spinner } from '../../registry/primitives/spinner/spinner';
 import { Skeleton } from '../../registry/primitives/skeleton/skeleton';
 import { Progress } from '../../registry/primitives/progress/progress';
+import { OTPInput } from '../../registry/mobile/otp-input/otp-input';
 
 export default function App() {
   const [email, setEmail] = useState('');
   const [agreed, setAgreed] = useState(false);
   const [notifications, setNotifications] = useState(true);
   const [plan, setPlan] = useState('monthly');
+  const [otp, setOtp] = useState('');
 
   return (
     <ScrollView
@@ -132,6 +134,10 @@ export default function App() {
       <View className="w-full gap-2 mt-4">
         <Progress value={30} />
         <Progress value={70} />
+      </View>
+
+      <View className="w-full mt-4">
+        <OTPInput value={otp} onChangeText={setOtp} onResend={() => {}} />
       </View>
 
       <Card className="w-full mt-4">

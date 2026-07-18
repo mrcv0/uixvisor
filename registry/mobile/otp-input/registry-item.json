@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "otp-input",
+  "type": "registry:component",
+  "version": "0.1.0",
+  "title": "OTP Input",
+  "description": "One-time-passcode input with SMS autofill support and a resend affordance for Expo applications.",
+  "platforms": ["ios", "android"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": ["text", "input"],
+  "files": [
+    {
+      "source": "otp-input.tsx",
+      "target": "components/ui/otp-input.tsx"
+    }
+  ]
+}
