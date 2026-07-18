@@ -1,8 +1,9 @@
-import { copyFile, mkdir, stat } from 'node:fs/promises';
+import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 
 import { loadRegistryIndex } from '../registry-source.js';
 import { resolveDependencyOrder } from '../resolve-dependencies.js';
+import { rewriteRegistryImports } from '../rewrite-imports.js';
 
 export interface AddOptions {
   registryRoot: string;
@@ -29,6 +30,14 @@ export async function runAdd(names: string[], options: AddOptions): Promise<void
 
   console.log(`Resolved ${order.length} item(s): ${order.join(', ')}`);
 
+  const dependencyTargets: Record<string, string> = {};
+  for (const name of order) {
+    const entry = index.get(name);
+    if (entry && entry.item.files[0]) {
+      dependencyTargets[name] = entry.item.files[0].target;
+    }
+  }
+
   let written = 0;
   let skipped = 0;
 
@@ -48,8 +57,11 @@ export async function runAdd(names: string[], options: AddOptions): Promise<void
         continue;
       }
 
+      const source = await readFile(sourcePath, 'utf-8');
+      const content = rewriteRegistryImports(source, file.target, dependencyTargets);
+
       await mkdir(dirname(targetPath), { recursive: true });
-      await copyFile(sourcePath, targetPath);
+      await writeFile(targetPath, content, 'utf-8');
       console.log(`  write  ${file.target}`);
       written += 1;
     }
