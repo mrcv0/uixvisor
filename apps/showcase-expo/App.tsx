@@ -22,6 +22,7 @@ import { Skeleton } from '../../registry/primitives/skeleton/skeleton';
 import { Progress } from '../../registry/primitives/progress/progress';
 import { OTPInput } from '../../registry/mobile/otp-input/otp-input';
 import { SearchBar } from '../../registry/mobile/search-bar/search-bar';
+import { KeyboardAwareForm } from '../../registry/mobile/keyboard-aware-form/keyboard-aware-form';
 
 export default function App() {
   const [email, setEmail] = useState('');
@@ -144,6 +145,13 @@ export default function App() {
 
       <View className="w-full mt-4">
         <SearchBar value={query} onChangeText={setQuery} />
+      </View>
+
+      <View className="h-40 w-full mt-4 rounded-xl border border-border">
+        <KeyboardAwareForm contentContainerClassName="gap-2 p-3">
+          <Input label="Field A" placeholder="A" />
+          <Input label="Field B" placeholder="B" />
+        </KeyboardAwareForm>
       </View>
 
       <Card className="w-full mt-4">

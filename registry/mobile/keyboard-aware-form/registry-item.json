@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "keyboard-aware-form",
+  "type": "registry:component",
+  "version": "0.1.0",
+  "title": "Keyboard-Aware Form",
+  "description": "Scroll wrapper that avoids the keyboard and dismisses it on outside tap, for Expo applications.",
+  "platforms": ["ios", "android"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "keyboard-aware-form.tsx",
+      "target": "components/ui/keyboard-aware-form.tsx"
+    }
+  ]
+}
