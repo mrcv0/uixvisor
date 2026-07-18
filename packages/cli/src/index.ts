@@ -6,6 +6,7 @@ import { runList } from './commands/list.js';
 import { runAdd } from './commands/add.js';
 import { runInit } from './commands/init.js';
 import { runDiff } from './commands/diff.js';
+import { runDoctor } from './commands/doctor.js';
 import { readConfig } from './config.js';
 
 async function resolveRegistryRoot(value: string | undefined): Promise<string> {
@@ -103,6 +104,30 @@ program
         targetRoot: resolve(opts.target),
       });
       if (hasDifferences) {
+        process.exitCode = 1;
+      }
+    } catch (error) {
+      fail(error);
+    }
+  });
+
+program
+  .command('doctor')
+  .description('Check the current project and registry for compatibility issues')
+  .option('--registry <path>', 'Path to the registry root')
+  .action(async (opts: { registry?: string }) => {
+    try {
+      const checks = await runDoctor({
+        projectRoot: process.cwd(),
+        registryRoot: await resolveRegistryRoot(opts.registry),
+      });
+
+      const icon = { pass: '✔', warn: '!', fail: '✖' } as const;
+      for (const check of checks) {
+        console.log(`${icon[check.status]} ${check.name}: ${check.message}`);
+      }
+
+      if (checks.some((check) => check.status === 'fail')) {
         process.exitCode = 1;
       }
     } catch (error) {

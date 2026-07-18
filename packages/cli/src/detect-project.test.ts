@@ -64,6 +64,24 @@ test('prefers the declared packageManager field over lockfiles', async () => {
   });
 });
 
+test('prefers the installed node_modules version over the declared range', async () => {
+  await withTempDir(async (dir) => {
+    await writeFile(
+      join(dir, 'package.json'),
+      JSON.stringify({ dependencies: { expo: '~57.0.6' } }),
+    );
+    await mkdir(join(dir, 'node_modules', 'expo'), { recursive: true });
+    await writeFile(
+      join(dir, 'node_modules', 'expo', 'package.json'),
+      JSON.stringify({ version: '57.0.6' }),
+    );
+
+    const result = await detectProject(dir);
+
+    assert.equal(result.expoVersion, '57.0.6');
+  });
+});
+
 test('detects Expo Router via an app/ directory even without the dependency', async () => {
   await withTempDir(async (dir) => {
     await writeFile(join(dir, 'package.json'), JSON.stringify({ dependencies: { expo: '~57.0.6' } }));

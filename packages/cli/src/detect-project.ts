@@ -1,5 +1,5 @@
 import { readFile, stat } from 'node:fs/promises';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 
 export type PackageManagerName = 'npm' | 'pnpm' | 'yarn' | 'bun' | 'unknown';
 
@@ -26,6 +26,26 @@ async function pathExists(path: string): Promise<boolean> {
   }
 }
 
+// Walks up from startDir the same way Node's own module resolution does,
+// since in npm/yarn/pnpm workspaces both hoisted node_modules and the
+// lockfile itself usually live at the workspace root, not next to the
+// package being inspected.
+async function findUp(startDir: string, relativePath: string): Promise<string | undefined> {
+  let dir = startDir;
+
+  while (true) {
+    const candidate = join(dir, relativePath);
+    if (await pathExists(candidate)) {
+      return candidate;
+    }
+    const parentDir = dirname(dir);
+    if (parentDir === dir) {
+      return undefined;
+    }
+    dir = parentDir;
+  }
+}
+
 async function readPackageJson(projectRoot: string): Promise<PackageJson | undefined> {
   try {
     const raw = await readFile(join(projectRoot, 'package.json'), 'utf-8');
@@ -39,6 +59,20 @@ function versionFromDeps(pkg: PackageJson | undefined, name: string): string | u
   return pkg?.dependencies?.[name] ?? pkg?.devDependencies?.[name];
 }
 
+async function readInstalledVersion(projectRoot: string, name: string): Promise<string | undefined> {
+  const manifestPath = await findUp(projectRoot, join('node_modules', name, 'package.json'));
+  if (!manifestPath) {
+    return undefined;
+  }
+
+  try {
+    const raw = await readFile(manifestPath, 'utf-8');
+    return (JSON.parse(raw) as { version?: string }).version;
+  } catch {
+    return undefined;
+  }
+}
+
 async function detectPackageManager(
   projectRoot: string,
   pkg: PackageJson | undefined,
@@ -48,19 +82,16 @@ async function detectPackageManager(
     return declared;
   }
 
-  if (await pathExists(join(projectRoot, 'pnpm-lock.yaml'))) {
+  if (await findUp(projectRoot, 'pnpm-lock.yaml')) {
     return 'pnpm';
   }
-  if (await pathExists(join(projectRoot, 'yarn.lock'))) {
+  if (await findUp(projectRoot, 'yarn.lock')) {
     return 'yarn';
   }
-  if (
-    (await pathExists(join(projectRoot, 'bun.lock'))) ||
-    (await pathExists(join(projectRoot, 'bun.lockb')))
-  ) {
+  if ((await findUp(projectRoot, 'bun.lock')) || (await findUp(projectRoot, 'bun.lockb'))) {
     return 'bun';
   }
-  if (await pathExists(join(projectRoot, 'package-lock.json'))) {
+  if (await findUp(projectRoot, 'package-lock.json')) {
     return 'npm';
   }
 
@@ -69,8 +100,10 @@ async function detectPackageManager(
 
 export async function detectProject(projectRoot: string): Promise<ProjectDetection> {
   const pkg = await readPackageJson(projectRoot);
-  const expoVersion = versionFromDeps(pkg, 'expo');
-  const nativewindVersion = versionFromDeps(pkg, 'nativewind');
+  const expoVersion =
+    (await readInstalledVersion(projectRoot, 'expo')) ?? versionFromDeps(pkg, 'expo');
+  const nativewindVersion =
+    (await readInstalledVersion(projectRoot, 'nativewind')) ?? versionFromDeps(pkg, 'nativewind');
 
   const hasExpoRouter =
     Boolean(versionFromDeps(pkg, 'expo-router')) ||

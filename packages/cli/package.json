@@ -14,14 +14,16 @@
     "build": "tsc -p tsconfig.json",
     "dev": "echo \"TODO: dev cli\" && exit 0",
     "lint": "echo \"TODO: lint cli\" && exit 0",
-    "test": "npm run build && node --test dist/resolve-dependencies.test.js dist/rewrite-imports.test.js dist/detect-project.test.js dist/diff.test.js",
+    "test": "npm run build && node --test dist/resolve-dependencies.test.js dist/rewrite-imports.test.js dist/detect-project.test.js dist/diff.test.js dist/commands/doctor.test.js",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@uixvisor/registry-schema": "0.0.0",
-    "commander": "^13.0.0"
+    "commander": "^13.0.0",
+    "semver": "^7.8.5"
   },
   "devDependencies": {
-    "@types/node": "^24.0.0"
+    "@types/node": "^24.0.0",
+    "@types/semver": "^7.7.1"
   }
 }
