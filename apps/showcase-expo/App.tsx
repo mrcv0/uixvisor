@@ -25,6 +25,7 @@ import { SearchBar } from '../../registry/mobile/search-bar/search-bar';
 import { KeyboardAwareForm } from '../../registry/mobile/keyboard-aware-form/keyboard-aware-form';
 import { ToastProvider, useToast } from '../../registry/mobile/toast/toast';
 import { EmptyState } from '../../registry/mobile/empty-state/empty-state';
+import { ErrorState } from '../../registry/mobile/error-state/error-state';
 
 export default function App() {
   return (
@@ -179,6 +180,8 @@ function ShowcaseContent() {
           </Button>
         }
       />
+
+      <ErrorState className="w-full" onRetry={() => {}} />
 
       <Card className="w-full mt-4">
         <CardHeader>
