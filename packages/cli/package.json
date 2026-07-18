@@ -8,13 +8,20 @@
   "bin": {
     "uixvisor": "./dist/index.js"
   },
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "echo \"TODO: build cli\" && exit 0",
+    "build": "tsc -p tsconfig.json",
     "dev": "echo \"TODO: dev cli\" && exit 0",
     "lint": "echo \"TODO: lint cli\" && exit 0",
-    "test": "echo \"TODO: test cli\" && exit 0",
+    "test": "npm run build && node --test dist/resolve-dependencies.test.js",
     "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@uixvisor/registry-schema": "0.0.0",
+    "commander": "^13.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0"
   }
 }
