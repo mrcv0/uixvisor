@@ -21,6 +21,7 @@ import { Spinner } from '../../registry/primitives/spinner/spinner';
 import { Skeleton } from '../../registry/primitives/skeleton/skeleton';
 import { Progress } from '../../registry/primitives/progress/progress';
 import { OTPInput } from '../../registry/mobile/otp-input/otp-input';
+import { SearchBar } from '../../registry/mobile/search-bar/search-bar';
 
 export default function App() {
   const [email, setEmail] = useState('');
@@ -28,6 +29,7 @@ export default function App() {
   const [notifications, setNotifications] = useState(true);
   const [plan, setPlan] = useState('monthly');
   const [otp, setOtp] = useState('');
+  const [query, setQuery] = useState('');
 
   return (
     <ScrollView
@@ -138,6 +140,10 @@ export default function App() {
 
       <View className="w-full mt-4">
         <OTPInput value={otp} onChangeText={setOtp} onResend={() => {}} />
+      </View>
+
+      <View className="w-full mt-4">
+        <SearchBar value={query} onChangeText={setQuery} />
       </View>
 
       <Card className="w-full mt-4">

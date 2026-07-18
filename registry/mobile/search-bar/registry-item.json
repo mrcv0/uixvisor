@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "search-bar",
+  "type": "registry:component",
+  "version": "0.1.0",
+  "title": "Search Bar",
+  "description": "Pill-shaped search input with a clear affordance for Expo applications.",
+  "platforms": ["ios", "android"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": ["icon-button", "text"],
+  "files": [
+    {
+      "source": "search-bar.tsx",
+      "target": "components/ui/search-bar.tsx"
+    }
+  ]
+}
