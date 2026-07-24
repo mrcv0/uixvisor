@@ -5,6 +5,10 @@ import { setTimeout as delay } from 'node:timers/promises';
 import { loadRegistryIndex } from '../registry-source.js';
 import { resolveDependencyOrder } from '../resolve-dependencies.js';
 import { buildRegistryImportTargets, rewriteRegistryImports } from '../rewrite-imports.js';
+import {
+  collectNpmDependencies,
+  formatNpmDependencyReport,
+} from '../registry-dependencies.js';
 import { resolveFileWithinRoot } from '../path-safety.js';
 
 export { resolveFileWithinRoot } from '../path-safety.js';
@@ -129,12 +133,12 @@ export async function runAdd(names: string[], options: AddOptions): Promise<void
 
   console.log(`Resolved ${order.length} item(s): ${order.join(', ')}`);
 
-  const dependencyTargets = buildRegistryImportTargets(
-    order.flatMap((name) => {
-      const entry = index.get(name);
-      return entry ? [entry.item] : [];
-    }),
-  );
+  const selectedItems = order.flatMap((name) => {
+    const entry = index.get(name);
+    return entry ? [entry.item] : [];
+  });
+  const dependencyTargets = buildRegistryImportTargets(selectedItems);
+  const npmDependencies = collectNpmDependencies(selectedItems);
 
   const plannedWrites: PlannedWrite[] = [];
   const skippedTargets: string[] = [];
@@ -222,4 +226,8 @@ export async function runAdd(names: string[], options: AddOptions): Promise<void
   }
 
   console.log(`\n${plannedWrites.length} file(s) written, ${skippedTargets.length} skipped`);
+
+  for (const line of formatNpmDependencyReport(npmDependencies)) {
+    console.log(line);
+  }
 }

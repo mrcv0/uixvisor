@@ -31,11 +31,24 @@ async function withoutConsole(run: () => Promise<void>): Promise<void> {
   }
 }
 
+async function captureLogs(run: () => Promise<void>): Promise<string[]> {
+  const logs: string[] = [];
+  const originalLog = console.log;
+  console.log = (...values: unknown[]) => logs.push(values.join(' '));
+  try {
+    await run();
+  } finally {
+    console.log = originalLog;
+  }
+  return logs;
+}
+
 async function writeRegistryItem(
   registryRoot: string,
   name: string,
   files: FixtureFile[],
   registryDependencies: string[] = [],
+  dependencies: string[] = [],
 ): Promise<void> {
   const itemDir = join(registryRoot, name);
   await mkdir(itemDir, { recursive: true });
@@ -47,7 +60,7 @@ async function writeRegistryItem(
       version: '0.1.0',
       platforms: ['ios', 'android'],
       compatibility: {},
-      dependencies: [],
+      dependencies,
       registryDependencies,
       files: files.map(({ source, target }) => ({ source, target })),
     }),
@@ -218,5 +231,33 @@ test('keeps existing targets unchanged without force', async () => {
 
     assert.equal(wrote, false);
     assert.equal(await readFile(join(targetRoot, 'existing.tsx'), 'utf-8'), 'original\n');
+  });
+});
+
+test('reports npm dependencies with an Expo install command', async () => {
+  await withTempDir(async (dir) => {
+    const registryRoot = join(dir, 'registry');
+    const targetRoot = join(dir, 'project');
+    await mkdir(targetRoot);
+    await writeRegistryItem(
+      registryRoot,
+      'gesture-item',
+      [
+        {
+          source: 'gesture-item.tsx',
+          target: 'components/gesture-item.tsx',
+          content: 'export const gestureItem = true;\n',
+        },
+      ],
+      [],
+      ['react-native-gesture-handler'],
+    );
+
+    const logs = await captureLogs(() =>
+      runAdd(['gesture-item'], { registryRoot, targetRoot, force: false }),
+    );
+
+    assert.ok(logs.includes('Required npm dependencies:'));
+    assert.ok(logs.includes('Run: npx expo install react-native-gesture-handler'));
   });
 });
