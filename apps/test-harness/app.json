@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "UIXVISOR Test Harness",
+    "slug": "uixvisor-test-harness",
+    "scheme": "uixvisor-test-harness",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "dev.uixvisor.testharness"
+    },
+    "android": {
+      "package": "dev.uixvisor.testharness",
+      "predictiveBackGestureEnabled": false
+    }
+  }
+}
