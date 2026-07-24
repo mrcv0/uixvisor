@@ -1,5 +1,5 @@
 import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
-import { dirname, join, resolve } from 'node:path';
+import { dirname, isAbsolute, relative, resolve, sep } from 'node:path';
 
 import { loadRegistryIndex } from '../registry-source.js';
 import { resolveDependencyOrder } from '../resolve-dependencies.js';
@@ -18,6 +18,25 @@ async function pathExists(path: string): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+export function resolveFileWithinRoot(root: string, filePath: string, field: string): string {
+  const resolvedRoot = resolve(root);
+  const normalizedFilePath = filePath.replace(/\\/g, '/');
+  const resolvedPath = resolve(resolvedRoot, normalizedFilePath);
+  const pathFromRoot = relative(resolvedRoot, resolvedPath);
+  const hasAbsolutePrefix =
+    normalizedFilePath.startsWith('/') || /^[a-zA-Z]:/.test(normalizedFilePath);
+  const escapesRoot =
+    pathFromRoot === '..' || pathFromRoot.startsWith(`..${sep}`) || isAbsolute(pathFromRoot);
+
+  if (pathFromRoot === '' || hasAbsolutePrefix || escapesRoot) {
+    throw new Error(
+      `Invalid ${field} path "${filePath}": must be a relative file path within ${resolvedRoot}`,
+    );
+  }
+
+  return resolvedPath;
 }
 
 export async function runAdd(names: string[], options: AddOptions): Promise<void> {
@@ -48,8 +67,8 @@ export async function runAdd(names: string[], options: AddOptions): Promise<void
     }
 
     for (const file of entry.item.files) {
-      const sourcePath = join(entry.dir, file.source);
-      const targetPath = resolve(options.targetRoot, file.target);
+      const sourcePath = resolveFileWithinRoot(entry.dir, file.source, 'source');
+      const targetPath = resolveFileWithinRoot(options.targetRoot, file.target, 'target');
 
       if (!options.force && (await pathExists(targetPath))) {
         console.log(`  skip   ${file.target} (already exists, use --force to overwrite)`);

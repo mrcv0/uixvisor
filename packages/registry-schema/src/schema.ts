@@ -1,8 +1,24 @@
 import { z } from 'zod';
 
+const registryItemFilePathSchema = z
+  .string()
+  .min(1)
+  .refine((value) => {
+    const normalized = value.replace(/\\/g, '/');
+    const segments = normalized.split('/');
+
+    return (
+      !normalized.startsWith('/') &&
+      !/^[a-zA-Z]:/.test(normalized) &&
+      !value.includes('\\') &&
+      !normalized.includes('\0') &&
+      segments.every((segment) => segment !== '' && segment !== '.' && segment !== '..')
+    );
+  }, 'path must be a normalized relative file path without empty, ".", or ".." segments');
+
 export const registryItemFileSchema = z.object({
-  source: z.string().min(1),
-  target: z.string().min(1),
+  source: registryItemFilePathSchema,
+  target: registryItemFilePathSchema,
 });
 
 export const registryItemSchema = z.object({

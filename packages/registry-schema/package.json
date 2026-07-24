@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "lint": "echo \"TODO: lint registry-schema\" && exit 0",
-    "test": "npm run build && node dist/validate-registry.js",
+    "test": "npm run build && node --test dist/schema.test.js && node dist/validate-registry.js",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
