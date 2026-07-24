@@ -5,15 +5,15 @@
   "description": "Registry resolution: dependency graph, fetch, checksum verification",
   "license": "MIT",
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "dependencies": {
-    "@uixvisor/registry-schema": "*"
+    "@uixvisor/registry-schema": "0.0.0"
   },
   "scripts": {
-    "build": "echo \"ERROR: @uixvisor/registry is not implemented\" && exit 1",
+    "build": "tsc -p tsconfig.json",
     "lint": "eslint src",
-    "test": "echo \"ERROR: tests are not configured for @uixvisor/registry\" && exit 1",
-    "typecheck": "echo \"ERROR: typecheck is not configured for @uixvisor/registry\" && exit 1"
+    "test": "npm run build && node --test dist/index.test.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   }
 }
