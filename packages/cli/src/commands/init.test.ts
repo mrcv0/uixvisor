@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -74,5 +74,32 @@ test('overwrites an existing config with force', async () => {
 
     const config = JSON.parse(await readFile(configPath, 'utf-8'));
     assert.equal(config.registry, 'replacement');
+  });
+});
+
+test('preserves the existing config and cleans temporary files when rename fails', async () => {
+  await withTempDir(async (dir) => {
+    const configPath = join(dir, 'uixvisor.config.json');
+    await writeFile(configPath, '{"registry":"original"}\n');
+
+    await withoutConsole(async () => {
+      await assert.rejects(
+        runInit({
+          projectRoot: dir,
+          registry: 'replacement',
+          force: true,
+          renameConfig: async () => {
+            throw new Error('simulated rename failure');
+          },
+        }),
+        /simulated rename failure/,
+      );
+    });
+
+    assert.equal(await readFile(configPath, 'utf-8'), '{"registry":"original"}\n');
+    assert.deepEqual(
+      (await readdir(dir)).filter((name) => name.includes('.tmp-')),
+      [],
+    );
   });
 });
