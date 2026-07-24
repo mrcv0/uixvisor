@@ -1,10 +1,13 @@
 import { mkdir, readFile, rm, rmdir, stat, writeFile } from 'node:fs/promises';
-import { dirname, isAbsolute, relative, resolve, sep } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 
 import { loadRegistryIndex } from '../registry-source.js';
 import { resolveDependencyOrder } from '../resolve-dependencies.js';
 import { rewriteRegistryImports } from '../rewrite-imports.js';
+import { resolveFileWithinRoot } from '../path-safety.js';
+
+export { resolveFileWithinRoot } from '../path-safety.js';
 
 export interface AddOptions {
   registryRoot: string;
@@ -45,25 +48,6 @@ async function pathStats(path: string) {
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
-}
-
-export function resolveFileWithinRoot(root: string, filePath: string, field: string): string {
-  const resolvedRoot = resolve(root);
-  const normalizedFilePath = filePath.replace(/\\/g, '/');
-  const resolvedPath = resolve(resolvedRoot, normalizedFilePath);
-  const pathFromRoot = relative(resolvedRoot, resolvedPath);
-  const hasAbsolutePrefix =
-    normalizedFilePath.startsWith('/') || /^[a-zA-Z]:/.test(normalizedFilePath);
-  const escapesRoot =
-    pathFromRoot === '..' || pathFromRoot.startsWith(`..${sep}`) || isAbsolute(pathFromRoot);
-
-  if (pathFromRoot === '' || hasAbsolutePrefix || escapesRoot) {
-    throw new Error(
-      `Invalid ${field} path "${filePath}": must be a relative file path within ${resolvedRoot}`,
-    );
-  }
-
-  return resolvedPath;
 }
 
 async function findMissingDirectories(root: string, targetPath: string): Promise<string[]> {
