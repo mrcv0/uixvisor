@@ -1,0 +1,7 @@
+appId: dev.uixvisor.testharness
+---
+- launchApp
+- tapOn: Verification code
+- inputText: 123456
+- assertVisible: Resend
+- tapOn: Resend

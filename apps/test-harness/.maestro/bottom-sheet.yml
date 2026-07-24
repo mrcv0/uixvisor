@@ -1,0 +1,9 @@
+appId: dev.uixvisor.testharness
+---
+- launchApp
+- assertVisible: UIXVISOR test harness
+- tapOn:
+    id: open-sheet
+- assertVisible: Sheet title
+- tapOn: Close sheet
+- assertNotVisible: Sheet title
