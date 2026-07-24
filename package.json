@@ -12,11 +12,12 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "lint": "turbo run lint",
+    "lint": "turbo run lint && eslint registry",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck"
   },
   "devDependencies": {
+    "next": "^16.2.10",
     "turbo": "^2.5.0",
     "typescript": "^5.7.0"
   }

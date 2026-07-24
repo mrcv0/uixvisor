@@ -9,7 +9,7 @@
   "types": "./src/index.ts",
   "scripts": {
     "build": "echo \"ERROR: @uixvisor/tokens is not implemented\" && exit 1",
-    "lint": "echo \"ERROR: lint is not configured for @uixvisor/tokens\" && exit 1",
+    "lint": "eslint src",
     "test": "echo \"ERROR: tests are not configured for @uixvisor/tokens\" && exit 1",
     "typecheck": "echo \"ERROR: typecheck is not configured for @uixvisor/tokens\" && exit 1"
   }

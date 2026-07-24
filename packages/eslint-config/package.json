@@ -6,7 +6,22 @@
   "license": "MIT",
   "type": "module",
   "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./base": "./base.js",
+    "./next": "./next.js",
+    "./react-native": "./react-native.js"
+  },
   "scripts": {
-    "lint": "echo \"ERROR: lint is not configured for @uixvisor/eslint-config\" && exit 1"
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
+    "eslint-config-expo": "~57.0.0",
+    "eslint-config-next": "^16.2.10",
+    "globals": "^16.5.0",
+    "next": "^16.2.10",
+    "typescript-eslint": "^8.65.0"
   }
 }

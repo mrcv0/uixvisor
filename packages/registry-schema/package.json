@@ -9,7 +9,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "lint": "echo \"ERROR: lint is not configured for registry-schema\" && exit 1",
+    "lint": "eslint src",
     "test": "npm run build && node --test dist/schema.test.js && node dist/validate-registry.js",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },

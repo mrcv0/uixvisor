@@ -12,7 +12,7 @@
   },
   "scripts": {
     "build": "echo \"ERROR: @uixvisor/presets is not implemented\" && exit 1",
-    "lint": "echo \"ERROR: lint is not configured for @uixvisor/presets\" && exit 1",
+    "lint": "eslint src",
     "test": "echo \"ERROR: tests are not configured for @uixvisor/presets\" && exit 1",
     "typecheck": "echo \"ERROR: typecheck is not configured for @uixvisor/presets\" && exit 1"
   }
