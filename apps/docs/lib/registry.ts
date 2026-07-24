@@ -5,7 +5,7 @@ import { join } from 'node:path';
 
 import { validateRegistryItem, type RegistryItem } from '@uixvisor/registry-schema';
 
-const REGISTRY_ROOT = join(process.cwd(), '..', '..', 'registry');
+import { resolveRegistryRoot } from './registry-path';
 
 async function pathExists(path: string): Promise<boolean> {
   try {
@@ -33,11 +33,12 @@ async function findRegistryItemFiles(dir: string): Promise<string[]> {
 }
 
 export async function getRegistryItems(): Promise<RegistryItem[]> {
-  if (!(await pathExists(REGISTRY_ROOT))) {
+  const registryRoot = resolveRegistryRoot();
+  if (!(await pathExists(registryRoot))) {
     return [];
   }
 
-  const itemFiles = await findRegistryItemFiles(REGISTRY_ROOT);
+  const itemFiles = await findRegistryItemFiles(registryRoot);
   const items: RegistryItem[] = [];
 
   for (const filePath of itemFiles) {
