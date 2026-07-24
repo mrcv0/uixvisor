@@ -58,6 +58,13 @@ export async function loadRegistryIndex(
       throw new Error(`Invalid registry item at ${manifestPath}: ${details}`);
     }
 
+    const existing = index.get(result.data.name);
+    if (existing) {
+      throw new Error(
+        `Duplicate registry item name "${result.data.name}" found at ${existing.dir} and ${dir}`,
+      );
+    }
+
     index.set(result.data.name, { item: result.data, dir });
   }
 
