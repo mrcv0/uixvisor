@@ -1,7 +1,7 @@
 import { readFile, stat } from 'node:fs/promises';
 
 import { loadRegistryIndex } from '../registry-source.js';
-import { rewriteRegistryImports } from '../rewrite-imports.js';
+import { buildRegistryImportTargets, rewriteRegistryImports } from '../rewrite-imports.js';
 import { diffLines } from '../diff.js';
 import { resolveFileWithinRoot } from '../path-safety.js';
 
@@ -22,12 +22,9 @@ async function pathExists(path: string): Promise<boolean> {
 export async function runDiff(names: string[], options: DiffOptions): Promise<boolean> {
   const index = await loadRegistryIndex(options.registryRoot);
 
-  const dependencyTargets: Record<string, string> = {};
-  for (const entry of index.values()) {
-    if (entry.item.files[0]) {
-      dependencyTargets[entry.item.name] = entry.item.files[0].target;
-    }
-  }
+  const dependencyTargets = buildRegistryImportTargets(
+    [...index.values()].map((entry) => entry.item),
+  );
 
   let hasDifferences = false;
 

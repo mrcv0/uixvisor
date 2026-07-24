@@ -1,7 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { rewriteRegistryImports, toRelativeImportSpecifier } from './rewrite-imports.js';
+import {
+  buildRegistryImportTargets,
+  rewriteRegistryImports,
+  toRelativeImportSpecifier,
+} from './rewrite-imports.js';
 
 test('rewrites a same-directory registry import to a relative specifier', () => {
   const content = `import { Input } from '@registry/input/input';\nimport { Text } from '@registry/text/text';\n`;
@@ -31,4 +35,43 @@ test('computes a relative specifier across nested directories', () => {
   );
 
   assert.equal(specifier, '../input');
+});
+
+test('resolves primary and secondary files from multi-file registry items', () => {
+  const targets = buildRegistryImportTargets([
+    {
+      name: 'swipeable-row',
+      files: [
+        {
+          source: 'swipeable-native.tsx',
+          target: 'components/ui/swipeable-native.tsx',
+        },
+        {
+          source: 'swipeable-row.tsx',
+          target: 'components/ui/swipeable-row.tsx',
+        },
+      ],
+    },
+  ]);
+  const content =
+    "import { Row } from '@registry/swipeable-row/swipeable-row';\n" +
+    "import { Native } from '@registry/swipeable-row/swipeable-native';\n";
+
+  assert.equal(targets['swipeable-row'], 'components/ui/swipeable-row.tsx');
+  assert.equal(
+    rewriteRegistryImports(content, 'components/screens/example.tsx', targets),
+    "import { Row } from '../ui/swipeable-row';\n" +
+      "import { Native } from '../ui/swipeable-native';\n",
+  );
+});
+
+test('falls back to the first file when no primary alias matches', () => {
+  const targets = buildRegistryImportTargets([
+    {
+      name: 'button',
+      files: [{ source: 'index.ts', target: 'components/ui/index.ts' }],
+    },
+  ]);
+
+  assert.equal(targets.button, 'components/ui/index.ts');
 });

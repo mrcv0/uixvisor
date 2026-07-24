@@ -4,7 +4,7 @@ import { setTimeout as delay } from 'node:timers/promises';
 
 import { loadRegistryIndex } from '../registry-source.js';
 import { resolveDependencyOrder } from '../resolve-dependencies.js';
-import { rewriteRegistryImports } from '../rewrite-imports.js';
+import { buildRegistryImportTargets, rewriteRegistryImports } from '../rewrite-imports.js';
 import { resolveFileWithinRoot } from '../path-safety.js';
 
 export { resolveFileWithinRoot } from '../path-safety.js';
@@ -129,13 +129,12 @@ export async function runAdd(names: string[], options: AddOptions): Promise<void
 
   console.log(`Resolved ${order.length} item(s): ${order.join(', ')}`);
 
-  const dependencyTargets: Record<string, string> = {};
-  for (const name of order) {
-    const entry = index.get(name);
-    if (entry?.item.files[0]) {
-      dependencyTargets[name] = entry.item.files[0].target;
-    }
-  }
+  const dependencyTargets = buildRegistryImportTargets(
+    order.flatMap((name) => {
+      const entry = index.get(name);
+      return entry ? [entry.item] : [];
+    }),
+  );
 
   const plannedWrites: PlannedWrite[] = [];
   const skippedTargets: string[] = [];
