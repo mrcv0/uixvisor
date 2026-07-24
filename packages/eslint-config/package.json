@@ -7,6 +7,6 @@
   "type": "module",
   "main": "./index.js",
   "scripts": {
-    "lint": "echo \"TODO: lint eslint-config\" && exit 0"
+    "lint": "echo \"ERROR: lint is not configured for @uixvisor/eslint-config\" && exit 1"
   }
 }

@@ -11,9 +11,9 @@
     "@uixvisor/registry-schema": "*"
   },
   "scripts": {
-    "build": "echo \"TODO: build registry\" && exit 0",
-    "lint": "echo \"TODO: lint registry\" && exit 0",
-    "test": "echo \"TODO: test registry\" && exit 0",
-    "typecheck": "tsc --noEmit"
+    "build": "echo \"ERROR: @uixvisor/registry is not implemented\" && exit 1",
+    "lint": "echo \"ERROR: lint is not configured for @uixvisor/registry\" && exit 1",
+    "test": "echo \"ERROR: tests are not configured for @uixvisor/registry\" && exit 1",
+    "typecheck": "echo \"ERROR: typecheck is not configured for @uixvisor/registry\" && exit 1"
   }
 }

@@ -12,10 +12,10 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "dev": "echo \"TODO: dev cli\" && exit 0",
-    "lint": "echo \"TODO: lint cli\" && exit 0",
-    "test": "npm run build && node --test dist/resolve-dependencies.test.js dist/rewrite-imports.test.js dist/detect-project.test.js dist/diff.test.js dist/commands/add.test.js dist/commands/doctor.test.js",
-    "typecheck": "tsc --noEmit"
+    "dev": "tsc -p tsconfig.json --watch",
+    "lint": "echo \"ERROR: lint is not configured for uixvisor\" && exit 1",
+    "test": "npm run build && node --test dist/resolve-dependencies.test.js dist/rewrite-imports.test.js dist/detect-project.test.js dist/diff.test.js dist/commands/add.test.js dist/commands/init.test.js dist/commands/list.test.js dist/commands/doctor.test.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
     "@uixvisor/registry-schema": "0.0.0",

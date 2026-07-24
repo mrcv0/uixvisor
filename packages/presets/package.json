@@ -11,9 +11,9 @@
     "@uixvisor/tokens": "*"
   },
   "scripts": {
-    "build": "echo \"TODO: build presets\" && exit 0",
-    "lint": "echo \"TODO: lint presets\" && exit 0",
-    "test": "echo \"TODO: test presets\" && exit 0",
-    "typecheck": "tsc --noEmit"
+    "build": "echo \"ERROR: @uixvisor/presets is not implemented\" && exit 1",
+    "lint": "echo \"ERROR: lint is not configured for @uixvisor/presets\" && exit 1",
+    "test": "echo \"ERROR: tests are not configured for @uixvisor/presets\" && exit 1",
+    "typecheck": "echo \"ERROR: typecheck is not configured for @uixvisor/presets\" && exit 1"
   }
 }
