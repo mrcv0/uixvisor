@@ -10,6 +10,7 @@ import { runInit } from './commands/init.js';
 import { runDiff } from './commands/diff.js';
 import { runDoctor } from './commands/doctor.js';
 import { readConfig } from './config.js';
+import { CLI_VERSION } from './version.js';
 
 async function resolveRegistryValue(value: string, projectRoot: string): Promise<string> {
   if (value.startsWith('https://')) {
@@ -42,7 +43,7 @@ async function resolveRegistryRoot(value: string | undefined): Promise<string> {
 
 const program = new Command();
 
-program.name('uixvisor').description('UIXVISOR registry CLI').version('0.1.0');
+program.name('uixvisor').description('UIXVISOR registry CLI').version(CLI_VERSION);
 
 function fail(error: unknown): never {
   const message = error instanceof Error ? error.message : String(error);
