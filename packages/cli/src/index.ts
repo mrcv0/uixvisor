@@ -2,6 +2,8 @@
 import { Command } from 'commander';
 import { resolve } from 'node:path';
 
+import { HostedRegistrySource } from '@uixvisor/registry';
+
 import { runList } from './commands/list.js';
 import { runAdd } from './commands/add.js';
 import { runInit } from './commands/init.js';
@@ -9,22 +11,31 @@ import { runDiff } from './commands/diff.js';
 import { runDoctor } from './commands/doctor.js';
 import { readConfig } from './config.js';
 
+async function resolveRegistryValue(value: string, projectRoot: string): Promise<string> {
+  if (value.startsWith('https://')) {
+    return new HostedRegistrySource({ baseUrl: value }).materialize();
+  }
+  if (value.startsWith('http://')) {
+    throw new Error('Hosted registry URLs must use HTTPS');
+  }
+  return resolve(projectRoot, value);
+}
+
 async function resolveRegistryRoot(value: string | undefined): Promise<string> {
   if (value) {
-    return resolve(value);
+    return resolveRegistryValue(value, process.cwd());
   }
   if (process.env.UIXVISOR_REGISTRY) {
-    return resolve(process.env.UIXVISOR_REGISTRY);
+    return resolveRegistryValue(process.env.UIXVISOR_REGISTRY, process.cwd());
   }
 
   const config = await readConfig(process.cwd());
   if (config?.registry) {
-    return resolve(process.cwd(), config.registry);
+    return resolveRegistryValue(config.registry, process.cwd());
   }
 
   console.error(
-    'No registry source configured. Pass --registry <path>, set UIXVISOR_REGISTRY, or run `uixvisor init`.\n' +
-      '(No hosted registry is deployed yet - point this at a local uixvisor registry checkout.)',
+    'No registry source configured. Pass --registry <path-or-url>, set UIXVISOR_REGISTRY, or run `uixvisor init`.',
   );
   process.exit(1);
 }
@@ -42,19 +53,20 @@ function fail(error: unknown): never {
 program
   .command('init')
   .description('Detect the current project and write uixvisor.config.json')
-  .option('--registry <path>', 'Registry source to record in the config')
+  .option('--registry <source>', 'Registry path or HTTPS URL to record in the config')
   .option('--force', 'Overwrite an existing config file', false)
   .action(async (opts: { registry?: string; force: boolean }) => {
     try {
       const registry = opts.registry ?? process.env.UIXVISOR_REGISTRY;
       if (!registry) {
-        throw new Error(
-          'Pass --registry <path> or set UIXVISOR_REGISTRY (no hosted registry is deployed yet).',
-        );
+        throw new Error('Pass --registry <path-or-url> or set UIXVISOR_REGISTRY.');
+      }
+      if (registry.startsWith('http://')) {
+        throw new Error('Hosted registry URLs must use HTTPS');
       }
       await runInit({
         projectRoot: process.cwd(),
-        registry: resolve(registry),
+        registry: registry.startsWith('https://') ? registry : resolve(registry),
         force: opts.force,
       });
     } catch (error) {
@@ -65,7 +77,7 @@ program
 program
   .command('list')
   .description('List available registry items')
-  .option('--registry <path>', 'Path to the registry root')
+  .option('--registry <source>', 'Local path or HTTPS registry URL')
   .action(async (opts: { registry?: string }) => {
     try {
       await runList(await resolveRegistryRoot(opts.registry));
@@ -77,7 +89,7 @@ program
 program
   .command('add <items...>')
   .description('Add one or more registry items to the current project')
-  .option('--registry <path>', 'Path to the registry root')
+  .option('--registry <source>', 'Local path or HTTPS registry URL')
   .option('--target <path>', 'Target project root', '.')
   .option('--force', 'Overwrite existing files', false)
   .action(async (items: string[], opts: { registry?: string; target: string; force: boolean }) => {
@@ -95,7 +107,7 @@ program
 program
   .command('diff <items...>')
   .description('Show differences between local files and the registry source')
-  .option('--registry <path>', 'Path to the registry root')
+  .option('--registry <source>', 'Local path or HTTPS registry URL')
   .option('--target <path>', 'Target project root', '.')
   .action(async (items: string[], opts: { registry?: string; target: string }) => {
     try {
@@ -114,7 +126,7 @@ program
 program
   .command('doctor')
   .description('Check the current project and registry for compatibility issues')
-  .option('--registry <path>', 'Path to the registry root')
+  .option('--registry <source>', 'Local path or HTTPS registry URL')
   .action(async (opts: { registry?: string }) => {
     try {
       const checks = await runDoctor({

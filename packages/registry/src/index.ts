@@ -4,6 +4,16 @@ import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 
 import { validateRegistryItem, type RegistryItem } from '@uixvisor/registry-schema';
 
+export {
+  HostedRegistrySource,
+  RegistryIntegrityError,
+  RegistryNetworkError,
+  RegistrySecurityError,
+  type HostedRegistryIndex,
+  type HostedRegistryItem,
+  type HostedRegistryOptions,
+} from './hosted.js';
+
 export interface RegistryEntry {
   item: RegistryItem;
   directory: string;
