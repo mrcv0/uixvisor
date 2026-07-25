@@ -15,7 +15,8 @@
     "lint": "turbo run lint && eslint registry",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
-    "smoke:cli": "npm run build --workspace uixvisor && node scripts/smoke-cli.mjs"
+    "smoke:cli": "npm run build --workspace uixvisor && node scripts/smoke-cli.mjs",
+    "verify:build": "node scripts/verify-build.mjs"
   },
   "devDependencies": {
     "next": "16.2.11",
