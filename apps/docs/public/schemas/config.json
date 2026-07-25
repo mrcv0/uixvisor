@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UIXVISOR Config",
+  "type": "object",
+  "required": ["registry"],
+  "properties": {
+    "$schema": { "type": "string", "format": "uri" },
+    "registry": {
+      "type": "string",
+      "anyOf": [
+        { "format": "uri", "pattern": "^https://" },
+        { "pattern": "^[A-Za-z]:[\\\\/]|^\\.\\.?[/\\\\]|^/" }
+      ]
+    }
+  },
+  "additionalProperties": false
+}

@@ -119,7 +119,10 @@ export class HostedRegistrySource {
     try {
       const response = await this.fetchImpl(url, { signal: controller.signal, redirect: 'follow' });
       if (!response.ok) {
-        throw new RegistryNetworkError(`Registry request failed (${response.status}): ${url}`);
+        throw new RegistryNetworkError(
+          `Registry request failed (${response.status}) for ${url}; ` +
+            'verify the channel (e.g. stable/preview) and the base URL.',
+        );
       }
       if (response.url) {
         const finalUrl = new URL(response.url);
