@@ -14,15 +14,18 @@ function cn(...classes: Array<string | false | undefined | null>) {
 
 export const Card = forwardRef<ComponentRef<typeof View>, CardProps>(
   ({ className, style, ...props }, ref) => {
-    // Light mode lifts the card with a shadow; dark mode uses the lighter `card`
-    // colour plus a border, because shadows do not read on dark backgrounds.
+    // Light mode lifts the card with a soft shadow; dark mode drops the shadow
+    // and relies on the lighter `card` colour, because shadows do not read on a
+    // dark background. The hairline border is present in both modes: it is what
+    // keeps the edge crisp when a platform renders the shadow more faintly than
+    // intended.
     const elevation = useElevation('raised');
 
     return (
       <View
         ref={ref}
         style={[elevation, style]}
-        className={cn('gap-3 rounded-md bg-card p-4 dark:border dark:border-border', className)}
+        className={cn('gap-3 rounded-md border border-border bg-card p-4', className)}
         {...props}
       />
     );

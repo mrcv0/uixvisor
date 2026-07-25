@@ -121,17 +121,23 @@ export type ElevationLevel = 'surface' | 'raised' | 'overlay';
 const lightElevation: Record<ElevationLevel, ViewStyle> = {
   surface: {},
   raised: {
+    // Wide and faint rather than tight and dark. A small shadowRadius reads as a
+    // hard grey rim on iOS, and Android's `elevation` draws its own shadow that
+    // ignores shadowOpacity entirely - so elevation stays at 1 to keep the two
+    // platforms in the same visual range. Surfaces also carry a hairline border,
+    // which is what actually guarantees definition when a platform renders the
+    // shadow differently than expected.
     shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.08,
-    shadowRadius: 3,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 1,
   },
   overlay: {
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.18,
-    shadowRadius: 24,
+    shadowOpacity: 0.12,
+    shadowRadius: 28,
     elevation: 8,
   },
 };

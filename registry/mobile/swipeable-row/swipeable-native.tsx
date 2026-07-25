@@ -15,7 +15,20 @@ export interface SwipeableNativeProps {
 
 export const SwipeableNative = forwardRef<ComponentRef<typeof Swipeable>, SwipeableNativeProps>(
   ({ children, renderRightActions }, ref) => (
-    <Swipeable ref={ref} renderRightActions={renderRightActions}>
+    <Swipeable
+      ref={ref}
+      renderRightActions={renderRightActions}
+      // Without this the row keeps travelling past the action panel and the
+      // panel stretches to fill the gap, which leaves the delete button
+      // off-centre and its edges torn. Capping the drag at the action width
+      // keeps the open state identical no matter how hard the row is flung.
+      overshootRight={false}
+      overshootLeft={false}
+      // Slightly heavier than the default 1 so the row does not fly open on a
+      // flick; the action still opens well before the finger leaves the screen.
+      friction={1.5}
+      rightThreshold={40}
+    >
       {children}
     </Swipeable>
   ),

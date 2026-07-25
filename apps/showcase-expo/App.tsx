@@ -3,7 +3,7 @@ import './global.css';
 import { useState, type ReactNode } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
-import { ScrollView, View } from 'react-native';
+import { Modal, ScrollView, View } from 'react-native';
 
 import { Button } from '@registry/button/button';
 import { Text } from '@registry/text/text';
@@ -19,7 +19,7 @@ import { Avatar } from '@registry/avatar/avatar';
 import { Badge } from '@registry/badge/badge';
 import { Separator } from '@registry/separator/separator';
 import { Spinner } from '@registry/spinner/spinner';
-import { Skeleton } from '@registry/skeleton/skeleton';
+import { SkeletonCard, SkeletonText } from '@registry/skeleton/skeleton';
 import { Progress } from '@registry/progress/progress';
 import { Icon } from '@registry/icon/icon';
 import { useThemeColor } from '@registry/theme/theme';
@@ -93,6 +93,7 @@ function Showcase() {
   const [otp, setOtp] = useState('');
   const [query, setQuery] = useState('');
   const [sheetVisible, setSheetVisible] = useState(false);
+  const [formVisible, setFormVisible] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const isDark = colorScheme === 'dark';
@@ -283,10 +284,11 @@ function Showcase() {
           <Spinner size="lg" />
         </View>
         <Progress value={0.6} />
-        <View className="gap-2">
-          <Skeleton className="h-4 w-3/4" />
-          <Skeleton className="h-4 w-1/2" />
-        </View>
+      </Section>
+
+      <Section title="Skeleton" hint="Shimmer sweeps across; falls back to a static block under reduce motion.">
+        <SkeletonCard />
+        <SkeletonText lines={3} />
       </Section>
 
       <Section title="Surfaces" hint="Shadow in light mode, lighter surface plus border in dark.">
@@ -332,12 +334,20 @@ function Showcase() {
         </Specimen>
 
         <Specimen label="Swipeable row (swipe left)">
-          <SwipeableRow
-            className="rounded-md border border-border px-4 py-3"
-            onDelete={() => toast.show('Row deleted')}
-          >
-            <Text>Swipe me</Text>
-          </SwipeableRow>
+          <View className="gap-2">
+            <SwipeableRow onDelete={() => toast.show('Invoice deleted')}>
+              <Text weight="medium">Invoice #1042</Text>
+              <Text variant="muted" size="sm">
+                Due in 3 days
+              </Text>
+            </SwipeableRow>
+            <SwipeableRow onDelete={() => toast.show('Invoice deleted')}>
+              <Text weight="medium">Invoice #1041</Text>
+              <Text variant="muted" size="sm">
+                Paid
+              </Text>
+            </SwipeableRow>
+          </View>
         </Specimen>
 
         <Specimen label="Empty state">
@@ -357,11 +367,48 @@ function Showcase() {
         </Specimen>
 
         <Specimen label="Keyboard aware form">
-          <KeyboardAwareForm>
-            <Input label="Full name" placeholder="Ada Lovelace" />
-          </KeyboardAwareForm>
+          <Text variant="muted" size="sm" className="mb-1">
+            A full-height container, so it opens as its own screen. Nesting it in
+            this page would put a scroll view inside a scroll view.
+          </Text>
+          <Button variant="secondary" onPress={() => setFormVisible(true)}>
+            Open form
+          </Button>
         </Specimen>
       </Section>
+
+      {/* Presented as its own screen so the keyboard behaviour is real: the
+          field list scrolls and the focused input stays above the keyboard. */}
+      <Modal visible={formVisible} animationType="slide" onRequestClose={() => setFormVisible(false)}>
+        <View className="flex-1 bg-background">
+          <View className="flex-row items-center justify-between border-b border-border px-4 py-3">
+            <Heading level={4}>Shipping details</Heading>
+            <IconButton
+              variant="ghost"
+              accessibilityLabel="Close form"
+              icon={<Icon name="close" size={20} color={foreground} />}
+              onPress={() => setFormVisible(false)}
+            />
+          </View>
+          <KeyboardAwareForm>
+            <Input label="Full name" placeholder="Ada Lovelace" />
+            <Input label="Address line 1" placeholder="12 Analytical Way" />
+            <Input label="Address line 2" placeholder="Apt 4" />
+            <Input label="City" placeholder="London" />
+            <Input label="Postcode" placeholder="EC1A 1BB" autoCapitalize="characters" />
+            <Input label="Phone" placeholder="+44 20 7946 0000" keyboardType="phone-pad" />
+            <Textarea label="Delivery notes" placeholder="Leave with the neighbour" />
+            <Button
+              onPress={() => {
+                setFormVisible(false);
+                toast.show('Details saved');
+              }}
+            >
+              Save details
+            </Button>
+          </KeyboardAwareForm>
+        </View>
+      </Modal>
 
       <StatusBar style="auto" />
     </ScrollView>

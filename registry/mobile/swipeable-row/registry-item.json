@@ -5,13 +5,22 @@
   "version": "0.1.0",
   "title": "Swipeable Row",
   "description": "List row with a swipe-to-delete action for Expo applications.",
-  "platforms": ["ios", "android"],
+  "platforms": [
+    "ios",
+    "android"
+  ],
   "compatibility": {
     "expo": ">=57 <58",
     "nativewind": ">=4 <5"
   },
-  "dependencies": ["react-native-gesture-handler"],
-  "registryDependencies": ["text"],
+  "dependencies": [
+    "react-native-gesture-handler"
+  ],
+  "registryDependencies": [
+    "icon",
+    "text",
+    "theme"
+  ],
   "files": [
     {
       "source": "swipeable-row.tsx",
