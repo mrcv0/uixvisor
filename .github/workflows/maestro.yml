@@ -1,0 +1,49 @@
+name: E2E (Maestro)
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'android or ios'
+        required: true
+        default: 'android'
+        type: choice
+        options:
+          - android
+          - ios
+
+jobs:
+  maestro:
+    name: Maestro ${{ inputs.platform }}
+    runs-on: macos-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.0
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Maestro
+        run: |
+          curl -fsSL https://get.maestro.mobile.dev | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Build the harness app
+        run: npm run build --workspace @uixvisor/test-harness
+
+      - name: Boot Android emulator
+        if: ${{ inputs.platform == 'android' }}
+        run: |
+          echo "Booting an Android emulator is environment-specific; see docs."
+          echo "EAS Workflows or a self-hosted runner with an active emulator is recommended."
+
+      - name: Run Maestro flows
+        run: |
+          maestro test .maestro -d ${{ inputs.platform }}
