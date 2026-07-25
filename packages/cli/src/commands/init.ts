@@ -2,12 +2,16 @@ import { randomUUID } from 'node:crypto';
 import { open, rename, rm, stat } from 'node:fs/promises';
 import { join } from 'node:path';
 
+import { projectConfigSchema, type FontFamily, type IconLibrary } from '@uixvisor/registry-schema';
+
 import { detectProject } from '../detect-project.js';
 
 export interface InitOptions {
   projectRoot: string;
   registry: string;
   force: boolean;
+  icons?: IconLibrary;
+  font?: FontFamily;
   renameConfig?: (source: string, target: string) => Promise<void>;
 }
 
@@ -62,10 +66,14 @@ export async function runInit(options: InitOptions): Promise<void> {
     );
   }
 
-  const config = {
+  // Parsing rather than building the object literal means the schema owns the
+  // defaults, so `init` and a hand-edited config can never disagree.
+  const config = projectConfigSchema.parse({
     $schema: 'https://uixvisor.dev/schema/config.json',
     registry: options.registry,
-  };
+    ...(options.icons ? { icons: options.icons } : {}),
+    ...(options.font ? { font: options.font } : {}),
+  });
 
   await writeFileAtomic(
     configPath,
@@ -73,4 +81,6 @@ export async function runInit(options: InitOptions): Promise<void> {
     options.renameConfig,
   );
   console.log(`\nWrote ${configPath}`);
+  console.log(`  Icons: ${config.icons}`);
+  console.log(`  Font:  ${config.font}`);
 }

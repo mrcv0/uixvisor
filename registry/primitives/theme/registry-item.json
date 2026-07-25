@@ -1,0 +1,29 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "theme",
+  "type": "registry:primitive",
+  "version": "0.1.0",
+  "title": "Theme",
+  "description": "Runtime token access for the things NativeWind classes cannot express: icon colours, native colour props, shadows, and press feedback.",
+  "platforms": ["ios", "android", "web"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": ["expo-haptics", "expo-font", "@expo-google-fonts/inter"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "theme.tsx",
+      "target": "components/ui/theme.tsx"
+    },
+    {
+      "source": "press-feedback.tsx",
+      "target": "components/ui/press-feedback.tsx"
+    },
+    {
+      "source": "use-uixvisor-fonts.ts",
+      "target": "components/ui/use-uixvisor-fonts.ts"
+    }
+  ]
+}

@@ -43,7 +43,27 @@ test('creates a config for a detected Expo project', async () => {
     assert.deepEqual(config, {
       $schema: 'https://uixvisor.dev/schema/config.json',
       registry: '../registry',
+      icons: 'phosphor',
+      font: 'inter',
     });
+  });
+});
+
+test('records the chosen icon library and font', async () => {
+  await withTempDir(async (dir) => {
+    await withoutConsole(() =>
+      runInit({
+        projectRoot: dir,
+        registry: '../registry',
+        force: false,
+        icons: 'phosphor',
+        font: 'system',
+      }),
+    );
+
+    const config = JSON.parse(await readFile(join(dir, 'uixvisor.config.json'), 'utf-8'));
+    assert.equal(config.icons, 'phosphor');
+    assert.equal(config.font, 'system');
   });
 });
 

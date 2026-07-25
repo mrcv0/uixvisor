@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "icon",
+  "type": "registry:primitive",
+  "version": "0.1.0",
+  "title": "Icon",
+  "description": "Semantic icon adapter. Components reference stable names so the underlying icon library can be swapped by replacing this single file.",
+  "platforms": ["ios", "android", "web"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": ["phosphor-react-native", "react-native-svg"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "icon.tsx",
+      "target": "components/ui/icon.tsx"
+    }
+  ]
+}

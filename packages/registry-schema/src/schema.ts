@@ -71,5 +71,27 @@ function basename(path: string): string {
   return path.split(/[\\/]/).pop() ?? path;
 }
 
+/**
+ * Icon libraries a project can be wired to. Components always reference
+ * semantic icon names, so this only selects which adapter file `add` installs.
+ */
+export const iconLibraries = ['phosphor'] as const;
+
+/**
+ * Font families shipped as an installable registry item. `system` skips the
+ * font install entirely and lets components fall back to the platform default.
+ */
+export const fontFamilies = ['inter', 'system'] as const;
+
+export const projectConfigSchema = z.object({
+  $schema: z.string().optional(),
+  registry: z.string().min(1),
+  icons: z.enum(iconLibraries).default('phosphor'),
+  font: z.enum(fontFamilies).default('inter'),
+});
+
+export type IconLibrary = (typeof iconLibraries)[number];
+export type FontFamily = (typeof fontFamilies)[number];
+export type ProjectConfig = z.infer<typeof projectConfigSchema>;
 export type RegistryItemFile = z.infer<typeof registryItemFileSchema>;
 export type RegistryItem = z.infer<typeof registryItemSchema>;

@@ -3,6 +3,7 @@ import { Command } from 'commander';
 import { resolve } from 'node:path';
 
 import { HostedRegistrySource } from '@uixvisor/registry';
+import { fontFamilies, iconLibraries } from '@uixvisor/registry-schema';
 
 import { runList } from './commands/list.js';
 import { runAdd } from './commands/add.js';
@@ -58,12 +59,32 @@ function fail(error: unknown): never {
   process.exit(1);
 }
 
+/**
+ * Rejects unknown values up front so a typo lands as a clear CLI error rather
+ * than a schema failure after the project has already been inspected.
+ */
+function parseChoice<T extends string>(
+  flag: string,
+  value: string | undefined,
+  allowed: readonly T[],
+): T | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+  if (!allowed.includes(value as T)) {
+    throw new Error(`${flag} must be one of: ${allowed.join(', ')}`);
+  }
+  return value as T;
+}
+
 program
   .command('init')
   .description('Detect the current project and write uixvisor.config.json')
   .option('--registry <source>', 'Registry path or HTTPS URL to record in the config')
+  .option('--icons <library>', `Icon library to install (${iconLibraries.join(', ')})`)
+  .option('--font <family>', `Font family to install (${fontFamilies.join(', ')})`)
   .option('--force', 'Overwrite an existing config file', false)
-  .action(async (opts: { registry?: string; force: boolean }) => {
+  .action(async (opts: { registry?: string; icons?: string; font?: string; force: boolean }) => {
     try {
       const registry = opts.registry ?? process.env.UIXVISOR_REGISTRY;
       if (!registry) {
@@ -72,10 +93,14 @@ program
       if (registry.startsWith('http://')) {
         throw new Error('Hosted registry URLs must use HTTPS');
       }
+      const icons = parseChoice('--icons', opts.icons, iconLibraries);
+      const font = parseChoice('--font', opts.font, fontFamilies);
       await runInit({
         projectRoot: process.cwd(),
         registry: registry.startsWith('https://') ? registry : resolve(registry),
         force: opts.force,
+        icons,
+        font,
       });
     } catch (error) {
       fail(error);

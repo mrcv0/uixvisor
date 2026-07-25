@@ -13,6 +13,9 @@
     "android": {
       "package": "dev.uixvisor.testharness",
       "predictiveBackGestureEnabled": false
-    }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }
