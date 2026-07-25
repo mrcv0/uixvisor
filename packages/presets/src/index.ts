@@ -31,20 +31,25 @@ export const defaultPreset: ThemePreset = {
   tokens: defaultTokens,
 };
 
+/**
+ * Demonstrates that theming works without touching a component: the monochrome
+ * base is kept intact and only the action colour departs from it. Everything
+ * else - neutrals, surfaces, borders - still comes from `defaultTokens`.
+ */
 export const fintechPreset: ThemePreset = {
   name: 'fintech',
   tokens: withColorOverrides(defaultTokens, {
     light: {
       primary: '#0369a1',
-      ring: '#0284c7',
+      'primary-foreground': '#ffffff',
+      ring: '#0369a1',
       success: '#047857',
-      card: '#f8fafc',
     },
     dark: {
       primary: '#38bdf8',
+      'primary-foreground': '#082f49',
       ring: '#38bdf8',
       success: '#34d399',
-      card: '#0f172a',
     },
   }),
 };

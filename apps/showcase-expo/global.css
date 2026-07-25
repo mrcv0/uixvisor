@@ -2,56 +2,87 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Monochrome by default: colour carries meaning, never decoration. The primary
+ * action is near-black in light mode and near-white in dark mode.
+ *
+ * Kept in sync with registry/primitives/theme/theme.tsx and @uixvisor/tokens by
+ * scripts/verify-tokens.mjs.
+ */
 :root {
   --color-background: #ffffff;
-  --color-foreground: #0f172a;
+  --color-foreground: #09090b;
 
   --color-surface: #ffffff;
-  --color-surface-elevated: #f8fafc;
+  --color-surface-elevated: #ffffff;
 
-  --color-primary: #2563eb;
-  --color-primary-foreground: #ffffff;
+  --color-card: #ffffff;
+  --color-card-foreground: #09090b;
 
-  --color-secondary: #f1f5f9;
-  --color-secondary-foreground: #0f172a;
+  --color-primary: #18181b;
+  --color-primary-foreground: #fafafa;
 
-  --color-muted: #f1f5f9;
-  --color-muted-foreground: #64748b;
+  --color-secondary: #f4f4f5;
+  --color-secondary-foreground: #18181b;
+
+  --color-muted: #f4f4f5;
+  --color-muted-foreground: #71717a;
+
+  --color-accent: #f4f4f5;
+  --color-accent-foreground: #18181b;
 
   --color-destructive: #dc2626;
+  --color-destructive-foreground: #fafafa;
   --color-success: #16a34a;
   --color-warning: #d97706;
 
-  --color-border: #e2e8f0;
-  --color-input: #e2e8f0;
-  --color-ring: #2563eb;
+  --color-border: #e4e4e7;
+  --color-input: #e4e4e7;
+  --color-ring: #18181b;
 
-  --color-skeleton: #e2e8f0;
+  --color-overlay: #000000;
+  --color-tab-bar: #ffffff;
+  --color-sheet: #ffffff;
+  --color-skeleton: #e4e4e7;
 }
 
+/*
+ * Dark mode separates raised surfaces with a lighter colour rather than a
+ * shadow, because shadows are unreadable against a dark background.
+ */
 .dark:root {
-  --color-background: #0b1220;
-  --color-foreground: #f8fafc;
+  --color-background: #09090b;
+  --color-foreground: #fafafa;
 
-  --color-surface: #111827;
-  --color-surface-elevated: #1a2233;
+  --color-surface: #09090b;
+  --color-surface-elevated: #18181b;
 
-  --color-primary: #3b82f6;
-  --color-primary-foreground: #ffffff;
+  --color-card: #18181b;
+  --color-card-foreground: #fafafa;
 
-  --color-secondary: #1f2937;
-  --color-secondary-foreground: #f8fafc;
+  --color-primary: #fafafa;
+  --color-primary-foreground: #18181b;
 
-  --color-muted: #1f2937;
-  --color-muted-foreground: #94a3b8;
+  --color-secondary: #27272a;
+  --color-secondary-foreground: #fafafa;
 
-  --color-destructive: #f87171;
+  --color-muted: #27272a;
+  --color-muted-foreground: #a1a1aa;
+
+  --color-accent: #27272a;
+  --color-accent-foreground: #fafafa;
+
+  --color-destructive: #dc2626;
+  --color-destructive-foreground: #fafafa;
   --color-success: #4ade80;
   --color-warning: #fbbf24;
 
-  --color-border: #1f2937;
-  --color-input: #1f2937;
-  --color-ring: #3b82f6;
+  --color-border: #27272a;
+  --color-input: #27272a;
+  --color-ring: #d4d4d8;
 
-  --color-skeleton: #1f2937;
+  --color-overlay: #000000;
+  --color-tab-bar: #09090b;
+  --color-sheet: #18181b;
+  --color-skeleton: #27272a;
 }

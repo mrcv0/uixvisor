@@ -39,5 +39,8 @@ jobs:
       - name: Verify build artifacts
         run: npm run verify:build
 
+      - name: Verify design token consistency
+        run: npm run verify:tokens
+
       - name: Build registry schemas
         run: node packages/registry-schema/dist/validate-registry.js
