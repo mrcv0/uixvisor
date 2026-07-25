@@ -38,7 +38,15 @@ export const registryItemSchema = z.object({
   title: z.string().min(1).optional(),
   description: z.string().min(1).optional(),
   platforms: z.array(z.enum(['ios', 'android', 'web'])).min(1),
-  compatibility: z.record(z.string(), z.string()),
+  compatibility: z.record(
+    z.enum(['expo', 'nativewind', 'reanimated', 'gesture-handler', 'react-native', 'react']),
+    z
+      .string()
+      .regex(
+        /^(>=|<=|>|<|~|\^)?\d+(\.\d+){0,2}(?:[ \t\n-]+(>=|<=|>|<|~|\^)?\d+(\.\d+){0,2})?$/,
+        'compatibility must be a semver range',
+      ),
+  ),
   dependencies: z.array(z.string()),
   registryDependencies: z.array(z.string()),
   files: z.array(registryItemFileSchema).min(1),
