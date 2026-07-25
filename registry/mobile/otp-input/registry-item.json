@@ -5,13 +5,19 @@
   "version": "0.1.0",
   "title": "OTP Input",
   "description": "One-time-passcode input with SMS autofill support and a resend affordance for Expo applications.",
-  "platforms": ["ios", "android"],
+  "platforms": [
+    "ios",
+    "android"
+  ],
   "compatibility": {
     "expo": ">=57 <58",
     "nativewind": ">=4 <5"
   },
   "dependencies": [],
-  "registryDependencies": ["text", "input"],
+  "registryDependencies": [
+    "input",
+    "text"
+  ],
   "files": [
     {
       "source": "otp-input.tsx",

@@ -57,7 +57,7 @@ export const RadioGroupItem = forwardRef<ComponentRef<typeof Pressable>, RadioGr
         accessibilityState={{ checked, disabled: Boolean(disabled) }}
         accessibilityLabel={label}
         className={cn(
-          'min-h-[44px] flex-row items-center gap-2',
+          'h-12 flex-row items-center gap-3',
           disabled && 'opacity-50',
           className,
         )}

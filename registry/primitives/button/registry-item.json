@@ -11,7 +11,7 @@
     "nativewind": ">=4 <5"
   },
   "dependencies": [],
-  "registryDependencies": [],
+  "registryDependencies": ["theme"],
   "files": [
     {
       "source": "button.tsx",

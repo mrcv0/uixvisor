@@ -13,7 +13,7 @@ export interface AvatarProps extends ViewProps {
 
 const sizeStyles: Record<AvatarSize, string> = {
   sm: 'h-8 w-8',
-  md: 'h-11 w-11',
+  md: 'h-12 w-12',
   lg: 'h-14 w-14',
 };
 

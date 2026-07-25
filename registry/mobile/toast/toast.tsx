@@ -82,7 +82,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           {toasts.map((toast) => (
             <View
               key={toast.id}
-              className={cn('w-full max-w-sm rounded-xl px-4 py-3', variantStyles[toast.variant])}
+              className={cn('w-full max-w-sm rounded-md px-4 py-3', variantStyles[toast.variant])}
             >
               <Text className="text-background">{toast.message}</Text>
             </View>

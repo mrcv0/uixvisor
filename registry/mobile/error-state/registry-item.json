@@ -5,13 +5,20 @@
   "version": "0.1.0",
   "title": "Error State",
   "description": "Placeholder block for failed loads with a retry action, for Expo applications.",
-  "platforms": ["ios", "android"],
+  "platforms": [
+    "ios",
+    "android"
+  ],
   "compatibility": {
     "expo": ">=57 <58",
     "nativewind": ">=4 <5"
   },
   "dependencies": [],
-  "registryDependencies": ["heading", "text", "button"],
+  "registryDependencies": [
+    "button",
+    "heading",
+    "text"
+  ],
   "files": [
     {
       "source": "error-state.tsx",

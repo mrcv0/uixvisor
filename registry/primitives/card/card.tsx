@@ -2,6 +2,8 @@
 import { forwardRef, type ComponentRef } from 'react';
 import { View, type ViewProps } from 'react-native';
 
+import { useElevation } from '@registry/theme/theme';
+
 export interface CardProps extends ViewProps {
   className?: string;
 }
@@ -11,13 +13,20 @@ function cn(...classes: Array<string | false | undefined | null>) {
 }
 
 export const Card = forwardRef<ComponentRef<typeof View>, CardProps>(
-  ({ className, ...props }, ref) => (
-    <View
-      ref={ref}
-      className={cn('gap-3 rounded-xl border border-border bg-surface-elevated p-4', className)}
-      {...props}
-    />
-  ),
+  ({ className, style, ...props }, ref) => {
+    // Light mode lifts the card with a shadow; dark mode uses the lighter `card`
+    // colour plus a border, because shadows do not read on dark backgrounds.
+    const elevation = useElevation('raised');
+
+    return (
+      <View
+        ref={ref}
+        style={[elevation, style]}
+        className={cn('gap-3 rounded-md bg-card p-4 dark:border dark:border-border', className)}
+        {...props}
+      />
+    );
+  },
 );
 Card.displayName = 'Card';
 

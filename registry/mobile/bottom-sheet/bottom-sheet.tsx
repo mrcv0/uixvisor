@@ -40,7 +40,7 @@ export function BottomSheet({ visible, onClose, children, className }: BottomShe
       >
         <Animated.View style={{ transform: [{ translateY }] }}>
           <Pressable onPress={() => {}}>
-            <View className={cn('gap-3 rounded-t-2xl bg-surface-elevated p-4', className)}>
+            <View className={cn('gap-3 rounded-t-lg bg-sheet p-4 dark:border-t dark:border-border', className)}>
               <View className="h-1 w-10 self-center rounded-full bg-border" />
               {children}
             </View>

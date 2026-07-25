@@ -2,6 +2,8 @@
 import { forwardRef, useState, type ComponentRef } from 'react';
 import { Text, TextInput, View, type TextInputProps } from 'react-native';
 
+import { useThemeColor } from '@registry/theme/theme';
+
 export interface TextareaProps extends TextInputProps {
   label?: string;
   error?: string;
@@ -17,17 +19,19 @@ export const Textarea = forwardRef<ComponentRef<typeof TextInput>, TextareaProps
   ({ label, error, rows = 4, editable = true, className, onFocus, onBlur, ...props }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
     const isDisabled = !editable;
+    // placeholderTextColor is a native prop and cannot take a class.
+    const placeholderColor = useThemeColor('muted-foreground');
 
     return (
       <View className="gap-1.5">
-        {label ? <Text className="text-sm font-medium text-foreground">{label}</Text> : null}
+        {label ? <Text className="font-medium text-sm text-foreground">{label}</Text> : null}
         <TextInput
           ref={ref}
           multiline
           numberOfLines={rows}
           textAlignVertical="top"
           editable={editable}
-          placeholderTextColor="#64748b"
+          placeholderTextColor={placeholderColor}
           accessibilityLabel={label}
           accessibilityState={{ disabled: isDisabled }}
           onFocus={(event) => {
@@ -39,7 +43,7 @@ export const Textarea = forwardRef<ComponentRef<typeof TextInput>, TextareaProps
             onBlur?.(event);
           }}
           className={cn(
-            'min-h-[88px] rounded-xl border bg-background px-4 py-3 text-base text-foreground',
+            'min-h-[96px] rounded-md border bg-background px-4 py-3 font-sans text-base text-foreground',
             error ? 'border-destructive' : isFocused ? 'border-ring' : 'border-input',
             isDisabled && 'opacity-50',
             className,

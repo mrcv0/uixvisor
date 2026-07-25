@@ -9,6 +9,8 @@ export interface HeadingProps extends TextProps {
   className?: string;
 }
 
+// Negative tracking is carried by the `fontSize` tokens for lg and above: at
+// display sizes default letter-spacing reads loose and undesigned.
 const levelStyles: Record<HeadingLevel, string> = {
   1: 'text-3xl font-bold',
   2: 'text-2xl font-bold',

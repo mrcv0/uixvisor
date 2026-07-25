@@ -5,13 +5,19 @@
   "version": "0.1.0",
   "title": "Checkbox",
   "description": "Accessible, themeable checkbox primitive for Expo applications.",
-  "platforms": ["ios", "android"],
+  "platforms": [
+    "ios",
+    "android"
+  ],
   "compatibility": {
     "expo": ">=57 <58",
     "nativewind": ">=4 <5"
   },
   "dependencies": [],
-  "registryDependencies": [],
+  "registryDependencies": [
+    "icon",
+    "theme"
+  ],
   "files": [
     {
       "source": "checkbox.tsx",
