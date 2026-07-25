@@ -33,5 +33,8 @@ jobs:
       - name: Test
         run: npm test
 
+      - name: Smoke CLI
+        run: npm run smoke:cli
+
       - name: Build registry schemas
         run: node packages/registry-schema/dist/validate-registry.js
