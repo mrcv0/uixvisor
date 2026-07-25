@@ -154,7 +154,7 @@ test('does not write any target when preflight validation fails', async () => {
     const targetRoot = join(dir, 'project');
     await mkdir(targetRoot);
     await writeRegistryItem(registryRoot, 'broken', [
-      { source: 'first.tsx', target: 'generated/first.tsx', content: 'first\n' },
+      { source: 'broken.tsx', target: 'generated/first.tsx', content: 'first\n' },
       { source: 'missing.tsx', target: 'generated/second.tsx' },
     ]);
 
@@ -177,8 +177,8 @@ test('restores overwritten files and removes new files when a write fails', asyn
     await mkdir(targetRoot);
     await writeFile(join(targetRoot, 'existing.tsx'), 'original\n');
     await writeRegistryItem(registryRoot, 'transaction', [
-      { source: 'first.tsx', target: 'existing.tsx', content: 'replacement\n' },
-      { source: 'second.tsx', target: 'generated/second.tsx', content: 'new\n' },
+      { source: 'transaction.tsx', target: 'existing.tsx', content: 'replacement\n' },
+      { source: 'helper.tsx', target: 'generated/helper.tsx', content: 'new\n' },
     ]);
 
     let writes = 0;
@@ -201,7 +201,7 @@ test('restores overwritten files and removes new files when a write fails', asyn
     });
 
     assert.equal(await readFile(join(targetRoot, 'existing.tsx'), 'utf-8'), 'original\n');
-    assert.equal(await pathExists(join(targetRoot, 'generated/second.tsx')), false);
+    assert.equal(await pathExists(join(targetRoot, 'generated/helper.tsx')), false);
     assert.equal(await pathExists(join(targetRoot, 'generated')), false);
   });
 });

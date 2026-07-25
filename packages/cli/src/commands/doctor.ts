@@ -56,7 +56,7 @@ export async function runDoctor(options: DoctorOptions): Promise<DoctorCheck[]> 
       const incompatible = [...index.values()]
         .filter((entry) => {
           const range = entry.item.compatibility.expo;
-          return Boolean(range) && !semver.satisfies(expoCoerced, range);
+          return Boolean(range) && !semver.satisfies(expoCoerced, range!);
         })
         .map((entry) => entry.item.name);
 

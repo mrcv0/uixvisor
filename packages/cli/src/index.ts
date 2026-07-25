@@ -12,9 +12,13 @@ import { runDoctor } from './commands/doctor.js';
 import { readConfig } from './config.js';
 import { CLI_VERSION } from './version.js';
 
-async function resolveRegistryValue(value: string, projectRoot: string): Promise<string> {
+async function resolveRegistryValue(
+  value: string,
+  projectRoot: string,
+  options: { offline?: boolean } = {},
+): Promise<string> {
   if (value.startsWith('https://')) {
-    return new HostedRegistrySource({ baseUrl: value }).materialize();
+    return new HostedRegistrySource({ baseUrl: value, offline: options.offline }).materialize();
   }
   if (value.startsWith('http://')) {
     throw new Error('Hosted registry URLs must use HTTPS');
@@ -22,17 +26,20 @@ async function resolveRegistryValue(value: string, projectRoot: string): Promise
   return resolve(projectRoot, value);
 }
 
-async function resolveRegistryRoot(value: string | undefined): Promise<string> {
+async function resolveRegistryRoot(
+  value: string | undefined,
+  options: { offline?: boolean } = {},
+): Promise<string> {
   if (value) {
-    return resolveRegistryValue(value, process.cwd());
+    return resolveRegistryValue(value, process.cwd(), options);
   }
   if (process.env.UIXVISOR_REGISTRY) {
-    return resolveRegistryValue(process.env.UIXVISOR_REGISTRY, process.cwd());
+    return resolveRegistryValue(process.env.UIXVISOR_REGISTRY, process.cwd(), options);
   }
 
   const config = await readConfig(process.cwd());
   if (config?.registry) {
-    return resolveRegistryValue(config.registry, process.cwd());
+    return resolveRegistryValue(config.registry, process.cwd(), options);
   }
 
   console.error(
@@ -79,9 +86,10 @@ program
   .command('list')
   .description('List available registry items')
   .option('--registry <source>', 'Local path or HTTPS registry URL')
-  .action(async (opts: { registry?: string }) => {
+  .option('--offline', 'Use cached registry snapshot without network access', false)
+  .action(async (opts: { registry?: string; offline: boolean }) => {
     try {
-      await runList(await resolveRegistryRoot(opts.registry));
+      await runList(await resolveRegistryRoot(opts.registry, { offline: opts.offline }));
     } catch (error) {
       fail(error);
     }
@@ -93,46 +101,59 @@ program
   .option('--registry <source>', 'Local path or HTTPS registry URL')
   .option('--target <path>', 'Target project root', '.')
   .option('--force', 'Overwrite existing files', false)
-  .action(async (items: string[], opts: { registry?: string; target: string; force: boolean }) => {
-    try {
-      await runAdd(items, {
-        registryRoot: await resolveRegistryRoot(opts.registry),
-        targetRoot: resolve(opts.target),
-        force: opts.force,
-      });
-    } catch (error) {
-      fail(error);
-    }
-  });
+  .option('--offline', 'Use cached registry snapshot without network access', false)
+  .action(
+    async (
+      items: string[],
+      opts: { registry?: string; target: string; force: boolean; offline: boolean },
+    ) => {
+      try {
+        await runAdd(items, {
+          registryRoot: await resolveRegistryRoot(opts.registry, { offline: opts.offline }),
+          targetRoot: resolve(opts.target),
+          force: opts.force,
+        });
+      } catch (error) {
+        fail(error);
+      }
+    },
+  );
 
 program
   .command('diff <items...>')
   .description('Show differences between local files and the registry source')
   .option('--registry <source>', 'Local path or HTTPS registry URL')
   .option('--target <path>', 'Target project root', '.')
-  .action(async (items: string[], opts: { registry?: string; target: string }) => {
-    try {
-      const hasDifferences = await runDiff(items, {
-        registryRoot: await resolveRegistryRoot(opts.registry),
-        targetRoot: resolve(opts.target),
-      });
-      if (hasDifferences) {
-        process.exitCode = 1;
+  .option('--offline', 'Use cached registry snapshot without network access', false)
+  .action(
+    async (
+      items: string[],
+      opts: { registry?: string; target: string; offline: boolean },
+    ) => {
+      try {
+        const hasDifferences = await runDiff(items, {
+          registryRoot: await resolveRegistryRoot(opts.registry, { offline: opts.offline }),
+          targetRoot: resolve(opts.target),
+        });
+        if (hasDifferences) {
+          process.exitCode = 1;
+        }
+      } catch (error) {
+        fail(error);
       }
-    } catch (error) {
-      fail(error);
-    }
-  });
+    },
+  );
 
 program
   .command('doctor')
   .description('Check the current project and registry for compatibility issues')
   .option('--registry <source>', 'Local path or HTTPS registry URL')
-  .action(async (opts: { registry?: string }) => {
+  .option('--offline', 'Use cached registry snapshot without network access', false)
+  .action(async (opts: { registry?: string; offline: boolean }) => {
     try {
       const checks = await runDoctor({
         projectRoot: process.cwd(),
-        registryRoot: await resolveRegistryRoot(opts.registry),
+        registryRoot: await resolveRegistryRoot(opts.registry, { offline: opts.offline }),
       });
 
       const icon = { pass: '✔', warn: '!', fail: '✖' } as const;

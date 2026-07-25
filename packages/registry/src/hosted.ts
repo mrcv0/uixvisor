@@ -26,6 +26,8 @@ export interface HostedRegistryOptions {
   maximumFileBytes?: number;
   allowInsecureHttp?: boolean;
   fetchImpl?: typeof fetch;
+  cacheVersion?: string;
+  offline?: boolean;
 }
 
 export class RegistryNetworkError extends Error {}
@@ -89,6 +91,8 @@ export class HostedRegistrySource {
   readonly timeoutMs: number;
   readonly maximumFileBytes: number;
   readonly fetchImpl: typeof fetch;
+  readonly cacheVersion: string;
+  readonly offline: boolean;
 
   constructor(options: HostedRegistryOptions) {
     const baseUrl = new URL(options.baseUrl.endsWith('/') ? options.baseUrl : `${options.baseUrl}/`);
@@ -100,6 +104,8 @@ export class HostedRegistrySource {
     this.timeoutMs = options.timeoutMs ?? 10_000;
     this.maximumFileBytes = options.maximumFileBytes ?? 5 * 1024 * 1024;
     this.fetchImpl = options.fetchImpl ?? fetch;
+    this.cacheVersion = options.cacheVersion ?? 'v1';
+    this.offline = options.offline ?? false;
   }
 
   private urlFor(path: string): URL {
@@ -152,6 +158,9 @@ export class HostedRegistrySource {
   }
 
   async materialize(): Promise<string> {
+    if (this.offline) {
+      throw new RegistryNetworkError('Hosted registry offline mode is enabled but no cache exists');
+    }
     const [indexBytes, checksumBytes] = await Promise.all([
       this.fetchBytes('index.json'),
       this.fetchBytes('index.json.sha256'),
@@ -164,7 +173,7 @@ export class HostedRegistrySource {
       throw new RegistryIntegrityError(error instanceof Error ? error.message : String(error));
     }
 
-    const finalDirectory = join(this.cacheDirectory, indexDigest);
+    const finalDirectory = join(this.cacheDirectory, `${this.cacheVersion}-${indexDigest}`);
     const finalRegistry = join(finalDirectory, 'registry');
     try {
       await readFile(join(finalDirectory, '.complete'));

@@ -104,3 +104,15 @@ test('rejects insecure hosted registry URLs by default', () => {
     RegistrySecurityError,
   );
 });
+
+test('rejects offline mode when no cache is available', async () => {
+  const source = new HostedRegistrySource({
+    baseUrl: 'https://registry.example.test/',
+    offline: true,
+  });
+
+  await assert.rejects(
+    source.materialize(),
+    /offline mode is enabled but no cache exists/,
+  );
+});
