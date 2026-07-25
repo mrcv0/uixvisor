@@ -36,7 +36,7 @@ export function BottomSheet({ visible, onClose, children, className }: BottomShe
       <Pressable
         onPress={onClose}
         accessibilityLabel="Close"
-        className="flex-1 justify-end bg-foreground/40"
+        className="flex-1 justify-end bg-overlay/40"
       >
         <Animated.View style={{ transform: [{ translateY }] }}>
           <Pressable onPress={() => {}}>

@@ -20,6 +20,7 @@
   --color-input: #e2e8f0;
   --color-ring: #2563eb;
   --color-skeleton: #e2e8f0;
+  --color-overlay: #000000;
 }
 
 .dark:root {
@@ -40,4 +41,5 @@
   --color-input: #1f2937;
   --color-ring: #3b82f6;
   --color-skeleton: #1f2937;
+  --color-overlay: #000000;
 }

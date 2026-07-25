@@ -22,6 +22,7 @@ module.exports = {
         input: 'var(--color-input)',
         ring: 'var(--color-ring)',
         skeleton: 'var(--color-skeleton)',
+        overlay: 'var(--color-overlay)',
       },
     },
   },
