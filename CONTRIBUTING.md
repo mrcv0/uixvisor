@@ -2,6 +2,24 @@
 
 UIXVISOR'a katkı sağlamadan önce ürün ve mimari kararların tam kaynağı olan [`uixvisor.md`](./uixvisor.md) dosyasını okuyun. Bu dosya, süreç kararlarının (özellikle §2.5 Git ve Katkı İş Akışı, §1.9 Marka ve Açık Kaynak Politikası) kısa bir özetidir; çelişki olursa `uixvisor.md` esastır.
 
+## Yerel geliştirme ortamı
+
+- Node `>=22.13` (`engines` alanı ile zorunlu).
+- npm `11.9.0` (Expo SDK 57 `corepack` ile gelir; `packageManager` alanında pinlenmiştir).
+- Macros ve `node` çalıştırılabilirleri `PATH`’te olmalı.
+
+Hızlı başlangıç:
+
+```bash
+corepack enable
+corepack prepare npm@11.9.0 --activate
+node --version
+npm --version
+npm install
+```
+
+`npm test`, `npm run lint`, `npm run typecheck` ve `npm run build` kökten tüm workspace'lerde turbo üzerinden çalışır.
+
 ## Branch ve commit kuralları
 
 - `main` korumalıdır, doğrudan push yapılmaz.
