@@ -2,7 +2,7 @@
 import { forwardRef, useState, type ComponentRef } from 'react';
 import { ScrollView, Switch, Text, View, type ViewProps } from 'react-native';
 
-import { ListItem } from '@registry/blocks/list-item';
+import { ListItem } from '@registry/list-item/list-item';
 
 export interface SettingsScreenProps extends ViewProps {
   initialNotifications: boolean;

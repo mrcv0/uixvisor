@@ -5,7 +5,11 @@
   "version": "0.1.0",
   "title": "Sign In Screen",
   "description": "Email + password sign-in screen built on registry primitives and form-field block.",
-  "platforms": ["ios", "android", "web"],
+  "platforms": [
+    "ios",
+    "android",
+    "web"
+  ],
   "compatibility": {
     "expo": ">=57 <58",
     "nativewind": ">=4 <5"
@@ -13,9 +17,9 @@
   "dependencies": [],
   "registryDependencies": [
     "button",
+    "form-field",
     "input",
-    "text",
-    "blocks/form-field"
+    "text"
   ],
   "files": [
     {

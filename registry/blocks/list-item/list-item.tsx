@@ -19,7 +19,7 @@ export const ListItem = forwardRef<ComponentRef<typeof Pressable>, ListItemProps
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? title}
       accessibilityState={{ disabled: Boolean(disabled) }}
-      className="min-h-[56px] flex-row items-center gap-3 rounded-xl border border-border bg-surface-elevated px-4 active:opacity-80"
+      className="min-h-[56px] flex-row items-center gap-3 rounded-md bg-card px-4 active:bg-accent dark:border dark:border-border"
       {...props}
     >
       {leading ? <View className="items-center justify-center">{leading}</View> : null}

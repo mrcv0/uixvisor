@@ -5,7 +5,11 @@
   "version": "0.1.0",
   "title": "Sign Up Screen",
   "description": "Sign-up screen collecting name, email, and password with form-field block.",
-  "platforms": ["ios", "android", "web"],
+  "platforms": [
+    "ios",
+    "android",
+    "web"
+  ],
   "compatibility": {
     "expo": ">=57 <58",
     "nativewind": ">=4 <5"
@@ -13,9 +17,9 @@
   "dependencies": [],
   "registryDependencies": [
     "button",
+    "form-field",
     "input",
-    "text",
-    "blocks/form-field"
+    "text"
   ],
   "files": [
     {

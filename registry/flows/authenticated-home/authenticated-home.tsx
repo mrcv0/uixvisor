@@ -2,8 +2,8 @@
 import { forwardRef, useState, type ComponentRef } from 'react';
 import { Text, View, type ViewProps } from 'react-native';
 
-import { AppHeader } from '@registry/blocks/app-header';
-import { ListItem } from '@registry/blocks/list-item';
+import { AppHeader } from '@registry/app-header/app-header';
+import { ListItem } from '@registry/list-item/list-item';
 import { Text as UText } from '@registry/text/text';
 
 export interface AuthenticatedHomeFlowProps extends ViewProps {

@@ -2,9 +2,19 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
-    "types": ["jest", "react", "react-native"],
+    "types": [
+      "jest",
+      "react",
+      "react-native"
+    ],
     "paths": {
-      "@registry/*": ["../../registry/primitives/*"]
+      "@registry/*": [
+        "../../registry/primitives/*",
+        "../../registry/mobile/*",
+        "../../registry/blocks/*",
+        "../../registry/screens/*",
+        "../../registry/flows/*"
+      ]
     }
   }
 }

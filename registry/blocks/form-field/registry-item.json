@@ -5,13 +5,17 @@
   "version": "0.1.0",
   "title": "Form Field",
   "description": "Label, child control, and optional hint/error text with accessible live region.",
-  "platforms": ["ios", "android", "web"],
+  "platforms": [
+    "ios",
+    "android",
+    "web"
+  ],
   "compatibility": {
     "expo": ">=57 <58",
     "nativewind": ">=4 <5"
   },
   "dependencies": [],
-  "registryDependencies": ["text"],
+  "registryDependencies": [],
   "files": [
     {
       "source": "form-field.tsx",

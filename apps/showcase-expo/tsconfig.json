@@ -3,7 +3,13 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@registry/*": ["../../registry/primitives/*"]
+      "@registry/*": [
+        "../../registry/primitives/*",
+        "../../registry/mobile/*",
+        "../../registry/blocks/*",
+        "../../registry/screens/*",
+        "../../registry/flows/*"
+      ]
     }
   }
 }

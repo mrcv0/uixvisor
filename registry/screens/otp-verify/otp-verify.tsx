@@ -3,7 +3,7 @@ import { forwardRef, useState, type ComponentRef } from 'react';
 import { Alert, Text, View, type ViewProps } from 'react-native';
 
 import { Button } from '@registry/button/button';
-import { OTPInput } from '@registry/mobile/otp-input/otp-input';
+import { OTPInput } from '@registry/otp-input/otp-input';
 import { Text as UText } from '@registry/text/text';
 
 export interface OtpVerifyScreenProps extends ViewProps {

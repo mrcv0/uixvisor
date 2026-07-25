@@ -23,6 +23,53 @@ async function findRegistryItemFiles(dir: string): Promise<string[]> {
   return files;
 }
 
+/**
+ * Cross-item imports use the `@registry/<item>/<file>` alias, so the imports a
+ * source file actually makes are the ground truth for `registryDependencies`.
+ * A stale declaration is invisible in the repo (the alias still resolves) but
+ * breaks `uixvisor add`, which copies only the declared dependencies.
+ */
+function referencedItems(source: string): Set<string> {
+  const names = new Set<string>();
+  for (const [, name] of source.matchAll(/from\s+'@registry\/([^/']+)\//g)) {
+    names.add(name);
+  }
+  return names;
+}
+
+async function checkDeclaredDependencies(
+  itemPath: string,
+  item: { name: string; registryDependencies: string[]; files: { source: string }[] },
+): Promise<string[]> {
+  const problems: string[] = [];
+  const imported = new Set<string>();
+
+  for (const file of item.files) {
+    const source = await readFile(join(dirname(itemPath), file.source), 'utf-8');
+    for (const name of referencedItems(source)) {
+      imported.add(name);
+    }
+  }
+
+  // Items may reference their own sibling files; that is not a dependency.
+  imported.delete(item.name);
+
+  const declared = new Set(item.registryDependencies.map((dep) => dep.split('/').pop() ?? dep));
+
+  for (const name of imported) {
+    if (!declared.has(name)) {
+      problems.push(`imports @registry/${name} but does not declare it in registryDependencies`);
+    }
+  }
+  for (const name of declared) {
+    if (!imported.has(name)) {
+      problems.push(`declares registryDependency "${name}" but never imports it`);
+    }
+  }
+
+  return problems;
+}
+
 async function main() {
   const itemFiles = await findRegistryItemFiles(registryRoot);
 
@@ -38,14 +85,24 @@ async function main() {
     const raw = await readFile(filePath, 'utf-8');
     const result = validateRegistryItem(JSON.parse(raw));
 
-    if (result.success) {
-      console.log(`PASS  ${result.data.name}`);
-    } else {
+    if (!result.success) {
       failures += 1;
       console.error(`FAIL  ${filePath}`);
       for (const error of result.errors) {
         console.error(`      ${error.path}: ${error.message}`);
       }
+      continue;
+    }
+
+    const problems = await checkDeclaredDependencies(filePath, result.data);
+    if (problems.length > 0) {
+      failures += 1;
+      console.error(`FAIL  ${result.data.name}`);
+      for (const problem of problems) {
+        console.error(`      ${problem}`);
+      }
+    } else {
+      console.log(`PASS  ${result.data.name}`);
     }
   }
 

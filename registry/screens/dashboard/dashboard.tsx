@@ -23,7 +23,7 @@ export const DashboardScreen = forwardRef<ComponentRef<typeof View>, DashboardSc
           <View
             key={highlight.id}
             accessibilityLabel={`${highlight.title} ${highlight.value}`}
-            className="rounded-xl border border-border bg-surface-elevated p-4"
+            className="rounded-md bg-card p-4 dark:border dark:border-border"
           >
             <Text className="text-xs uppercase text-muted-foreground">{highlight.title}</Text>
             <Text className="text-lg font-semibold text-foreground">{highlight.value}</Text>

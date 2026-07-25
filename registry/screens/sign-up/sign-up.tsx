@@ -3,7 +3,7 @@ import { forwardRef, useState, type ComponentRef } from 'react';
 import { Alert, Text, View, type ViewProps } from 'react-native';
 
 import { Button } from '@registry/button/button';
-import { FormField } from '@registry/blocks/form-field';
+import { FormField } from '@registry/form-field/form-field';
 import { Input } from '@registry/input/input';
 import { Text as UText } from '@registry/text/text';
 

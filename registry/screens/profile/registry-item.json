@@ -5,15 +5,18 @@
   "version": "0.1.0",
   "title": "Profile Screen",
   "description": "Profile screen with avatar, name, email, and optional bio.",
-  "platforms": ["ios", "android", "web"],
+  "platforms": [
+    "ios",
+    "android",
+    "web"
+  ],
   "compatibility": {
     "expo": ">=57 <58",
     "nativewind": ">=4 <5"
   },
   "dependencies": [],
   "registryDependencies": [
-    "avatar",
-    "text"
+    "avatar"
   ],
   "files": [
     {

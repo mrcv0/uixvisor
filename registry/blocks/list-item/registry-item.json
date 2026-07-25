@@ -5,13 +5,17 @@
   "version": "0.1.0",
   "title": "List Item",
   "description": "Reusable pressable row with leading, trailing, title, and description slots.",
-  "platforms": ["ios", "android", "web"],
+  "platforms": [
+    "ios",
+    "android",
+    "web"
+  ],
   "compatibility": {
     "expo": ">=57 <58",
     "nativewind": ">=4 <5"
   },
   "dependencies": [],
-  "registryDependencies": ["text"],
+  "registryDependencies": [],
   "files": [
     {
       "source": "list-item.tsx",
