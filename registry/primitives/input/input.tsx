@@ -23,7 +23,7 @@ export const Input = forwardRef<ComponentRef<typeof TextInput>, InputProps>(
         <TextInput
           ref={ref}
           editable={editable}
-          placeholderTextColor="#94a3b8"
+          placeholderTextColor="#64748b"
           accessibilityLabel={label}
           accessibilityState={{ disabled: isDisabled }}
           onFocus={(event) => {

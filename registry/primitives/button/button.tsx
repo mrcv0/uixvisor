@@ -39,9 +39,10 @@ function cn(...classes: Array<string | false | undefined | null>) {
 export const Button = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
   ({ children, variant = 'primary', loading = false, disabled, className, ...props }, ref) => {
     const isDisabled = disabled || loading;
-    const styles = variantStyles[variant];
+      const styles = variantStyles[variant];
+      const spinnerColor = styles.spinnerColor;
 
-    return (
+      return (
       <Pressable
         ref={ref}
         disabled={isDisabled}
@@ -56,7 +57,7 @@ export const Button = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
         {...props}
       >
         {loading ? (
-          <ActivityIndicator color={styles.spinnerColor} />
+          <ActivityIndicator color={spinnerColor} />
         ) : (
           <Text className={cn('text-base font-medium', styles.text)}>{children}</Text>
         )}

@@ -7,7 +7,7 @@ export interface SwitchProps extends Omit<RNSwitchProps, 'value' | 'onValueChang
   onCheckedChange: (checked: boolean) => void;
 }
 
-const TRACK_COLOR = { false: '#e2e8f0', true: '#2563eb' };
+const TRACK_COLOR = { false: '#e2e8f0', true: '#2563eb' } as const;
 const THUMB_COLOR = '#ffffff';
 
 export const Switch = forwardRef<ComponentRef<typeof RNSwitch>, SwitchProps>(

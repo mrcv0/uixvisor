@@ -14,11 +14,11 @@ const sizeMap: Record<SpinnerSize, 'small' | 'large'> = {
 };
 
 export const Spinner = forwardRef<ComponentRef<typeof ActivityIndicator>, SpinnerProps>(
-  ({ size = 'sm', color = '#2563eb', accessibilityLabel = 'Loading', ...props }, ref) => (
+  ({ size = 'sm', color, accessibilityLabel = 'Loading', ...props }, ref) => (
     <ActivityIndicator
       ref={ref}
       size={sizeMap[size]}
-      color={color}
+      color={color ?? '#2563eb'}
       accessibilityLabel={accessibilityLabel}
       {...props}
     />

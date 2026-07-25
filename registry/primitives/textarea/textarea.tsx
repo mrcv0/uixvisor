@@ -27,7 +27,7 @@ export const Textarea = forwardRef<ComponentRef<typeof TextInput>, TextareaProps
           numberOfLines={rows}
           textAlignVertical="top"
           editable={editable}
-          placeholderTextColor="#94a3b8"
+          placeholderTextColor="#64748b"
           accessibilityLabel={label}
           accessibilityState={{ disabled: isDisabled }}
           onFocus={(event) => {
