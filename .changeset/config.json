@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/@changesets/schema@2.3.0/schema.json",
-  "changelog": "@uixvisor/changelog@1.0.0",
+  "changelog": "@changesets/cli/changelog",
   "commit": false,
   "fixed": [],
   "linked": [],

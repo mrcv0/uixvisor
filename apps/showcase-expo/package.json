@@ -28,7 +28,6 @@
     "web": "expo start --web",
     "build": "expo export",
     "lint": "expo lint",
-    "test": "echo \"ERROR: RNTL tests are not configured for showcase-expo\" && exit 1",
     "typecheck": "tsc --noEmit"
   },
   "private": true

@@ -1,5 +1,5 @@
 ---
-"@uixvisor/cli": minor
+"uixvisor": minor
 "@uixvisor/registry": minor
 "@uixvisor/registry-schema": minor
 "@uixvisor/tokens": minor
