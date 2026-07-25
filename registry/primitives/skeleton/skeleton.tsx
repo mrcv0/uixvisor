@@ -1,6 +1,6 @@
 // UIXVISOR — https://uixvisor.dev/primitives/skeleton
-import { forwardRef, useEffect, useRef, type ComponentRef } from 'react';
-import { Animated, View, type ViewProps } from 'react-native';
+import { forwardRef, useEffect, useRef, useState, type ComponentRef } from 'react';
+import { AccessibilityInfo, Animated, View, type ViewProps } from 'react-native';
 
 export interface SkeletonProps extends ViewProps {
   className?: string;
@@ -12,9 +12,30 @@ function cn(...classes: Array<string | false | undefined | null>) {
 
 export const Skeleton = forwardRef<ComponentRef<typeof View>, SkeletonProps>(
   ({ className, ...props }, ref) => {
-    const opacity = useRef(new Animated.Value(0.5)).current;
+    const opacity = useRef(new Animated.Value(0.7)).current;
+    const [reduceMotion, setReduceMotion] = useState<boolean | null>(null);
 
     useEffect(() => {
+      let mounted = true;
+      void AccessibilityInfo.isReduceMotionEnabled().then((enabled) => {
+        if (mounted) {
+          setReduceMotion(enabled);
+        }
+      });
+      const subscription = AccessibilityInfo.addEventListener('reduceMotionChanged', setReduceMotion);
+      return () => {
+        mounted = false;
+        subscription.remove();
+      };
+    }, []);
+
+    useEffect(() => {
+      if (reduceMotion !== false) {
+        opacity.stopAnimation();
+        opacity.setValue(0.7);
+        return;
+      }
+
       const animation = Animated.loop(
         Animated.sequence([
           Animated.timing(opacity, { toValue: 1, duration: 700, useNativeDriver: true }),
@@ -23,7 +44,7 @@ export const Skeleton = forwardRef<ComponentRef<typeof View>, SkeletonProps>(
       );
       animation.start();
       return () => animation.stop();
-    }, [opacity]);
+    }, [opacity, reduceMotion]);
 
     return (
       <Animated.View

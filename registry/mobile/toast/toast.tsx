@@ -1,5 +1,13 @@
 // UIXVISOR — https://uixvisor.dev/mobile/toast
-import { createContext, useCallback, useContext, useRef, useState, type ReactNode } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
 import { View } from 'react-native';
 
 import { Text } from '@registry/text/text';
@@ -13,7 +21,8 @@ interface ToastItem {
 }
 
 interface ToastContextValue {
-  show: (message: string, variant?: ToastVariant) => void;
+  show: (message: string, variant?: ToastVariant) => number;
+  dismiss: (id: number) => void;
 }
 
 const ToastContext = createContext<ToastContextValue | null>(null);
@@ -33,17 +42,40 @@ function cn(...classes: Array<string | false | undefined | null>) {
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
   const nextId = useRef(0);
+  const timers = useRef(new Map<number, ReturnType<typeof setTimeout>>());
+
+  useEffect(() => {
+    const activeTimers = timers.current;
+    return () => {
+      for (const timer of activeTimers.values()) {
+        clearTimeout(timer);
+      }
+      activeTimers.clear();
+    };
+  }, []);
+
+  const dismiss = useCallback((id: number) => {
+    const timer = timers.current.get(id);
+    if (timer !== undefined) {
+      clearTimeout(timer);
+      timers.current.delete(id);
+    }
+    setToasts((current) => current.filter((toast) => toast.id !== id));
+  }, []);
 
   const show = useCallback((message: string, variant: ToastVariant = 'default') => {
     const id = nextId.current++;
     setToasts((current) => [...current, { id, message, variant }]);
-    setTimeout(() => {
+    const timer = setTimeout(() => {
+      timers.current.delete(id);
       setToasts((current) => current.filter((toast) => toast.id !== id));
     }, DEFAULT_DURATION_MS);
+    timers.current.set(id, timer);
+    return id;
   }, []);
 
   return (
-    <ToastContext.Provider value={{ show }}>
+    <ToastContext.Provider value={{ show, dismiss }}>
       <View className="flex-1">
         {children}
         <View pointerEvents="none" className="absolute inset-x-0 bottom-10 items-center gap-2 px-6">

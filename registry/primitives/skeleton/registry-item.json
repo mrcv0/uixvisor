@@ -2,7 +2,7 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "skeleton",
   "type": "registry:component",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "title": "Skeleton",
   "description": "Pulsing loading placeholder primitive for Expo applications.",
   "platforms": ["ios", "android"],
