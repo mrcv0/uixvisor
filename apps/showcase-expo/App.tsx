@@ -27,12 +27,16 @@ import { ToastProvider, useToast } from '../../registry/mobile/toast/toast';
 import { EmptyState } from '../../registry/mobile/empty-state/empty-state';
 import { ErrorState } from '../../registry/mobile/error-state/error-state';
 import { BottomSheet } from '../../registry/mobile/bottom-sheet/bottom-sheet';
+import { SwipeableRow } from '../../registry/mobile/swipeable-row/swipeable-row';
+import { GestureRoot } from './gesture-root';
 
 export default function App() {
   return (
-    <ToastProvider>
-      <ShowcaseContent />
-    </ToastProvider>
+    <GestureRoot>
+      <ToastProvider>
+        <ShowcaseContent />
+      </ToastProvider>
+    </GestureRoot>
   );
 }
 
@@ -185,10 +189,17 @@ function ShowcaseContent() {
 
       <ErrorState className="w-full" onRetry={() => {}} />
 
-      {/* SwipeableRow demo temporarily disabled here - GestureHandlerRootView
-      triggers a native Worklets crash (libworklets.so SIGSEGV) via
-      NativeWind's react-native-css-interop on this Expo Go build. The
-      registry component itself is unaffected; see memory/known issue notes. */}
+      <View className="w-full">
+        <Text variant="muted" size="sm" className="mb-1">
+          Swipe left to reveal the delete action
+        </Text>
+        <SwipeableRow
+          className="rounded-lg border border-border px-4 py-3"
+          onDelete={() => toast.show('Row deleted')}
+        >
+          <Text>Swipeable row</Text>
+        </SwipeableRow>
+      </View>
 
       <Button variant="secondary" onPress={() => setSheetVisible(true)}>
         Open bottom sheet
