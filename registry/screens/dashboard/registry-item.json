@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "dashboard",
+  "type": "registry:screen",
+  "version": "0.1.0",
+  "title": "Dashboard Screen",
+  "description": "Scrollable dashboard screen with greeting, highlight cards, and a children slot.",
+  "platforms": ["ios", "android", "web"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": ["text"],
+  "files": [
+    {
+      "source": "dashboard.tsx",
+      "target": "components/screens/dashboard.tsx"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "button-group",
+  "type": "registry:block",
+  "version": "0.1.0",
+  "title": "Button Group",
+  "description": "Horizontal or wrapped layout of action buttons with consistent spacing.",
+  "platforms": ["ios", "android", "web"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "button-group.tsx",
+      "target": "components/blocks/button-group.tsx"
+    }
+  ]
+}

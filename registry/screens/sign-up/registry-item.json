@@ -1,0 +1,26 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "sign-up",
+  "type": "registry:screen",
+  "version": "0.1.0",
+  "title": "Sign Up Screen",
+  "description": "Sign-up screen collecting name, email, and password with form-field block.",
+  "platforms": ["ios", "android", "web"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": [
+    "button",
+    "input",
+    "text",
+    "blocks/form-field"
+  ],
+  "files": [
+    {
+      "source": "sign-up.tsx",
+      "target": "components/screens/sign-up.tsx"
+    }
+  ]
+}

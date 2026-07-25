@@ -1,0 +1,25 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "otp-verify",
+  "type": "registry:screen",
+  "version": "0.1.0",
+  "title": "OTP Verify Screen",
+  "description": "OTP entry screen that wraps registry OTPInput with submit and resend actions.",
+  "platforms": ["ios", "android", "web"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": [
+    "button",
+    "text",
+    "mobile/otp-input"
+  ],
+  "files": [
+    {
+      "source": "otp-verify.tsx",
+      "target": "components/screens/otp-verify.tsx"
+    }
+  ]
+}

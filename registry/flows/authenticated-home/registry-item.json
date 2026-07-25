@@ -1,0 +1,25 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "authenticated-home",
+  "type": "registry:flow",
+  "version": "0.1.0",
+  "title": "Authenticated Home Flow",
+  "description": "Top-level home flow combining header, navigation list, and sign-out callback.",
+  "platforms": ["ios", "android", "web"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": [
+    "text",
+    "blocks/app-header",
+    "blocks/list-item"
+  ],
+  "files": [
+    {
+      "source": "authenticated-home.tsx",
+      "target": "components/flows/authenticated-home.tsx"
+    }
+  ]
+}

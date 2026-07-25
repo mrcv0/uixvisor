@@ -1,0 +1,26 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "sign-in",
+  "type": "registry:screen",
+  "version": "0.1.0",
+  "title": "Sign In Screen",
+  "description": "Email + password sign-in screen built on registry primitives and form-field block.",
+  "platforms": ["ios", "android", "web"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": [
+    "button",
+    "input",
+    "text",
+    "blocks/form-field"
+  ],
+  "files": [
+    {
+      "source": "sign-in.tsx",
+      "target": "components/screens/sign-in.tsx"
+    }
+  ]
+}

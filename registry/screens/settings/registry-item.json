@@ -1,0 +1,25 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "settings",
+  "type": "registry:screen",
+  "version": "0.1.0",
+  "title": "Settings Screen",
+  "description": "Settings screen with notification and biometric toggles built on the list-item block.",
+  "platforms": ["ios", "android", "web"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": [
+    "text",
+    "switch",
+    "blocks/list-item"
+  ],
+  "files": [
+    {
+      "source": "settings.tsx",
+      "target": "components/screens/settings.tsx"
+    }
+  ]
+}

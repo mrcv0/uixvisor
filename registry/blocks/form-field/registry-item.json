@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "form-field",
+  "type": "registry:block",
+  "version": "0.1.0",
+  "title": "Form Field",
+  "description": "Label, child control, and optional hint/error text with accessible live region.",
+  "platforms": ["ios", "android", "web"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": ["text"],
+  "files": [
+    {
+      "source": "form-field.tsx",
+      "target": "components/blocks/form-field.tsx"
+    }
+  ]
+}
