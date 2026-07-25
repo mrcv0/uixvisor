@@ -67,3 +67,36 @@ test('accepts compatibility entries that are in the known package set', () => {
 
   assert.equal(result.success, true);
 });
+
+test('rejects items whose primary file target does not match the name', () => {
+  const result = registryItemSchema.safeParse({
+    name: 'mismatch',
+    type: 'registry:component',
+    version: '0.1.0',
+    platforms: ['ios'],
+    compatibility: { expo: '>=57 <58' },
+    dependencies: [],
+    registryDependencies: [],
+    files: [{ source: 'other.tsx', target: 'components/widget.tsx' }],
+  });
+
+  assert.equal(result.success, false);
+});
+
+test('accepts items with an aliased secondary file', () => {
+  const result = registryItemSchema.safeParse({
+    name: 'swipeable-row',
+    type: 'registry:component',
+    version: '0.1.0',
+    platforms: ['ios'],
+    compatibility: { expo: '>=57 <58' },
+    dependencies: [],
+    registryDependencies: [],
+    files: [
+      { source: 'swipeable-native.tsx', target: 'components/ui/swipeable-native.tsx' },
+      { source: 'swipeable-row.tsx', target: 'components/ui/swipeable-row.tsx' },
+    ],
+  });
+
+  assert.equal(result.success, true);
+});
