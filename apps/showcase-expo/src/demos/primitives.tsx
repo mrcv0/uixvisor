@@ -4,7 +4,14 @@ import { View } from 'react-native';
 import { Avatar } from '@registry/avatar/avatar';
 import { Badge } from '@registry/badge/badge';
 import { Button } from '@registry/button/button';
-import { Card, CardContent, CardFooter, CardHeader } from '@registry/card/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@registry/card/card';
 import { Checkbox } from '@registry/checkbox/checkbox';
 import { Heading } from '@registry/heading/heading';
 import { Icon } from '@registry/icon/icon';
@@ -13,7 +20,7 @@ import { Input } from '@registry/input/input';
 import { Progress } from '@registry/progress/progress';
 import { RadioGroup, RadioGroupItem } from '@registry/radio-group/radio-group';
 import { Separator } from '@registry/separator/separator';
-import { SkeletonCard, SkeletonText } from '@registry/skeleton/skeleton';
+import { Skeleton, SkeletonCard, SkeletonText } from '@registry/skeleton/skeleton';
 import { Spinner } from '@registry/spinner/spinner';
 import { Switch } from '@registry/switch/switch';
 import { Text } from '@registry/text/text';
@@ -384,58 +391,107 @@ export function SwitchDemo() {
 
 export function CardDemo() {
   return (
-    <Card>
-      <CardHeader>
-        <Text size="lg" weight="semibold">
-          Account
-        </Text>
-        <Text variant="muted" size="sm">
-          Manage your profile settings
-        </Text>
-      </CardHeader>
-      <CardContent>
-        <Text size="sm">
-          Depth is mode dependent because shadows do not read on a dark background.
-        </Text>
-      </CardContent>
-      <CardFooter>
-        <Button variant="outline" size="sm" onPress={() => {}}>
-          Cancel
-        </Button>
-        <Button size="sm" onPress={() => {}}>
-          Save
-        </Button>
-      </CardFooter>
-    </Card>
+    <View className="gap-4">
+      <Card>
+        <CardHeader>
+          <CardTitle>Account</CardTitle>
+          <CardDescription>Manage your profile settings</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Text size="sm">
+            Depth is mode dependent because shadows do not read on a dark background.
+          </Text>
+        </CardContent>
+        <CardFooter>
+          <Button variant="outline" size="sm" onPress={() => {}}>
+            Cancel
+          </Button>
+          <Button size="sm" onPress={() => {}}>
+            Save
+          </Button>
+        </CardFooter>
+      </Card>
+      <Card elevation="surface">
+        <CardHeader>
+          <CardTitle>Flat card</CardTitle>
+          <CardDescription>elevation=&quot;surface&quot; — no raised shadow</CardDescription>
+        </CardHeader>
+      </Card>
+    </View>
   );
 }
 
 export function AvatarDemo() {
   return (
-    <View className="flex-row items-center gap-3">
-      <Avatar size="sm" fallback="AL" />
-      <Avatar size="md" fallback="AL" />
-      <Avatar size="lg" fallback="AL" />
+    <View className="gap-4">
+      <View className="flex-row items-center gap-3">
+        <Avatar size="sm" fallback="Ada Lovelace" />
+        <Avatar size="md" fallback="Ada Lovelace" />
+        <Avatar size="lg" fallback="Ada Lovelace" />
+      </View>
+      <View className="flex-row items-center gap-3">
+        <Avatar
+          size="md"
+          fallback="With photo"
+          source={{ uri: 'https://i.pravatar.cc/128?u=uixvisor' }}
+        />
+        <Avatar
+          size="md"
+          fallback="Broken image"
+          source={{ uri: 'https://example.invalid/missing.png' }}
+        />
+        <Avatar size="md" fallback="Single" initials="UX" />
+      </View>
+      <Text variant="muted" size="sm">
+        Multi-word fallback → initials; broken URI falls back to glyph.
+      </Text>
     </View>
   );
 }
 
 export function BadgeDemo() {
   return (
-    <View className="flex-row flex-wrap items-center gap-2">
-      <Badge>Default</Badge>
-      <Badge variant="secondary">Secondary</Badge>
-      <Badge variant="destructive">Destructive</Badge>
+    <View className="gap-3">
+      <View className="flex-row flex-wrap items-center gap-2">
+        <Badge>Default</Badge>
+        <Badge variant="secondary">Secondary</Badge>
+        <Badge variant="destructive">Destructive</Badge>
+        <Badge variant="success">Success</Badge>
+        <Badge variant="warning">Warning</Badge>
+      </View>
+      <View className="flex-row flex-wrap items-center gap-2">
+        <Badge appearance="soft">Soft</Badge>
+        <Badge appearance="soft" variant="destructive">
+          Soft destructive
+        </Badge>
+        <Badge appearance="soft" variant="success">
+          Soft success
+        </Badge>
+        <Badge appearance="soft" variant="warning">
+          Soft warning
+        </Badge>
+      </View>
     </View>
   );
 }
 
 export function SeparatorDemo() {
   return (
-    <View className="gap-3">
-      <Text>Above</Text>
-      <Separator />
-      <Text>Below</Text>
+    <View className="gap-4">
+      <View className="gap-3">
+        <Text>Above</Text>
+        <Separator />
+        <Text>Below</Text>
+      </View>
+      <View className="h-12 flex-row items-center gap-3">
+        <Text>Left</Text>
+        <Separator orientation="vertical" />
+        <Text>Right</Text>
+        <Separator orientation="vertical" hairline />
+        <Text variant="muted" size="sm">
+          hairline
+        </Text>
+      </View>
     </View>
   );
 }
@@ -452,6 +508,8 @@ export function SpinnerDemo() {
 export function SkeletonDemo() {
   return (
     <View className="gap-4">
+      <Skeleton />
+      <Skeleton className="h-24 w-full rounded-lg" />
       <SkeletonCard />
       <SkeletonText lines={3} />
     </View>
@@ -460,10 +518,16 @@ export function SkeletonDemo() {
 
 export function ProgressDemo() {
   return (
-    <View className="gap-3">
-      <Progress value={25} />
-      <Progress value={60} />
-      <Progress value={100} />
+    <View className="gap-4">
+      <Progress value={25} showValueLabel />
+      <Progress value={60} variant="success" size="lg" showValueLabel />
+      <Progress value={100} variant="destructive" size="sm" />
+      <View className="gap-1">
+        <Text size="sm" variant="muted">
+          Indeterminate
+        </Text>
+        <Progress indeterminate />
+      </View>
     </View>
   );
 }

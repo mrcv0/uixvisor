@@ -1,12 +1,27 @@
 // UIXVISOR — https://uixvisor.dev/primitives/avatar
 import { forwardRef, useState, type ComponentRef } from 'react';
-import { Image, Text, View, type ViewProps } from 'react-native';
+import {
+  Image,
+  View,
+  type ImageSourcePropType,
+  type ViewProps,
+} from 'react-native';
+
+import { Text } from '@registry/text/text';
+import { cn } from '@registry/theme/cn';
 
 type AvatarSize = 'sm' | 'md' | 'lg';
 
 export interface AvatarProps extends ViewProps {
-  source?: { uri: string };
+  /** Remote URI, local require(), or full ImageSourcePropType. */
+  source?: ImageSourcePropType;
+  /**
+   * Name or initials used for the fallback glyph and accessibility label.
+   * Multi-word names yield first+last initials ("Ada Lovelace" → "AL").
+   */
   fallback: string;
+  /** Override computed initials (max two characters shown). */
+  initials?: string;
   size?: AvatarSize;
   className?: string;
 }
@@ -17,20 +32,29 @@ const sizeStyles: Record<AvatarSize, string> = {
   lg: 'h-14 w-14',
 };
 
-const textSizeStyles: Record<AvatarSize, string> = {
-  sm: 'text-xs',
-  md: 'text-base',
-  lg: 'text-lg',
+const textSizeStyles: Record<AvatarSize, 'xs' | 'base' | 'lg'> = {
+  sm: 'xs',
+  md: 'base',
+  lg: 'lg',
 };
 
-function cn(...classes: Array<string | false | undefined | null>) {
-  return classes.filter(Boolean).join(' ');
+/** Derive up to two initials from a display name. */
+export function getInitials(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) {
+    return '?';
+  }
+  if (parts.length === 1) {
+    return parts[0].slice(0, 2).toUpperCase();
+  }
+  return `${parts[0][0] ?? ''}${parts[parts.length - 1][0] ?? ''}`.toUpperCase();
 }
 
 export const Avatar = forwardRef<ComponentRef<typeof View>, AvatarProps>(
-  ({ source, fallback, size = 'md', className, ...props }, ref) => {
+  ({ source, fallback, initials, size = 'md', className, ...props }, ref) => {
     const [hasError, setHasError] = useState(false);
     const showImage = Boolean(source) && !hasError;
+    const glyph = (initials ?? getInitials(fallback)).slice(0, 2);
 
     return (
       <View
@@ -47,8 +71,8 @@ export const Avatar = forwardRef<ComponentRef<typeof View>, AvatarProps>(
         {showImage && source ? (
           <Image source={source} onError={() => setHasError(true)} className="h-full w-full" />
         ) : (
-          <Text className={cn('font-medium text-muted-foreground', textSizeStyles[size])}>
-            {fallback.slice(0, 2).toUpperCase()}
+          <Text size={textSizeStyles[size]} weight="medium" variant="muted">
+            {glyph}
           </Text>
         )}
       </View>

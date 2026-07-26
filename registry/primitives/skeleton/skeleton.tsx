@@ -9,14 +9,11 @@ import {
 import { AccessibilityInfo, Animated, Easing, View, type ViewProps } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import { cn } from '@registry/theme/cn';
 import { useThemeMode } from '@registry/theme/theme';
 
 export interface SkeletonProps extends ViewProps {
   className?: string;
-}
-
-function cn(...classes: Array<string | false | undefined | null>) {
-  return classes.filter(Boolean).join(' ');
 }
 
 /**
@@ -86,7 +83,8 @@ export const Skeleton = forwardRef<ComponentRef<typeof View>, SkeletonProps>(
         onLayout={(event) => setWidth(event.nativeEvent.layout.width)}
         accessibilityElementsHidden
         importantForAccessibility="no-hide-descendants"
-        className={cn('overflow-hidden rounded-sm bg-skeleton', className)}
+        // Default h-4 w-full so a bare <Skeleton /> is never zero-size.
+        className={cn('h-4 w-full overflow-hidden rounded-sm bg-skeleton', className)}
         {...props}
       >
         {reduceMotion === false && width > 0 ? (

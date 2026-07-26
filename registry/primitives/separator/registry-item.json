@@ -2,16 +2,16 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "separator",
   "type": "registry:component",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "title": "Separator",
-  "description": "Horizontal or vertical divider line primitive for Expo applications.",
+  "description": "Decorative horizontal or vertical divider primitive for Expo applications.",
   "platforms": ["ios", "android"],
   "compatibility": {
     "expo": ">=57 <58",
     "nativewind": ">=4 <5"
   },
   "dependencies": [],
-  "registryDependencies": [],
+  "registryDependencies": ["theme"],
   "files": [
     {
       "source": "separator.tsx",
