@@ -10,7 +10,6 @@ import {
   CardDemo,
   CheckboxDemo,
   HeadingDemo,
-  IconButtonDemo,
   IconDemo,
   InputDemo,
   ProgressDemo,
@@ -55,7 +54,8 @@ const demos: Record<string, () => ReactNode> = {
   text: () => <TextDemo />,
   heading: () => <HeadingDemo />,
   button: () => <ButtonDemo />,
-  'icon-button': () => <IconButtonDemo />,
+  // icon-button is folded into Button (size="icon"); demo lives under button.
+  'icon-button': () => <ButtonDemo />,
   icon: () => <IconDemo />,
   input: () => <InputDemo />,
   textarea: () => <TextareaDemo />,

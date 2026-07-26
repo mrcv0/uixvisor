@@ -7,7 +7,6 @@ import { Button } from '@registry/button/button';
 import { ButtonGroup } from '@registry/button-group/button-group';
 import { FormField } from '@registry/form-field/form-field';
 import { Icon } from '@registry/icon/icon';
-import { IconButton } from '@registry/icon-button/icon-button';
 import { Input } from '@registry/input/input';
 import { ListItem } from '@registry/list-item/list-item';
 import { Switch } from '@registry/switch/switch';
@@ -40,8 +39,9 @@ export function AppHeaderDemo() {
             title="Account"
             onBack={() => toast.show('Back pressed')}
             trailing={
-              <IconButton
+              <Button
                 variant="ghost"
+                size="icon-sm"
                 accessibilityLabel="Settings"
                 icon={<Icon name="settings" size={20} color={foreground} />}
                 onPress={() => toast.show('Settings')}

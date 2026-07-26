@@ -44,4 +44,14 @@ describe('Button', () => {
     expect(onPress).not.toHaveBeenCalled();
     expect(screen.getByRole('button').props.accessibilityState.disabled).toBe(true);
   });
+
+  test('icon size requires an accessible name', async () => {
+    const onPress = jest.fn();
+    const screen = await render(
+      <Button size="icon" accessibilityLabel="Add" icon={<></>} onPress={onPress} />,
+    );
+
+    await fireEvent.press(screen.getByRole('button', { name: 'Add' }));
+    expect(onPress).toHaveBeenCalledTimes(1);
+  });
 });

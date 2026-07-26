@@ -3,8 +3,8 @@ import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
 
+import { Button } from '@registry/button/button';
 import { Icon } from '@registry/icon/icon';
-import { IconButton } from '@registry/icon-button/icon-button';
 import { Text } from '@registry/text/text';
 import { useThemeColor } from '@registry/theme/theme';
 
@@ -65,10 +65,10 @@ export function ScreenChrome({
                 justifyContent: 'center',
               }}
             >
-              <IconButton
+              <Button
                 variant="ghost"
+                size="icon-sm"
                 accessibilityLabel="Go back"
-                className="h-11 w-11 rounded-xl"
                 icon={<Icon name="chevron-left" size={22} color={foreground} weight="bold" />}
                 onPress={onBack}
               />
@@ -94,10 +94,10 @@ export function ScreenChrome({
               justifyContent: 'center',
             }}
           >
-            <IconButton
+            <Button
               variant="outline"
+              size="icon-sm"
               accessibilityLabel={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-              className="h-11 w-11 rounded-xl"
               icon={
                 <Icon
                   name={isDark ? 'sun' : 'moon'}

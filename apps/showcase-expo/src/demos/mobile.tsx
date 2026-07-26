@@ -7,7 +7,6 @@ import { EmptyState } from '@registry/empty-state/empty-state';
 import { ErrorState } from '@registry/error-state/error-state';
 import { Heading } from '@registry/heading/heading';
 import { Icon } from '@registry/icon/icon';
-import { IconButton } from '@registry/icon-button/icon-button';
 import { Input } from '@registry/input/input';
 import { KeyboardAwareForm } from '@registry/keyboard-aware-form/keyboard-aware-form';
 import { OTPInput } from '@registry/otp-input/otp-input';
@@ -131,8 +130,9 @@ export function KeyboardAwareFormDemo() {
         <View className="flex-1 bg-background">
           <View className="flex-row items-center justify-between border-b border-border px-4 py-3">
             <Heading level={4}>Shipping details</Heading>
-            <IconButton
+            <Button
               variant="ghost"
+              size="icon-sm"
               accessibilityLabel="Close form"
               icon={<Icon name="close" size={20} color={foreground} />}
               onPress={() => setFormVisible(false)}

@@ -1,4 +1,7 @@
 // UIXVISOR — https://uixvisor.dev/primitives/button
+//
+// Mobile-first button inspired by shadcn/ui: one component covers labelled
+// actions and icon-only toolbars via `size="icon" | "icon-sm" | "icon-lg"`.
 import { forwardRef, type ComponentRef, type ReactNode } from 'react';
 import { Animated, Pressable, Text, View, type PressableProps } from 'react-native';
 
@@ -7,19 +10,28 @@ import { cn } from '@registry/theme/cn';
 import { composePressHandlers, usePressFeedback } from '@registry/theme/press-feedback';
 import { useThemeColor } from '@registry/theme/theme';
 
-type ButtonVariant = 'primary' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link';
-type ButtonSize = 'sm' | 'default' | 'lg';
+export type ButtonVariant = 'primary' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link';
+/** Labelled sizes + shadcn-style icon sizes (square hit targets). */
+export type ButtonSize = 'sm' | 'default' | 'lg' | 'icon' | 'icon-sm' | 'icon-lg';
 
 export interface ButtonProps extends Omit<PressableProps, 'children'> {
-  /** Visible label. Kept as string so AT always has a stable name. */
-  children: string;
+  /**
+   * Visible label for text buttons. Omit when using an icon size — then pass
+   * `icon` and a required `accessibilityLabel`.
+   */
+  children?: string;
   variant?: ButtonVariant;
   size?: ButtonSize;
   loading?: boolean;
-  /** Rendered before the label, typically an <Icon />. */
+  /** Leading icon for labelled buttons. */
   startIcon?: ReactNode;
-  /** Rendered after the label, typically an <Icon />. */
+  /** Trailing icon for labelled buttons. */
   endIcon?: ReactNode;
+  /**
+   * Sole content for icon sizes (`icon` / `icon-sm` / `icon-lg`).
+   * Prefer this over nesting a separate icon-button component.
+   */
+  icon?: ReactNode;
   className?: string;
 }
 
@@ -38,15 +50,24 @@ const variantStyles: Record<ButtonVariant, { container: string; text: string }> 
   link: { container: '', text: 'text-foreground underline' },
 };
 
-// Heights clear the iOS 44pt / Material 48dp floor. `sm` is h-11 (44), not h-10.
-const sizeStyles: Record<ButtonSize, { container: string; text: string }> = {
-  sm: { container: 'h-11 px-3 rounded-sm gap-1.5', text: 'text-sm' },
-  default: { container: 'h-12 px-4 rounded-md gap-2', text: 'text-base' },
-  lg: { container: 'h-14 px-6 rounded-lg gap-2', text: 'text-base' },
+const sizeStyles: Record<ButtonSize, { container: string; text: string; iconOnly: boolean }> = {
+  sm: { container: 'h-11 px-3 rounded-sm gap-1.5', text: 'text-sm', iconOnly: false },
+  default: { container: 'h-12 px-4 rounded-md gap-2', text: 'text-base', iconOnly: false },
+  lg: { container: 'h-14 px-6 rounded-lg gap-2', text: 'text-base', iconOnly: false },
+  // Square targets — match shadcn icon sizes, keep ≥44pt on mobile.
+  'icon-sm': { container: 'h-11 w-11 rounded-md', text: 'text-sm', iconOnly: true },
+  icon: { container: 'h-12 w-12 rounded-md', text: 'text-base', iconOnly: true },
+  'icon-lg': { container: 'h-14 w-14 rounded-lg', text: 'text-base', iconOnly: true },
 };
 
-/** Which variants warrant a haptic tick - firing on all of them reads as a gimmick. */
-const hapticVariants: ReadonlySet<ButtonVariant> = new Set<ButtonVariant>(['primary', 'destructive']);
+const hapticVariants: ReadonlySet<ButtonVariant> = new Set<ButtonVariant>([
+  'primary',
+  'destructive',
+]);
+
+function isIconSize(size: ButtonSize): boolean {
+  return sizeStyles[size].iconOnly;
+}
 
 export const Button = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
   (
@@ -57,6 +78,7 @@ export const Button = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
       loading = false,
       startIcon,
       endIcon,
+      icon,
       disabled,
       className,
       onPressIn,
@@ -66,9 +88,21 @@ export const Button = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
     },
     ref,
   ) => {
+    const iconOnly = isIconSize(size);
     const isDisabled = disabled || loading;
     const styles = variantStyles[variant];
     const sizing = sizeStyles[size];
+
+    if (__DEV__) {
+      if (iconOnly && !accessibilityLabel && !children) {
+        console.warn(
+          'UIXVISOR Button: icon sizes require `accessibilityLabel` (or a string `children` used as the name).',
+        );
+      }
+      if (iconOnly && !icon && !startIcon && !loading) {
+        console.warn('UIXVISOR Button: icon sizes should pass `icon`.');
+      }
+    }
 
     const onPrimary = useThemeColor('primary-foreground');
     const onDestructive = useThemeColor('destructive-foreground');
@@ -77,18 +111,22 @@ export const Button = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
       variant === 'primary' ? onPrimary : variant === 'destructive' ? onDestructive : onNeutral;
 
     const feedback = usePressFeedback({
-      // A link is text, so scaling it looks like a glitch rather than a press.
       scale: variant !== 'link',
       haptic: hapticVariants.has(variant) ? 'impact' : 'none',
       disabled: isDisabled,
     });
     const press = composePressHandlers(feedback, { onPressIn, onPressOut });
 
-    // Keep the spoken name when loading replaces the visual label with a spinner.
     const a11yLabel = accessibilityLabel ?? children;
+    const glyph = icon ?? startIcon;
 
     return (
-      <Animated.View style={[{ alignSelf: 'stretch' }, feedback.style]}>
+      <Animated.View
+        style={[
+          { alignSelf: iconOnly ? 'flex-start' : 'stretch' },
+          feedback.style,
+        ]}
+      >
         <Pressable
           ref={ref}
           disabled={isDisabled}
@@ -98,8 +136,9 @@ export const Button = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
           onPressIn={press.onPressIn}
           onPressOut={press.onPressOut}
           className={cn(
-            'w-full flex-row items-center justify-center',
-            variant === 'link' ? 'h-auto px-0' : sizing.container,
+            'flex-row items-center justify-center',
+            !iconOnly && 'w-full',
+            variant === 'link' && !iconOnly ? 'h-auto px-0' : sizing.container,
             styles.container,
             isDisabled && 'opacity-50',
             className,
@@ -108,10 +147,14 @@ export const Button = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
         >
           {loading ? (
             <Spinner size="sm" color={spinnerColor} accessibilityLabel={a11yLabel} />
+          ) : iconOnly ? (
+            glyph
           ) : (
             <>
               {startIcon ? <View>{startIcon}</View> : null}
-              <Text className={cn('font-medium', sizing.text, styles.text)}>{children}</Text>
+              {children ? (
+                <Text className={cn('font-medium', sizing.text, styles.text)}>{children}</Text>
+              ) : null}
               {endIcon ? <View>{endIcon}</View> : null}
             </>
           )}

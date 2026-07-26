@@ -15,7 +15,6 @@ import {
 import { Checkbox } from '@registry/checkbox/checkbox';
 import { Heading } from '@registry/heading/heading';
 import { Icon } from '@registry/icon/icon';
-import { IconButton } from '@registry/icon-button/icon-button';
 import { Input } from '@registry/input/input';
 import { Progress } from '@registry/progress/progress';
 import { RadioGroup, RadioGroupItem } from '@registry/radio-group/radio-group';
@@ -34,22 +33,76 @@ import {
 } from '@registry/theme/theme';
 import { useToast } from '@registry/toast/toast';
 
+import { DocIntro, DocLabel, DocSection } from '../shell/DocSection';
 import { Section } from '../shell/Section';
 
-const SWATCH_NAMES: ThemeColorName[] = [
-  'background',
-  'foreground',
-  'primary',
-  'secondary',
-  'muted',
-  'border',
-  'destructive',
-  'success',
-  'warning',
-  'card',
-  'surface-elevated',
-  'skeleton',
+type SwatchGroup = { title: string; description: string; names: ThemeColorName[] };
+
+const SWATCH_GROUPS: SwatchGroup[] = [
+  {
+    title: 'Base',
+    description: 'Page canvas and default type colour.',
+    names: ['background', 'foreground'],
+  },
+  {
+    title: 'Surfaces',
+    description: 'Cards, elevated sheets, and muted chrome.',
+    names: ['card', 'card-foreground', 'surface', 'surface-elevated', 'muted', 'muted-foreground'],
+  },
+  {
+    title: 'Interactive',
+    description: 'Primary actions, secondary fills, accents, focus ring.',
+    names: [
+      'primary',
+      'primary-foreground',
+      'secondary',
+      'secondary-foreground',
+      'accent',
+      'accent-foreground',
+      'ring',
+    ],
+  },
+  {
+    title: 'Borders & inputs',
+    description: 'Hairlines, field borders, skeleton placeholders.',
+    names: ['border', 'input', 'skeleton'],
+  },
+  {
+    title: 'Status',
+    description: 'Colour carries meaning, not decoration.',
+    names: ['destructive', 'destructive-foreground', 'success', 'warning'],
+  },
+  {
+    title: 'Overlay',
+    description: 'Sheets, tab bars, and dimmers.',
+    names: ['overlay', 'sheet', 'tab-bar'],
+  },
 ];
+
+function ColorSwatch({
+  name,
+  hex,
+  elevated,
+}: {
+  name: string;
+  hex: string;
+  elevated?: object;
+}) {
+  return (
+    <View className="w-[31%] gap-1.5">
+      <View
+        className="h-14 w-full rounded-lg border border-border"
+        style={[{ backgroundColor: hex }, elevated]}
+      />
+      <Text size="xs" weight="medium" numberOfLines={1}>
+        {name}
+      </Text>
+      <Text size="xs" variant="muted" numberOfLines={1}>
+        {hex}
+      </Text>
+    </View>
+  );
+}
 
 export function ThemeDemo() {
   const mode = useThemeMode();
@@ -57,73 +110,154 @@ export function ThemeDemo() {
   const colors = themeColors[mode];
 
   return (
-    <View className="gap-4">
-      <Text variant="muted" size="sm">
-        Active mode: {mode}. Shadows only apply in light mode.
-      </Text>
-      <View className="flex-row flex-wrap gap-2">
-        {SWATCH_NAMES.map((name) => (
-          <View key={name} className="w-[30%] items-center gap-1">
-            <View
-              className="h-12 w-full rounded-md border border-border"
-              style={[{ backgroundColor: colors[name] }, name === 'card' ? raised : undefined]}
-            />
-            <Text size="xs" variant="muted" numberOfLines={1}>
-              {name}
-            </Text>
+    <View className="gap-6">
+      <DocIntro
+        title="Theme"
+        description="Semantic tokens — not raw greys in components. Change a token once; every primitive follows. Toggle light/dark from the header."
+      />
+
+      <DocSection
+        title="How it works"
+        description="NativeWind classes (bg-primary, text-muted-foreground) read CSS variables. useThemeColor() returns the same hex for SVG, Switch tracks, and ActivityIndicator."
+      >
+        <View className="gap-2">
+          <Text size="sm">
+            Active mode: <Text size="sm" weight="semibold">{mode}</Text>
+          </Text>
+          <Text size="sm" variant="muted">
+            Shadows (useElevation) apply in light mode only. Dark mode lifts surfaces with
+            surface-elevated + border instead.
+          </Text>
+        </View>
+      </DocSection>
+
+      {SWATCH_GROUPS.map((group) => (
+        <DocSection key={group.title} title={group.title} description={group.description}>
+          <View className="flex-row flex-wrap gap-2">
+            {group.names.map((name) => (
+              <ColorSwatch
+                key={name}
+                name={name}
+                hex={colors[name]}
+                elevated={name === 'card' || name === 'surface-elevated' ? raised : undefined}
+              />
+            ))}
           </View>
-        ))}
-      </View>
+        </DocSection>
+      ))}
     </View>
   );
 }
 
 export function TextDemo() {
   return (
-    <View className="gap-3">
-      <Text size="3xl" weight="bold">
-        3xl bold
-      </Text>
-      <Text size="2xl" weight="bold">
-        2xl bold
-      </Text>
-      <Text size="xl" weight="semibold">
-        xl semibold
-      </Text>
-      <Text size="lg" weight="semibold">
-        Large semibold
-      </Text>
-      <Text size="base">Body text at the 16px base step.</Text>
-      <Text size="sm" weight="medium">
-        Small medium
-      </Text>
-      <Text size="xs">Extra small</Text>
-      <Text variant="muted" size="sm">
-        Muted small text for secondary information.
-      </Text>
-      <Text variant="destructive" size="sm">
-        Destructive text for error messaging.
-      </Text>
-      <Text variant="success" size="sm">
-        Success text for positive status.
-      </Text>
-      <Text variant="warning" size="sm">
-        Warning text for caution.
-      </Text>
+    <View className="gap-6">
+      <DocIntro
+        title="Text"
+        description="Body type system. Sizes map to the design scale; weights map to Inter families (Android cannot fake weight on a single font file)."
+      />
+
+      <DocSection
+        title="Type scale"
+        description="From dense UI captions to display. Headings reuse the upper steps."
+      >
+        <View className="gap-3">
+          {(
+            [
+              ['3xl', 'bold', 'Display / page title'],
+              ['2xl', 'bold', 'Section title'],
+              ['xl', 'semibold', 'Card title'],
+              ['lg', 'semibold', 'Emphasised body'],
+              ['base', 'regular', 'Default body (16)'],
+              ['sm', 'medium', 'Secondary / labels'],
+              ['xs', 'regular', 'Captions / meta'],
+            ] as const
+          ).map(([size, weight, note]) => (
+            <View key={size} className="gap-0.5 border-b border-border pb-3 last:border-b-0 last:pb-0">
+              <Text size={size} weight={weight}>
+                The quick brown fox
+              </Text>
+              <Text size="xs" variant="muted">
+                size={size} · weight={weight} — {note}
+              </Text>
+            </View>
+          ))}
+        </View>
+      </DocSection>
+
+      <DocSection
+        title="Variants"
+        description="Semantic colour on type. Prefer variant over one-off className colours."
+      >
+        <View className="gap-2">
+          <Text variant="default">Default — primary reading colour.</Text>
+          <Text variant="muted">Muted — secondary descriptions and hints.</Text>
+          <Text variant="destructive">Destructive — errors and irreversible actions.</Text>
+          <Text variant="success">Success — confirmations and positive status.</Text>
+          <Text variant="warning">Warning — caution without a hard stop.</Text>
+        </View>
+      </DocSection>
+
+      <DocSection title="Weights" description="regular · medium · semibold · bold">
+        <View className="gap-1">
+          <Text weight="regular">Regular — body copy</Text>
+          <Text weight="medium">Medium — labels and buttons</Text>
+          <Text weight="semibold">Semibold — emphasis</Text>
+          <Text weight="bold">Bold — display</Text>
+        </View>
+      </DocSection>
     </View>
   );
 }
 
 export function HeadingDemo() {
   return (
-    <View className="gap-2">
-      <Heading level={1}>Heading one</Heading>
-      <Heading level={2}>Heading two</Heading>
-      <Heading level={3}>Heading three</Heading>
-      <Heading level={4}>Heading four</Heading>
-      <Text variant="muted" size="sm">
-        Levels share the Text type ramp and Inter weight families.
-      </Text>
+    <View className="gap-6">
+      <DocIntro
+        title="Heading"
+        description="Four visual ranks built on Text. Use for page structure; keep body copy on Text."
+      />
+
+      <DocSection
+        title="Levels"
+        description="level maps to size + weight on the shared type ramp (1 = largest)."
+      >
+        <View className="gap-4">
+          <View className="gap-1">
+            <Heading level={1}>Heading one</Heading>
+            <Text size="xs" variant="muted">
+              level=1 · 3xl bold
+            </Text>
+          </View>
+          <View className="gap-1">
+            <Heading level={2}>Heading two</Heading>
+            <Text size="xs" variant="muted">
+              level=2 · 2xl bold
+            </Text>
+          </View>
+          <View className="gap-1">
+            <Heading level={3}>Heading three</Heading>
+            <Text size="xs" variant="muted">
+              level=3 · xl semibold
+            </Text>
+          </View>
+          <View className="gap-1">
+            <Heading level={4}>Heading four</Heading>
+            <Text size="xs" variant="muted">
+              level=4 · lg semibold
+            </Text>
+          </View>
+        </View>
+      </DocSection>
+
+      <DocSection title="In context" description="Heading + supporting Text (typeset pattern).">
+        <View className="gap-2">
+          <Heading level={3}>Payment methods</Heading>
+          <Text variant="muted" size="sm">
+            Add a card or bank account. We never store full PAN on device.
+          </Text>
+        </View>
+      </DocSection>
     </View>
   );
 }
@@ -131,10 +265,16 @@ export function HeadingDemo() {
 export function ButtonDemo() {
   const toast = useToast();
   const foreground = useThemeColor('foreground');
+  const onPrimary = useThemeColor('primary-foreground');
 
   return (
-    <View className="gap-5">
-      <Section title="Variants" hint="Six variants." showSeparator={false}>
+    <View className="gap-6">
+      <DocIntro
+        title="Button"
+        description="One component for labelled actions and icon toolbars. Icon-only uses size icon / icon-sm / icon-lg (no separate IconButton primitive)."
+      />
+
+      <DocSection title="Variants" description="primary · secondary · outline · ghost · destructive · link">
         <View className="gap-2">
           <Button variant="primary" onPress={() => toast.show('Primary pressed')}>
             Primary
@@ -155,9 +295,9 @@ export function ButtonDemo() {
             Link
           </Button>
         </View>
-      </Section>
+      </DocSection>
 
-      <Section title="Sizes" showSeparator={false}>
+      <DocSection title="Sizes" description="sm · default · lg for labels; keep labels short on sm.">
         <View className="gap-2">
           <Button size="sm" variant="secondary" onPress={() => {}}>
             Small
@@ -169,9 +309,72 @@ export function ButtonDemo() {
             Large
           </Button>
         </View>
-      </Section>
+      </DocSection>
 
-      <Section title="States" showSeparator={false}>
+      <DocSection
+        title="With icons"
+        description="startIcon / endIcon for labelled buttons — same pattern as shadcn icon+label."
+      >
+        <View className="gap-2">
+          <Button
+            startIcon={<Icon name="plus" size={18} color={onPrimary} />}
+            onPress={() => {}}
+          >
+            Add item
+          </Button>
+          <Button
+            variant="outline"
+            endIcon={<Icon name="chevron-right" size={18} color={foreground} />}
+            onPress={() => {}}
+          >
+            Continue
+          </Button>
+        </View>
+      </DocSection>
+
+      <DocSection
+        title="Icon only"
+        description="size=&quot;icon&quot; | icon-sm | icon-lg. Always pass accessibilityLabel."
+      >
+        <View className="flex-row flex-wrap gap-2">
+          <Button
+            size="icon-sm"
+            variant="outline"
+            accessibilityLabel="Search"
+            icon={<Icon name="search" size={18} color={foreground} />}
+            onPress={() => {}}
+          />
+          <Button
+            size="icon"
+            variant="secondary"
+            accessibilityLabel="Settings"
+            icon={<Icon name="settings" size={20} color={foreground} />}
+            onPress={() => {}}
+          />
+          <Button
+            size="icon-lg"
+            accessibilityLabel="Add"
+            icon={<Icon name="plus" size={22} color={onPrimary} />}
+            onPress={() => {}}
+          />
+          <Button
+            size="icon"
+            variant="destructive"
+            accessibilityLabel="Delete"
+            icon={<Icon name="trash" size={20} color={onPrimary} />}
+            onPress={() => {}}
+          />
+          <Button
+            size="icon"
+            variant="ghost"
+            accessibilityLabel="More"
+            icon={<Icon name="chevron-down" size={20} color={foreground} />}
+            onPress={() => {}}
+          />
+        </View>
+      </DocSection>
+
+      <DocSection title="States" description="loading keeps the accessible name; disabled blocks press.">
         <View className="gap-2">
           <Button loading onPress={() => {}}>
             Loading
@@ -179,49 +382,8 @@ export function ButtonDemo() {
           <Button disabled onPress={() => {}}>
             Disabled
           </Button>
-          <Button
-            variant="secondary"
-            startIcon={<Icon name="plus" size={18} color={foreground} />}
-            onPress={() => {}}
-          >
-            With icon
-          </Button>
         </View>
-      </Section>
-    </View>
-  );
-}
-
-export function IconButtonDemo() {
-  const foreground = useThemeColor('foreground');
-  const onPrimary = useThemeColor('primary-foreground');
-
-  return (
-    <View className="flex-row flex-wrap gap-2">
-      <IconButton
-        variant="primary"
-        accessibilityLabel="Add"
-        icon={<Icon name="plus" size={20} color={onPrimary} />}
-        onPress={() => {}}
-      />
-      <IconButton
-        variant="secondary"
-        accessibilityLabel="Settings"
-        icon={<Icon name="settings" size={20} color={foreground} />}
-        onPress={() => {}}
-      />
-      <IconButton
-        variant="outline"
-        accessibilityLabel="Refresh"
-        icon={<Icon name="refresh" size={20} color={foreground} />}
-        onPress={() => {}}
-      />
-      <IconButton
-        variant="ghost"
-        accessibilityLabel="Delete"
-        icon={<Icon name="trash" size={20} color={foreground} />}
-        onPress={() => {}}
-      />
+      </DocSection>
     </View>
   );
 }
@@ -286,9 +448,9 @@ export function InputDemo() {
         placeholder="••••••••"
         secureTextEntry={!passwordVisible}
         endIcon={
-          <IconButton
+          <Button
             variant="ghost"
-            size="sm"
+            size="icon-sm"
             accessibilityLabel={passwordVisible ? 'Hide password' : 'Show password'}
             icon={
               <Icon
