@@ -2,6 +2,11 @@
 //
 // Linear onboarding pager. Host supplies step content; flow owns index state
 // (or accepts controlled index via optional props).
+//
+// Layout contract:
+// - Skip sits top-right (ghost) when provided and not on the last step
+// - Content is vertically centered in the remaining space
+// - Dots + primary CTA are pinned to a full-width footer
 import { forwardRef, useState, type ComponentRef, type ReactNode } from 'react';
 import { View, type ViewProps } from 'react-native';
 
@@ -25,7 +30,7 @@ export interface OnboardingFlowProps extends ViewProps {
   defaultIndex?: number;
   onIndexChange?: (index: number) => void;
   onComplete: () => void;
-  /** Shown on every step except the last when provided. */
+  /** Shown top-right on every step except the last when provided. */
   onSkip?: () => void;
   nextLabel?: string;
   doneLabel?: string;
@@ -56,6 +61,7 @@ export const OnboardingFlow = forwardRef<ComponentRef<typeof View>, OnboardingFl
     const safeIndex = Math.min(Math.max(index, 0), Math.max(steps.length - 1, 0));
     const step = steps[safeIndex];
     const isLast = safeIndex >= steps.length - 1;
+    const showSkip = Boolean(onSkip) && !isLast;
 
     const setIndex = (next: number) => {
       if (!controlled) setIndexLocal(next);
@@ -88,12 +94,29 @@ export const OnboardingFlow = forwardRef<ComponentRef<typeof View>, OnboardingFl
         className={cn('flex-1 bg-background', className)}
         {...props}
       >
-        <View className="flex-1 justify-between gap-8 p-6">
-          <View className="flex-1 items-center justify-center gap-6">
+        {/* Top bar — reserves height so content doesn't jump when Skip hides on last step */}
+        <View className="h-14 w-full flex-row items-center justify-end px-4">
+          {showSkip ? (
+            <Button
+              variant="ghost"
+              size="sm"
+              accessibilityLabel={skipLabel}
+              onPress={onSkip}
+            >
+              {skipLabel}
+            </Button>
+          ) : (
+            <View className="h-11" />
+          )}
+        </View>
+
+        {/* Centered step body */}
+        <View className="min-h-0 flex-1 items-center justify-center px-6">
+          <View className="w-full max-w-sm items-center gap-6">
             {step.media ? (
-              <View className="mb-2 w-full items-center">{step.media}</View>
+              <View className="w-full items-center">{step.media}</View>
             ) : null}
-            <View className="w-full max-w-sm gap-3">
+            <View className="w-full gap-3">
               <Heading level={2} className="text-center">
                 {step.title}
               </Heading>
@@ -102,42 +125,38 @@ export const OnboardingFlow = forwardRef<ComponentRef<typeof View>, OnboardingFl
               </Text>
             </View>
           </View>
+        </View>
 
-          <View className="gap-4">
-            <View
-              className="flex-row items-center justify-center gap-2"
-              accessibilityElementsHidden
-              importantForAccessibility="no-hide-descendants"
-            >
-              {steps.map((item, i) => (
-                <View
-                  key={item.id}
-                  className={cn(
-                    'h-2 rounded-full',
-                    i === safeIndex ? 'w-6 bg-primary' : 'w-2 bg-muted',
-                  )}
-                />
-              ))}
-            </View>
-
-            <Button
-              onPress={() => {
-                if (isLast) {
-                  onComplete();
-                  return;
-                }
-                setIndex(safeIndex + 1);
-              }}
-            >
-              {isLast ? doneLabel : nextLabel}
-            </Button>
-
-            {!isLast && onSkip ? (
-              <Button variant="ghost" onPress={onSkip}>
-                {skipLabel}
-              </Button>
-            ) : null}
+        {/* Footer — full-width primary action, dots above */}
+        <View className="w-full gap-5 px-6 pb-6 pt-2">
+          <View
+            className="flex-row items-center justify-center gap-2"
+            accessibilityElementsHidden
+            importantForAccessibility="no-hide-descendants"
+          >
+            {steps.map((item, i) => (
+              <View
+                key={item.id}
+                className={cn(
+                  'h-2 rounded-full',
+                  i === safeIndex ? 'w-6 bg-primary' : 'w-2 bg-muted',
+                )}
+              />
+            ))}
           </View>
+
+          <Button
+            className="w-full"
+            onPress={() => {
+              if (isLast) {
+                onComplete();
+                return;
+              }
+              setIndex(safeIndex + 1);
+            }}
+          >
+            {isLast ? doneLabel : nextLabel}
+          </Button>
         </View>
       </View>
     );

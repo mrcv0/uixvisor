@@ -2,9 +2,9 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "onboarding",
   "type": "registry:flow",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "title": "Onboarding Flow",
-  "description": "Linear onboarding pager with progress dots, next/done, and optional skip. Host supplies step copy.",
+  "description": "Linear onboarding pager: top-right Skip, centered content, full-width footer CTA with progress dots.",
   "platforms": ["ios", "android", "web"],
   "compatibility": {
     "expo": ">=57 <58",

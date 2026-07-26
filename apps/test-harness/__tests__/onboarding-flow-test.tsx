@@ -33,13 +33,28 @@ describe('OnboardingFlow', () => {
     expect(onComplete).toHaveBeenCalled();
   });
 
-  test('skip calls onSkip', async () => {
+  test('skip is top-right on intermediate steps and calls onSkip', async () => {
     const onSkip = jest.fn();
     const screen = await render(
       <OnboardingFlow steps={steps} onComplete={jest.fn()} onSkip={onSkip} />,
     );
 
-    await fireEvent.press(screen.getByText('Skip'));
+    await fireEvent.press(screen.getByLabelText('Skip'));
     expect(onSkip).toHaveBeenCalled();
+  });
+
+  test('hides skip on the last step', async () => {
+    const onSkip = jest.fn();
+    const screen = await render(
+      <OnboardingFlow
+        steps={steps}
+        defaultIndex={2}
+        onComplete={jest.fn()}
+        onSkip={onSkip}
+      />,
+    );
+
+    expect(screen.queryByLabelText('Skip')).toBeNull();
+    expect(screen.getByText('Get started')).toBeTruthy();
   });
 });
