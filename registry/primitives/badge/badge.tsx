@@ -34,7 +34,8 @@ const softStyles: Record<BadgeVariant, { container: string; text: string }> = {
 
 export const Badge = forwardRef<ComponentRef<typeof View>, BadgeProps>(
   ({ variant = 'default', appearance = 'solid', children, className, ...props }, ref) => {
-    const styles = appearance === 'soft' ? softStyles[variant] : solidStyles[variant];
+    const table = appearance === 'soft' ? softStyles : solidStyles;
+    const styles = table[variant] ?? table.default;
 
     return (
       <View

@@ -65,16 +65,30 @@ const hapticVariants: ReadonlySet<ButtonVariant> = new Set<ButtonVariant>([
   'destructive',
 ]);
 
-function isIconSize(size: ButtonSize): boolean {
-  return sizeStyles[size].iconOnly;
+function resolveVariant(variant: string | undefined): ButtonVariant {
+  if (variant && variant in variantStyles) {
+    return variant as ButtonVariant;
+  }
+  // shadcn uses "default"; map it to our primary so copy-paste does not crash.
+  if (variant === 'default') {
+    return 'primary';
+  }
+  return 'primary';
+}
+
+function resolveSize(size: string | undefined): ButtonSize {
+  if (size && size in sizeStyles) {
+    return size as ButtonSize;
+  }
+  return 'default';
 }
 
 export const Button = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
   (
     {
       children,
-      variant = 'primary',
-      size = 'default',
+      variant: variantProp = 'primary',
+      size: sizeProp = 'default',
       loading = false,
       startIcon,
       endIcon,
@@ -88,10 +102,12 @@ export const Button = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
     },
     ref,
   ) => {
-    const iconOnly = isIconSize(size);
-    const isDisabled = disabled || loading;
+    const variant = resolveVariant(variantProp);
+    const size = resolveSize(sizeProp);
     const styles = variantStyles[variant];
     const sizing = sizeStyles[size];
+    const iconOnly = sizing.iconOnly;
+    const isDisabled = disabled || loading;
 
     if (__DEV__) {
       if (iconOnly && !accessibilityLabel && !children) {

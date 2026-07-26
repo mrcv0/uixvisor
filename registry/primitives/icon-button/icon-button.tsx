@@ -9,7 +9,7 @@ import type { PressableProps } from 'react-native';
 
 import { Button, type ButtonSize, type ButtonVariant } from '@registry/button/button';
 
-type LegacySize = 'sm' | 'default' | 'lg';
+type LegacySize = 'sm' | 'default' | 'lg' | 'icon' | 'icon-sm' | 'icon-lg';
 
 export interface IconButtonProps extends Omit<PressableProps, 'children'> {
   icon: ReactNode;
@@ -20,19 +20,42 @@ export interface IconButtonProps extends Omit<PressableProps, 'children'> {
   className?: string;
 }
 
-const sizeMap: Record<LegacySize, ButtonSize> = {
-  sm: 'icon-sm',
-  default: 'icon',
-  lg: 'icon-lg',
-};
+/** Map legacy IconButton sizes + already-migrated Button icon sizes. */
+function mapSize(size: LegacySize | undefined): ButtonSize {
+  switch (size) {
+    case 'sm':
+    case 'icon-sm':
+      return 'icon-sm';
+    case 'lg':
+    case 'icon-lg':
+      return 'icon-lg';
+    case 'icon':
+    case 'default':
+    case undefined:
+      return 'icon';
+    default:
+      return 'icon';
+  }
+}
 
 /** @deprecated Use `<Button size="icon" icon={...} accessibilityLabel="..." />`. */
 export const IconButton = forwardRef<ComponentRef<typeof Button>, IconButtonProps>(
-  ({ icon, variant = 'primary', size = 'default', loading, accessibilityLabel, className, ...props }, ref) => (
+  (
+    {
+      icon,
+      variant = 'primary',
+      size = 'default',
+      loading,
+      accessibilityLabel,
+      className,
+      ...props
+    },
+    ref,
+  ) => (
     <Button
       ref={ref}
-      variant={variant}
-      size={sizeMap[size]}
+      variant={variant === 'default' ? 'primary' : variant}
+      size={mapSize(size)}
       icon={icon}
       loading={loading}
       accessibilityLabel={accessibilityLabel}
