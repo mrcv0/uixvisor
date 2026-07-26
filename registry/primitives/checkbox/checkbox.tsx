@@ -11,11 +11,6 @@ import { useThemeColor } from '@registry/theme/theme';
 export interface CheckboxProps extends Omit<PressableProps, 'onPress' | 'children'> {
   checked: boolean;
   onCheckedChange: (checked: boolean) => void;
-  /**
-   * Mixed state for "select some" trees. Takes visual priority over `checked`
-   * and reports `accessibilityState.checked = 'mixed'`.
-   */
-  indeterminate?: boolean;
   label?: string;
   className?: string;
 }
@@ -25,7 +20,6 @@ export const Checkbox = forwardRef<ComponentRef<typeof Pressable>, CheckboxProps
     {
       checked,
       onCheckedChange,
-      indeterminate = false,
       label,
       disabled,
       className,
@@ -46,24 +40,15 @@ export const Checkbox = forwardRef<ComponentRef<typeof Pressable>, CheckboxProps
     });
     const press = composePressHandlers(feedback, { onPressIn, onPressOut });
 
-    const isOn = indeterminate || checked;
-    const a11yChecked = indeterminate ? ('mixed' as const) : checked;
-
     return (
       <Pressable
         ref={ref}
         disabled={disabled}
-        onPress={() => {
-          if (indeterminate) {
-            onCheckedChange(true);
-            return;
-          }
-          onCheckedChange(!checked);
-        }}
+        onPress={() => onCheckedChange(!checked)}
         onPressIn={press.onPressIn}
         onPressOut={press.onPressOut}
         accessibilityRole="checkbox"
-        accessibilityState={{ checked: a11yChecked, disabled: Boolean(disabled) }}
+        accessibilityState={{ checked, disabled: Boolean(disabled) }}
         accessibilityLabel={accessibilityLabel ?? label}
         // min-w-12 keeps a 48pt hit area when there is no label text.
         className={cn(
@@ -76,14 +61,10 @@ export const Checkbox = forwardRef<ComponentRef<typeof Pressable>, CheckboxProps
         <View
           className={cn(
             'h-5 w-5 items-center justify-center rounded-sm border',
-            isOn ? 'border-primary bg-primary' : 'border-input bg-background',
+            checked ? 'border-primary bg-primary' : 'border-input bg-background',
           )}
         >
-          {indeterminate ? (
-            <Icon name="minus" size={14} color={checkColor} weight="bold" />
-          ) : checked ? (
-            <Icon name="check" size={14} color={checkColor} weight="bold" />
-          ) : null}
+          {checked ? <Icon name="check" size={14} color={checkColor} weight="bold" /> : null}
         </View>
         {label ? (
           <Text size="base" className="flex-1">

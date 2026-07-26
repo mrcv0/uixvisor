@@ -15,17 +15,4 @@ describe('Checkbox', () => {
     await fireEvent.press(control);
     expect(onCheckedChange).toHaveBeenCalledWith(true);
   });
-
-  test('reports mixed state when indeterminate', async () => {
-    const screen = await render(
-      <Checkbox
-        checked={false}
-        indeterminate
-        onCheckedChange={() => {}}
-        label="Select all"
-      />,
-    );
-
-    expect(screen.getByRole('checkbox').props.accessibilityState.checked).toBe('mixed');
-  });
 });

@@ -323,21 +323,10 @@ export function TextareaDemo() {
 
 export function CheckboxDemo() {
   const [agreed, setAgreed] = useState(false);
-  const [partial, setPartial] = useState(true);
 
   return (
     <View className="gap-3">
       <Checkbox checked={agreed} onCheckedChange={setAgreed} label="I agree to the terms" />
-      <Checkbox
-        checked={false}
-        indeterminate={partial}
-        onCheckedChange={(next) => {
-          setPartial(false);
-          // First tap leaves indeterminate into a firm true.
-          setAgreed(next);
-        }}
-        label="Select all (indeterminate)"
-      />
       <Checkbox checked={false} onCheckedChange={() => {}} label="Disabled" disabled />
       <View className="flex-row items-center gap-3">
         <Checkbox
