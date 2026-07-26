@@ -73,7 +73,16 @@ export function ThemeDemo() {
 
 export function TextDemo() {
   return (
-    <View className="gap-2">
+    <View className="gap-3">
+      <Text size="3xl" weight="bold">
+        3xl bold
+      </Text>
+      <Text size="2xl" weight="bold">
+        2xl bold
+      </Text>
+      <Text size="xl" weight="semibold">
+        xl semibold
+      </Text>
       <Text size="lg" weight="semibold">
         Large semibold
       </Text>
@@ -88,6 +97,12 @@ export function TextDemo() {
       <Text variant="destructive" size="sm">
         Destructive text for error messaging.
       </Text>
+      <Text variant="success" size="sm">
+        Success text for positive status.
+      </Text>
+      <Text variant="warning" size="sm">
+        Warning text for caution.
+      </Text>
     </View>
   );
 }
@@ -99,6 +114,9 @@ export function HeadingDemo() {
       <Heading level={2}>Heading two</Heading>
       <Heading level={3}>Heading three</Heading>
       <Heading level={4}>Heading four</Heading>
+      <Text variant="muted" size="sm">
+        Levels share the Text type ramp and Inter weight families.
+      </Text>
     </View>
   );
 }
@@ -254,6 +272,7 @@ export function InputDemo() {
         placeholder="you@example.com"
         keyboardType="email-address"
         autoCapitalize="none"
+        hint="We'll never share your email."
       />
       <Input
         label="Password"
@@ -276,12 +295,23 @@ export function InputDemo() {
         }
       />
       <Input label="With error" value="not-an-email" error="Enter a valid email address" />
+      <Input label="Disabled" value="Locked value" disabled />
     </View>
   );
 }
 
 export function TextareaDemo() {
-  return <Textarea label="Notes" placeholder="Anything else we should know?" />;
+  return (
+    <View className="gap-3">
+      <Textarea
+        label="Notes"
+        placeholder="Anything else we should know?"
+        hint="Optional — max a short paragraph."
+      />
+      <Textarea label="With error" value="Too short" error="Please write at least 20 characters." />
+      <Textarea label="Disabled" value="Cannot edit" disabled />
+    </View>
+  );
 }
 
 export function CheckboxDemo() {

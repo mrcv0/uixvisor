@@ -14,4 +14,17 @@ describe('Input', () => {
     expect(onChangeText).toHaveBeenCalledWith('user@example.com');
     expect(screen.getByText('Email is required')).toBeTruthy();
   });
+
+  test('disabled alias blocks editing and exposes state', async () => {
+    const screen = await render(<Input label="Name" value="Ada" disabled />);
+    const field = screen.getByLabelText('Name');
+
+    expect(field.props.editable).toBe(false);
+    expect(field.props.accessibilityState).toEqual({ disabled: true });
+  });
+
+  test('hint is shown when there is no error', async () => {
+    const screen = await render(<Input label="Email" hint="Work address preferred" />);
+    expect(screen.getByText('Work address preferred')).toBeTruthy();
+  });
 });

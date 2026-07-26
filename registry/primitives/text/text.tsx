@@ -2,9 +2,12 @@
 import { forwardRef, type ComponentRef } from 'react';
 import { Text as RNText, type TextProps as RNTextProps } from 'react-native';
 
-type TextVariant = 'default' | 'muted' | 'destructive';
-type TextSize = 'xs' | 'sm' | 'base' | 'lg';
-type TextWeight = 'regular' | 'medium' | 'semibold' | 'bold';
+import { cn } from '@registry/theme/cn';
+
+export type TextVariant = 'default' | 'muted' | 'destructive' | 'success' | 'warning';
+/** Full type ramp — headings reuse the upper steps. */
+export type TextSize = 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl';
+export type TextWeight = 'regular' | 'medium' | 'semibold' | 'bold';
 
 export interface TextProps extends RNTextProps {
   variant?: TextVariant;
@@ -17,6 +20,8 @@ const variantStyles: Record<TextVariant, string> = {
   default: 'text-foreground',
   muted: 'text-muted-foreground',
   destructive: 'text-destructive',
+  success: 'text-success',
+  warning: 'text-warning',
 };
 
 const sizeStyles: Record<TextSize, string> = {
@@ -24,6 +29,9 @@ const sizeStyles: Record<TextSize, string> = {
   sm: 'text-sm',
   base: 'text-base',
   lg: 'text-lg',
+  xl: 'text-xl',
+  '2xl': 'text-2xl',
+  '3xl': 'text-3xl',
 };
 
 // Weights select a font family rather than a numeric weight: React Native on
@@ -35,10 +43,6 @@ const weightStyles: Record<TextWeight, string> = {
   semibold: 'font-semibold',
   bold: 'font-bold',
 };
-
-function cn(...classes: Array<string | false | undefined | null>) {
-  return classes.filter(Boolean).join(' ');
-}
 
 export const Text = forwardRef<ComponentRef<typeof RNText>, TextProps>(
   ({ variant = 'default', size = 'base', weight = 'regular', className, ...props }, ref) => {
