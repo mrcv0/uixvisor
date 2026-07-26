@@ -9,12 +9,13 @@ const path = require('node:path');
 // Previously this alias pointed straight at `primitives/`, so nothing under
 // blocks, screens or flows could resolve - which is why those had never actually
 // been bundled or type-checked.
+const registryRoot = path.resolve(__dirname, '../../registry');
+
 function registryAliases() {
-  const root = path.resolve(__dirname, '../../registry');
   const alias = {};
 
-  for (const namespace of fs.readdirSync(root)) {
-    const namespaceDir = path.join(root, namespace);
+  for (const namespace of fs.readdirSync(registryRoot)) {
+    const namespaceDir = path.join(registryRoot, namespace);
     if (!fs.statSync(namespaceDir).isDirectory()) continue;
 
     for (const item of fs.readdirSync(namespaceDir)) {
@@ -27,8 +28,14 @@ function registryAliases() {
   return alias;
 }
 
+/** Fingerprint so adding registry/forms/* invalidates babel's forever-cache. */
+function registryAliasCacheKey() {
+  return Object.keys(registryAliases()).sort().join('|');
+}
+
 module.exports = function (api) {
-  api.cache(true);
+  // Do not use api.cache(true): new registry items would keep stale aliases.
+  api.cache.using(registryAliasCacheKey);
   return {
     presets: [
       ['babel-preset-expo', { jsxImportSource: 'nativewind' }],
