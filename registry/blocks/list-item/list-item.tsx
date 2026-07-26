@@ -69,8 +69,10 @@ export const ListItem = forwardRef<ComponentRef<typeof Pressable>, ListItemProps
       </>
     );
 
+    // Transparent by default so a parent group can own the only surface.
+    // Putting bg-card on both the group and each row reads as "box in a box".
     const surface = cn(
-      'min-h-[56px] w-full flex-row items-center bg-card px-4',
+      'min-h-[56px] w-full flex-row items-center bg-transparent px-4',
       disabled && 'opacity-50',
       className,
     );
@@ -102,7 +104,7 @@ export const ListItem = forwardRef<ComponentRef<typeof Pressable>, ListItemProps
         accessibilityState={{ disabled: Boolean(disabled) }}
         onPressIn={press.onPressIn}
         onPressOut={press.onPressOut}
-        className={cn(surface, 'active:bg-accent')}
+        className={cn(surface, 'active:bg-muted')}
         {...props}
       >
         {body}

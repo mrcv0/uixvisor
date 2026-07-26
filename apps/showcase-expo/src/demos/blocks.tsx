@@ -31,10 +31,15 @@ function Sample({ label, children }: { label: string; children: React.ReactNode 
   );
 }
 
-/** Grouped settings surface for list rows. */
+/**
+ * Single surface for a stack of ListItems.
+ * Rows stay transparent — only this wrapper has border/bg (no double box).
+ */
 function ListGroup({ children }: { children: React.ReactNode }) {
   return (
-    <View className="w-full overflow-hidden rounded-xl border border-border bg-card">{children}</View>
+    <View className="w-full overflow-hidden rounded-xl border border-border bg-card">
+      {children}
+    </View>
   );
 }
 
