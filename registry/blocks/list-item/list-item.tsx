@@ -1,4 +1,7 @@
 // UIXVISOR — https://uixvisor.dev/blocks/list-item
+//
+// Built on Text + theme press feedback. No baked-in group chrome — parent
+// provides rounded card / separators so stacks stay flexible.
 import { forwardRef, type ComponentRef, type ReactNode } from 'react';
 import { Pressable, View, type PressableProps } from 'react-native';
 
@@ -36,43 +39,73 @@ export const ListItem = forwardRef<ComponentRef<typeof Pressable>, ListItemProps
     const feedback = usePressFeedback({
       scale: false,
       haptic: interactive ? 'selection' : 'none',
-      disabled: Boolean(disabled) || !onPress,
+      disabled: !interactive,
     });
     const press = composePressHandlers(feedback, { onPressIn, onPressOut });
+
+    const body = (
+      <>
+        {leading ? (
+          <View className="mr-3 shrink-0 items-center justify-center">{leading}</View>
+        ) : null}
+
+        <View className="min-w-0 flex-1 justify-center py-3.5">
+          <Text size="base" weight="medium" numberOfLines={1}>
+            {title}
+          </Text>
+          {description ? (
+            <Text size="sm" variant="muted" numberOfLines={2} className="mt-0.5">
+              {description}
+            </Text>
+          ) : null}
+        </View>
+
+        {/* box-none so Switch / icon buttons inside trailing still receive touches */}
+        {trailing ? (
+          <View className="ml-3 shrink-0 items-center justify-center" pointerEvents="box-none">
+            {trailing}
+          </View>
+        ) : null}
+      </>
+    );
+
+    const surface = cn(
+      'min-h-[56px] w-full flex-row items-center bg-card px-4',
+      disabled && 'opacity-50',
+      className,
+    );
+
+    // Non-interactive row (e.g. switch only): Pressable without onPress still
+    // lays out the same, but we leave it enabled for trailing controls via box-none.
+    if (!onPress) {
+      return (
+        <Pressable
+          ref={ref}
+          disabled
+          accessibilityRole="none"
+          accessibilityLabel={accessibilityLabel ?? title}
+          className={surface}
+          {...props}
+        >
+          {body}
+        </Pressable>
+      );
+    }
 
     return (
       <Pressable
         ref={ref}
         onPress={onPress}
-        disabled={disabled || !onPress}
-        accessibilityRole={onPress ? 'button' : 'text'}
+        disabled={disabled}
+        accessibilityRole="button"
         accessibilityLabel={accessibilityLabel ?? title}
         accessibilityState={{ disabled: Boolean(disabled) }}
-        onPressIn={onPress ? press.onPressIn : undefined}
-        onPressOut={onPress ? press.onPressOut : undefined}
-        className={cn(
-          'min-h-14 w-full flex-row items-center gap-3 border-b border-border bg-background px-4 active:bg-accent',
-          disabled && 'opacity-50',
-          className,
-        )}
+        onPressIn={press.onPressIn}
+        onPressOut={press.onPressOut}
+        className={cn(surface, 'active:bg-accent')}
         {...props}
       >
-        {leading ? (
-          <View className="shrink-0 items-center justify-center py-3">{leading}</View>
-        ) : null}
-        <View className="min-w-0 flex-1 gap-0.5 py-3">
-          <Text size="base" weight="medium" numberOfLines={1}>
-            {title}
-          </Text>
-          {description ? (
-            <Text size="sm" variant="muted" numberOfLines={2}>
-              {description}
-            </Text>
-          ) : null}
-        </View>
-        {trailing ? (
-          <View className="shrink-0 items-center justify-center py-3">{trailing}</View>
-        ) : null}
+        {body}
       </Pressable>
     );
   },

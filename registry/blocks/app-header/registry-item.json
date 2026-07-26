@@ -2,16 +2,16 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "app-header",
   "type": "registry:block",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "title": "App Header",
-  "description": "Top-level screen header with optional leading/trailing slots and back affordance.",
+  "description": "Top-level screen header composed from Button, Icon, and Text primitives.",
   "platforms": ["ios", "android", "web"],
   "compatibility": {
     "expo": ">=57 <58",
     "nativewind": ">=4 <5"
   },
   "dependencies": [],
-  "registryDependencies": ["icon", "theme", "text"],
+  "registryDependencies": ["button", "icon", "theme", "text"],
   "files": [
     {
       "source": "app-header.tsx",

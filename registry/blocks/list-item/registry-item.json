@@ -2,9 +2,9 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "list-item",
   "type": "registry:block",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "title": "List Item",
-  "description": "Pressable full-width row with leading, trailing, title, and description slots.",
+  "description": "Settings-style row built on Text and theme press feedback.",
   "platforms": ["ios", "android", "web"],
   "compatibility": {
     "expo": ">=57 <58",
