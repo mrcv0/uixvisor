@@ -45,4 +45,33 @@ describe('SignInScreen validation', () => {
       });
     });
   });
+
+  test('surfaces root error when onSubmit throws', async () => {
+    const onSubmit = jest.fn().mockRejectedValue(new Error('Invalid credentials'));
+    const screen = await render(<SignInScreen onSubmit={onSubmit} />);
+
+    await fireEvent.changeText(screen.getByLabelText('Email'), 'ada@example.com');
+    await fireEvent.changeText(screen.getByLabelText('Password'), 'secret');
+    await fireEvent.press(screen.getByText('Continue'));
+
+    await waitFor(() => {
+      expect(screen.getByText('Invalid credentials')).toBeTruthy();
+    });
+  });
+
+  test('trims email before submit', async () => {
+    const onSubmit = jest.fn().mockResolvedValue(undefined);
+    const screen = await render(<SignInScreen onSubmit={onSubmit} />);
+
+    await fireEvent.changeText(screen.getByLabelText('Email'), '  ada@example.com  ');
+    await fireEvent.changeText(screen.getByLabelText('Password'), 'secret');
+    await fireEvent.press(screen.getByText('Continue'));
+
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledWith({
+        email: 'ada@example.com',
+        password: 'secret',
+      });
+    });
+  });
 });

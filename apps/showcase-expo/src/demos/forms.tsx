@@ -3,9 +3,12 @@ import { View } from 'react-native';
 
 import { Button } from '@registry/button/button';
 import {
+  bindTextInput,
   ControlledFormField,
-  rootError,
+  createFormSubmitHandler,
+  FormRootError,
   useAppForm,
+  useFormRootError,
 } from '@registry/form-adapter/form-adapter';
 import {
   emailSchema,
@@ -26,38 +29,62 @@ const liveDemoSchema = z.object({
 
 export function FormAdapterDemo() {
   const [submitted, setSubmitted] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
   const form = useAppForm({
     schema: liveDemoSchema,
     defaultValues: { email: '', password: '' },
   });
-  const formRootError = rootError(form);
+  const formRootError = useFormRootError(form);
+
+  const handleSubmit = createFormSubmitHandler(
+    form,
+    async (values) => {
+      setSubmitted(`${values.email} · password length ${values.password.length}`);
+    },
+    {
+      onPendingChange: setPending,
+      fieldOrder: ['email', 'password'],
+    },
+  );
+
+  const simulateServerError = createFormSubmitHandler(
+    form,
+    async () => {
+      throw new Error('Invalid credentials (demo)');
+    },
+    {
+      onPendingChange: setPending,
+      fieldOrder: ['email', 'password'],
+    },
+  );
 
   return (
     <View className="w-full gap-6">
       <DocIntro
         title="Form adapter"
-        description="Bridges React Hook Form and Zod to FormField. Primitives stay library-agnostic — they only receive value, onChange, and error strings."
+        description="React Hook Form + Zod bridge for registry controls. Use ControlledFormField, bindTextInput, createFormSubmitHandler, and useFormRootError. Primitives stay library-agnostic."
       />
 
-      <DocSection title="Live validation" description="Submit empty or invalid values to see field errors. Blur also revalidates after the first submit.">
-        {formRootError ? (
-          <Text variant="destructive" size="sm" accessibilityLiveRegion="polite">
-            {formRootError}
-          </Text>
-        ) : null}
+      <DocSection
+        title="Live validation"
+        description="Submit empty or invalid values for field errors. Valid submit shows parsed values. Second button demos root/async errors."
+      >
+        <FormRootError message={formRootError} />
         <ControlledFormField control={form.control} name="email" label="Email" required>
-          {(field) => (
-            <Input
-              label=""
-              value={field.value}
-              onChangeText={field.onChange}
-              onBlur={field.onBlur}
-              autoCapitalize="none"
-              keyboardType="email-address"
-              accessibilityLabel="Email"
-              placeholder="you@example.com"
-            />
-          )}
+          {(field) => {
+            const { ref: inputRef, ...inputProps } = bindTextInput(field);
+            return (
+              <Input
+                ref={inputRef}
+                label=""
+                {...inputProps}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                accessibilityLabel="Email"
+                placeholder="you@example.com"
+              />
+            );
+          }}
         </ControlledFormField>
         <ControlledFormField
           control={form.control}
@@ -66,24 +93,25 @@ export function FormAdapterDemo() {
           hint="Minimum 8 characters"
           required
         >
-          {(field) => (
-            <Input
-              label=""
-              value={field.value}
-              onChangeText={field.onChange}
-              onBlur={field.onBlur}
-              secureTextEntry
-              accessibilityLabel="Password"
-              placeholder="••••••••"
-            />
-          )}
+          {(field) => {
+            const { ref: inputRef, ...inputProps } = bindTextInput(field);
+            return (
+              <Input
+                ref={inputRef}
+                label=""
+                {...inputProps}
+                secureTextEntry
+                accessibilityLabel="Password"
+                placeholder="••••••••"
+              />
+            );
+          }}
         </ControlledFormField>
-        <Button
-          onPress={form.handleSubmit((values) => {
-            setSubmitted(`${values.email} · password length ${values.password.length}`);
-          })}
-        >
+        <Button loading={pending} onPress={handleSubmit}>
           Validate &amp; submit
+        </Button>
+        <Button loading={pending} variant="secondary" onPress={simulateServerError}>
+          Simulate server error
         </Button>
         {submitted ? (
           <Text size="sm" variant="muted">

@@ -2,9 +2,9 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "sign-in",
   "type": "registry:screen",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "title": "Sign In Screen",
-  "description": "Email + password sign-in with shared Zod schema and React Hook Form adapter.",
+  "description": "Validated email + password sign-in: Zod schema, RHF adapter, keyboard-aware layout, focus-first-error.",
   "platforms": ["ios", "android", "web"],
   "compatibility": {
     "expo": ">=57 <58",
@@ -16,6 +16,7 @@
     "form-adapter",
     "auth-schemas",
     "input",
+    "keyboard-aware-form",
     "text"
   ],
   "files": [

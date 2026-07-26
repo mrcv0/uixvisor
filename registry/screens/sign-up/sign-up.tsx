@@ -4,17 +4,23 @@ import { Text, View, type ViewProps } from 'react-native';
 
 import { Button } from '@registry/button/button';
 import {
+  bindTextInput,
   ControlledFormField,
-  rootError,
+  createFormSubmitHandler,
+  FormRootError,
   useAppForm,
+  useFormRootError,
 } from '@registry/form-adapter/form-adapter';
 import { signUpSchema, type SignUpValues } from '@registry/auth-schemas/auth-schemas';
 import { Input } from '@registry/input/input';
+import { KeyboardAwareForm } from '@registry/keyboard-aware-form/keyboard-aware-form';
 import { Text as UText } from '@registry/text/text';
 
 export interface SignUpScreenProps extends ViewProps {
   onSubmit: (input: SignUpValues) => Promise<void> | void;
 }
+
+const FIELD_ORDER = ['name', 'email', 'password'] as const;
 
 export const SignUpScreen = forwardRef<ComponentRef<typeof View>, SignUpScreenProps>(
   ({ onSubmit, className, ...props }, ref) => {
@@ -23,80 +29,86 @@ export const SignUpScreen = forwardRef<ComponentRef<typeof View>, SignUpScreenPr
       schema: signUpSchema,
       defaultValues: { name: '', email: '', password: '' },
     });
-    const formRootError = rootError(form);
+    const formRootError = useFormRootError(form);
+
+    const handleSubmit = createFormSubmitHandler(form, onSubmit, {
+      onPendingChange: setPending,
+      fieldOrder: [...FIELD_ORDER],
+    });
 
     return (
       <View
         ref={ref}
         accessibilityLabel="Sign up"
-        className={`flex-1 gap-6 bg-background p-6${className ? ` ${className}` : ''}`}
+        className={`flex-1 bg-background${className ? ` ${className}` : ''}`}
         {...props}
       >
-        <Text className="text-2xl font-semibold text-foreground">Create your account</Text>
-        <UText variant="muted">Tell us who you are to get started.</UText>
-        {formRootError ? (
-          <UText variant="destructive" size="sm" accessibilityLiveRegion="polite">
-            {formRootError}
-          </UText>
-        ) : null}
-        <ControlledFormField control={form.control} name="name" label="Name" required>
-          {(field) => (
-            <Input
-              label=""
-              value={field.value}
-              onChangeText={field.onChange}
-              onBlur={field.onBlur}
-              accessibilityLabel="Name"
-            />
-          )}
-        </ControlledFormField>
-        <ControlledFormField control={form.control} name="email" label="Email" required>
-          {(field) => (
-            <Input
-              label=""
-              value={field.value}
-              onChangeText={field.onChange}
-              onBlur={field.onBlur}
-              autoCapitalize="none"
-              keyboardType="email-address"
-              accessibilityLabel="Email"
-            />
-          )}
-        </ControlledFormField>
-        <ControlledFormField
-          control={form.control}
-          name="password"
-          label="Password"
-          hint="Minimum 8 characters"
-          required
+        <KeyboardAwareForm
+          className="flex-1"
+          contentContainerClassName="gap-6 p-6"
+          keyboardShouldPersistTaps="handled"
         >
-          {(field) => (
-            <Input
-              label=""
-              value={field.value}
-              onChangeText={field.onChange}
-              onBlur={field.onBlur}
-              secureTextEntry
-              accessibilityLabel="Password"
-            />
-          )}
-        </ControlledFormField>
-        <Button
-          loading={pending}
-          onPress={form.handleSubmit(async (values) => {
-            try {
-              setPending(true);
-              form.clearErrors('root');
-              await onSubmit(values);
-            } catch (error) {
-              form.setError('root', { message: (error as Error).message });
-            } finally {
-              setPending(false);
-            }
-          })}
-        >
-          Create account
-        </Button>
+          <Text className="text-2xl font-semibold text-foreground">Create your account</Text>
+          <UText variant="muted">Tell us who you are to get started.</UText>
+          <FormRootError message={formRootError} />
+          <ControlledFormField control={form.control} name="name" label="Name" required>
+            {(field) => {
+              const { ref: inputRef, ...inputProps } = bindTextInput(field);
+              return (
+                <Input
+                  ref={inputRef}
+                  label=""
+                  {...inputProps}
+                  textContentType="name"
+                  autoComplete="name"
+                  accessibilityLabel="Name"
+                />
+              );
+            }}
+          </ControlledFormField>
+          <ControlledFormField control={form.control} name="email" label="Email" required>
+            {(field) => {
+              const { ref: inputRef, ...inputProps } = bindTextInput(field);
+              return (
+                <Input
+                  ref={inputRef}
+                  label=""
+                  {...inputProps}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                  textContentType="emailAddress"
+                  autoComplete="email"
+                  accessibilityLabel="Email"
+                />
+              );
+            }}
+          </ControlledFormField>
+          <ControlledFormField
+            control={form.control}
+            name="password"
+            label="Password"
+            hint="Minimum 8 characters"
+            required
+          >
+            {(field) => {
+              const { ref: inputRef, ...inputProps } = bindTextInput(field);
+              return (
+                <Input
+                  ref={inputRef}
+                  label=""
+                  {...inputProps}
+                  secureTextEntry
+                  textContentType="newPassword"
+                  autoComplete="password-new"
+                  accessibilityLabel="Password"
+                />
+              );
+            }}
+          </ControlledFormField>
+          <Button loading={pending} onPress={handleSubmit}>
+            Create account
+          </Button>
+        </KeyboardAwareForm>
       </View>
     );
   },

@@ -1,11 +1,18 @@
 // UIXVISOR — https://uixvisor.dev/screens/otp-verify
 import { forwardRef, useState, type ComponentRef } from 'react';
-import { Controller } from 'react-hook-form';
 import { Text, View, type ViewProps } from 'react-native';
 
 import { Button } from '@registry/button/button';
-import { rootError, useAppForm } from '@registry/form-adapter/form-adapter';
+import {
+  bindTextInput,
+  ControlledField,
+  createFormSubmitHandler,
+  FormRootError,
+  useAppForm,
+  useFormRootError,
+} from '@registry/form-adapter/form-adapter';
 import { otpVerifySchema } from '@registry/auth-schemas/auth-schemas';
+import { KeyboardAwareForm } from '@registry/keyboard-aware-form/keyboard-aware-form';
 import { OTPInput } from '@registry/otp-input/otp-input';
 import { Text as UText } from '@registry/text/text';
 
@@ -21,51 +28,51 @@ export const OtpVerifyScreen = forwardRef<ComponentRef<typeof View>, OtpVerifySc
       schema: otpVerifySchema,
       defaultValues: { code: '' },
     });
-    const formRootError = rootError(form);
+    const formRootError = useFormRootError(form);
+
+    const handleSubmit = createFormSubmitHandler(
+      form,
+      async (values) => {
+        await onSubmit(values.code);
+      },
+      {
+        onPendingChange: setPending,
+        fieldOrder: ['code'],
+      },
+    );
 
     return (
       <View
         ref={ref}
         accessibilityLabel="OTP verification"
-        className={`flex-1 gap-6 bg-background p-6${className ? ` ${className}` : ''}`}
+        className={`flex-1 bg-background${className ? ` ${className}` : ''}`}
         {...props}
       >
-        <Text className="text-2xl font-semibold text-foreground">Verify your code</Text>
-        <UText variant="muted">Enter the 6-digit code we sent to your inbox.</UText>
-        {formRootError ? (
-          <UText variant="destructive" size="sm" accessibilityLiveRegion="polite">
-            {formRootError}
-          </UText>
-        ) : null}
-        <Controller
-          control={form.control}
-          name="code"
-          render={({ field, fieldState }) => (
-            <OTPInput
-              value={field.value}
-              onChangeText={field.onChange}
-              onBlur={field.onBlur}
-              error={fieldState.error?.message}
-              onResend={onResend}
-            />
-          )}
-        />
-        <Button
-          loading={pending}
-          onPress={form.handleSubmit(async (values) => {
-            try {
-              setPending(true);
-              form.clearErrors('root');
-              await onSubmit(values.code);
-            } catch (error) {
-              form.setError('root', { message: (error as Error).message });
-            } finally {
-              setPending(false);
-            }
-          })}
+        <KeyboardAwareForm
+          className="flex-1"
+          contentContainerClassName="gap-6 p-6"
+          keyboardShouldPersistTaps="handled"
         >
-          Verify
-        </Button>
+          <Text className="text-2xl font-semibold text-foreground">Verify your code</Text>
+          <UText variant="muted">Enter the 6-digit code we sent to your inbox.</UText>
+          <FormRootError message={formRootError} />
+          <ControlledField control={form.control} name="code">
+            {(field) => {
+              const { ref: inputRef, ...inputProps } = bindTextInput(field);
+              return (
+                <OTPInput
+                  ref={inputRef}
+                  {...inputProps}
+                  error={field.error}
+                  onResend={onResend}
+                />
+              );
+            }}
+          </ControlledField>
+          <Button loading={pending} onPress={handleSubmit}>
+            Verify
+          </Button>
+        </KeyboardAwareForm>
       </View>
     );
   },

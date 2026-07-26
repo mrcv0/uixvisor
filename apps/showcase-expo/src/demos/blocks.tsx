@@ -6,7 +6,11 @@ import { Avatar } from '@registry/avatar/avatar';
 import { Badge } from '@registry/badge/badge';
 import { Button } from '@registry/button/button';
 import { ButtonGroup } from '@registry/button-group/button-group';
-import { ControlledFormField, useAppForm } from '@registry/form-adapter/form-adapter';
+import {
+  bindTextInput,
+  ControlledFormField,
+  useAppForm,
+} from '@registry/form-adapter/form-adapter';
 import { FormField } from '@registry/form-field/form-field';
 import { Icon } from '@registry/icon/icon';
 import { Input } from '@registry/input/input';
@@ -221,7 +225,7 @@ export function FormFieldDemo() {
         description="Label, control slot, hint, and error. With the form adapter, errors come from Zod on blur/submit — not hardcoded props."
       />
 
-      <DocSection title="Live (adapter)" description="Submit to validate. Label lives on FormField; Input keeps label empty to avoid double chrome.">
+      <DocSection title="Live (adapter)" description="Submit to validate. Label lives on FormField; bindTextInput wires ref for setFocus.">
         <ControlledFormField
           control={form.control}
           name="name"
@@ -229,41 +233,47 @@ export function FormFieldDemo() {
           hint="Shown on your public profile"
           required
         >
-          {(field) => (
-            <Input
-              label=""
-              value={field.value}
-              onChangeText={field.onChange}
-              onBlur={field.onBlur}
-              accessibilityLabel="Display name"
-            />
-          )}
+          {(field) => {
+            const { ref: inputRef, ...inputProps } = bindTextInput(field);
+            return (
+              <Input
+                ref={inputRef}
+                label=""
+                {...inputProps}
+                accessibilityLabel="Display name"
+              />
+            );
+          }}
         </ControlledFormField>
         <ControlledFormField control={form.control} name="email" label="Email" required>
-          {(field) => (
-            <Input
-              label=""
-              value={field.value}
-              onChangeText={field.onChange}
-              onBlur={field.onBlur}
-              autoCapitalize="none"
-              keyboardType="email-address"
-              accessibilityLabel="Email"
-            />
-          )}
+          {(field) => {
+            const { ref: inputRef, ...inputProps } = bindTextInput(field);
+            return (
+              <Input
+                ref={inputRef}
+                label=""
+                {...inputProps}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                accessibilityLabel="Email"
+              />
+            );
+          }}
         </ControlledFormField>
         <ControlledFormField control={form.control} name="bio" label="Bio" hint="Optional short intro">
-          {(field) => (
-            <Textarea
-              label=""
-              value={field.value ?? ''}
-              onChangeText={field.onChange}
-              onBlur={field.onBlur}
-              placeholder="Tell people about yourself"
-              accessibilityLabel="Bio"
-              rows={3}
-            />
-          )}
+          {(field) => {
+            const { ref: inputRef, ...inputProps } = bindTextInput(field);
+            return (
+              <Textarea
+                ref={inputRef}
+                label=""
+                {...inputProps}
+                placeholder="Tell people about yourself"
+                accessibilityLabel="Bio"
+                rows={3}
+              />
+            );
+          }}
         </ControlledFormField>
         <Button onPress={form.handleSubmit(() => undefined)}>Validate fields</Button>
       </DocSection>

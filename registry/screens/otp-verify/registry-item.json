@@ -2,9 +2,9 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "otp-verify",
   "type": "registry:screen",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "title": "OTP Verify Screen",
-  "description": "OTP entry with shared Zod schema and React Hook Form adapter; resend callback optional.",
+  "description": "Validated 6-digit OTP: Zod schema, ControlledField adapter, keyboard-aware layout, optional resend.",
   "platforms": ["ios", "android", "web"],
   "compatibility": {
     "expo": ">=57 <58",
@@ -15,6 +15,7 @@
     "button",
     "form-adapter",
     "auth-schemas",
+    "keyboard-aware-form",
     "otp-input",
     "text"
   ],
