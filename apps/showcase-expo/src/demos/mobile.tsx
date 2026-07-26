@@ -20,8 +20,7 @@ import { useToast } from '@registry/toast/toast';
 import { DocIntro } from '../shell/DocSection';
 
 /**
- * Mobile demos intentionally avoid DocSection card frames.
- * Device behaviours must read at full width, as they would in a real screen.
+ * Mobile demos: full-width, no card frames — same footprint as a real screen.
  */
 
 export function OtpInputDemo() {
@@ -59,7 +58,7 @@ export function ToastDemo() {
     <View className="w-full gap-4">
       <DocIntro
         title="Toast"
-        description="Fires over the whole app, above the safe area — not inside a card. Tap a variant."
+        description="Fires over the whole app, above the safe area. Tap a variant."
       />
       <View className="w-full gap-2">
         <Button className="w-full" onPress={() => toast.show('Saved successfully')}>
@@ -86,14 +85,14 @@ export function ToastDemo() {
 
 export function EmptyStateDemo() {
   return (
-    <View className="w-full gap-4">
+    <View className="w-full flex-1">
       <DocIntro
         title="Empty state"
-        description="How a blank list or search looks on a real screen."
+        description="Centered blank list or search. Default inbox icon; pass icon to override."
       />
       <EmptyState
         title="No results"
-        description="Try adjusting your search or filters."
+        description="Try adjusting your search or filters to find what you need."
         action={
           <Button variant="outline" size="sm" onPress={() => {}}>
             Clear filters
@@ -107,10 +106,10 @@ export function EmptyStateDemo() {
 export function ErrorStateDemo() {
   const toast = useToast();
   return (
-    <View className="w-full gap-4">
+    <View className="w-full flex-1">
       <DocIntro
         title="Error state"
-        description="Recoverable failure. Retry is wired to a toast in this demo."
+        description="Centered recoverable failure with icon and full-width retry."
       />
       <ErrorState
         title="Could not load invoices"
@@ -128,13 +127,13 @@ export function BottomSheetDemo() {
     <View className="w-full gap-4">
       <DocIntro
         title="Bottom sheet"
-        description="Overlays the full window — not framed in a card. Open it to see real edge-to-edge behaviour."
+        description="Overlays the full window. Open it to see edge-to-edge behaviour."
       />
       <Button className="w-full" variant="secondary" onPress={() => setVisible(true)}>
         Open bottom sheet
       </Button>
       <BottomSheet visible={visible} onClose={() => setVisible(false)}>
-        <View className="gap-3">
+        <View className="w-full gap-3">
           <Heading level={4}>Sheet title</Heading>
           <Text variant="muted" size="sm">
             Sheet content. Keep short actions here; tall forms belong on a full screen.
@@ -154,7 +153,7 @@ export function SwipeableRowDemo() {
     <View className="w-full gap-4">
       <DocIntro
         title="Swipeable row"
-        description="Edge-to-edge list rows. Swipe left to reveal delete."
+        description="Full-width list rows. Swipe left to reveal delete."
       />
       <View className="w-full gap-2">
         <SwipeableRow onDelete={() => toast.show('Invoice deleted')}>
@@ -183,7 +182,7 @@ export function KeyboardAwareFormDemo() {
     <View className="w-full gap-4">
       <DocIntro
         title="Keyboard-aware form"
-        description="Opens as a full screen so keyboard behaviour is real — not nested in a card scroll."
+        description="Opens full screen so keyboard behaviour is real."
       />
       <Button className="w-full" variant="secondary" onPress={() => setFormVisible(true)}>
         Open form

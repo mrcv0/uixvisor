@@ -2,16 +2,16 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "empty-state",
   "type": "registry:component",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "title": "Empty State",
-  "description": "Placeholder block for empty lists or screens with an optional action, for Expo applications.",
+  "description": "Centered empty list/screen placeholder with icon and optional action.",
   "platforms": ["ios", "android"],
   "compatibility": {
     "expo": ">=57 <58",
     "nativewind": ">=4 <5"
   },
   "dependencies": [],
-  "registryDependencies": ["heading", "text"],
+  "registryDependencies": ["heading", "text", "icon", "theme"],
   "files": [
     {
       "source": "empty-state.tsx",

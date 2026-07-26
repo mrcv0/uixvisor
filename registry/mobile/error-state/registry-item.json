@@ -2,23 +2,16 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "error-state",
   "type": "registry:component",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "title": "Error State",
-  "description": "Placeholder block for failed loads with a retry action, for Expo applications.",
-  "platforms": [
-    "ios",
-    "android"
-  ],
+  "description": "Centered failure placeholder with icon and retry action.",
+  "platforms": ["ios", "android"],
   "compatibility": {
     "expo": ">=57 <58",
     "nativewind": ">=4 <5"
   },
   "dependencies": [],
-  "registryDependencies": [
-    "button",
-    "heading",
-    "text"
-  ],
+  "registryDependencies": ["button", "heading", "text", "icon", "theme"],
   "files": [
     {
       "source": "error-state.tsx",
