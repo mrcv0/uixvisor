@@ -8,15 +8,16 @@ import { IconButton } from '@registry/icon-button/icon-button';
 import { Text } from '@registry/text/text';
 import { useThemeColor } from '@registry/theme/theme';
 
-import { SPACE_X } from '../layout';
+import { usePageLayout } from '../layout';
 
 const ACTION_SIZE = 44;
 
 /**
  * Shared top chrome for every showcase route.
  *
- * Layout: [ leading 44 ] [ title flex ] [ trailing 44 ]
- * Equal side slots keep the title column stable whether back is present or not.
+ * Horizontal padding matches PageBody (`sideGutter`) so the home title lines
+ * up with catalogue cards. No empty left slot when back is absent — that was
+ * pushing "UIXVISOR" inward while the theme control sat tight on the right.
  */
 export function ScreenChrome({
   title,
@@ -30,6 +31,7 @@ export function ScreenChrome({
   children: ReactNode;
 }) {
   const insets = useSafeAreaInsets();
+  const { sideGutter } = usePageLayout();
   const { colorScheme, toggleColorScheme } = useColorScheme();
   const foreground = useThemeColor('foreground');
   const isDark = colorScheme === 'dark';
@@ -41,16 +43,23 @@ export function ScreenChrome({
         className="border-b border-border bg-background"
         style={{
           minHeight: 56,
-          paddingHorizontal: SPACE_X,
+          paddingLeft: sideGutter,
+          paddingRight: sideGutter,
           paddingVertical: 8,
           flexDirection: 'row',
           alignItems: 'center',
-          gap: 8,
+          gap: 12,
         }}
       >
-        {/* Leading — fixed slot so title never jumps when back appears */}
-        <View style={{ width: ACTION_SIZE, height: ACTION_SIZE, alignItems: 'center', justifyContent: 'center' }}>
-          {onBack ? (
+        {onBack ? (
+          <View
+            style={{
+              width: ACTION_SIZE,
+              height: ACTION_SIZE,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
             <IconButton
               variant="ghost"
               accessibilityLabel="Go back"
@@ -58,17 +67,12 @@ export function ScreenChrome({
               icon={<Icon name="chevron-left" size={22} color={foreground} weight="bold" />}
               onPress={onBack}
             />
-          ) : null}
-        </View>
+          </View>
+        ) : null}
 
-        {/* Title column */}
+        {/* Title — starts at the same gutter as page content when there is no back */}
         <View className="min-w-0 flex-1 justify-center" style={{ gap: 2 }}>
-          <Text
-            weight="semibold"
-            size="lg"
-            numberOfLines={1}
-            accessibilityRole="header"
-          >
+          <Text weight="semibold" size="lg" numberOfLines={1} accessibilityRole="header">
             {title}
           </Text>
           {subtitle ? (
@@ -78,19 +82,20 @@ export function ScreenChrome({
           ) : null}
         </View>
 
-        {/* Trailing — theme toggle via proper Phosphor sun/moon */}
-        <View style={{ width: ACTION_SIZE, height: ACTION_SIZE, alignItems: 'center', justifyContent: 'center' }}>
+        <View
+          style={{
+            width: ACTION_SIZE,
+            height: ACTION_SIZE,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
           <IconButton
             variant="outline"
             accessibilityLabel={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
             className="h-11 w-11 rounded-xl"
             icon={
-              <Icon
-                name={isDark ? 'sun' : 'moon'}
-                size={20}
-                color={foreground}
-                weight="regular"
-              />
+              <Icon name={isDark ? 'sun' : 'moon'} size={20} color={foreground} weight="regular" />
             }
             onPress={toggleColorScheme}
           />
