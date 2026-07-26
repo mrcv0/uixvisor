@@ -1,7 +1,7 @@
 // UIXVISOR — https://uixvisor.dev/blocks/list-item
 //
-// Built on Text + theme press feedback. No baked-in group chrome — parent
-// provides rounded card / separators so stacks stay flexible.
+// Built on Text + theme press feedback. Transparent row surface so a parent
+// group can own the card background — rows stay wide and flush, not double-boxed.
 import { forwardRef, type ComponentRef, type ReactNode } from 'react';
 import { Pressable, View, type PressableProps } from 'react-native';
 
@@ -46,7 +46,7 @@ export const ListItem = forwardRef<ComponentRef<typeof Pressable>, ListItemProps
     const body = (
       <>
         {leading ? (
-          <View className="mr-3 shrink-0 items-center justify-center">{leading}</View>
+          <View className="mr-3.5 shrink-0 items-center justify-center">{leading}</View>
         ) : null}
 
         <View className="min-w-0 flex-1 justify-center py-3.5">
@@ -60,7 +60,6 @@ export const ListItem = forwardRef<ComponentRef<typeof Pressable>, ListItemProps
           ) : null}
         </View>
 
-        {/* box-none so Switch / icon buttons inside trailing still receive touches */}
         {trailing ? (
           <View className="ml-3 shrink-0 items-center justify-center" pointerEvents="box-none">
             {trailing}
@@ -69,14 +68,14 @@ export const ListItem = forwardRef<ComponentRef<typeof Pressable>, ListItemProps
       </>
     );
 
+    // Transparent fill — parent group supplies bg-card. Avoids a “card in a card”
+    // that reads as a narrow inset slab.
     const surface = cn(
-      'min-h-[56px] w-full flex-row items-center bg-card px-4',
+      'min-h-[60px] w-full flex-row items-center px-5',
       disabled && 'opacity-50',
       className,
     );
 
-    // Non-interactive row (e.g. switch only): Pressable without onPress still
-    // lays out the same, but we leave it enabled for trailing controls via box-none.
     if (!onPress) {
       return (
         <Pressable
