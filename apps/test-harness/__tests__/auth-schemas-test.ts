@@ -3,6 +3,8 @@ import {
   otpCodeSchema,
   otpVerifySchema,
   passwordSchema,
+  phoneLoginSchema,
+  phoneSchema,
   signInSchema,
   signUpSchema,
 } from '../../../registry/forms/auth-schemas/auth-schemas';
@@ -47,5 +49,13 @@ describe('auth-schemas', () => {
     expect(otpCodeSchema.safeParse('12345').success).toBe(false);
     expect(otpCodeSchema.safeParse('abcdef').success).toBe(false);
     expect(otpVerifySchema.safeParse({ code: '123456' }).success).toBe(true);
+  });
+
+  test('phoneSchema accepts E.164-ish numbers', () => {
+    expect(phoneSchema.safeParse('+1 555 0100').success).toBe(true);
+    expect(phoneSchema.safeParse('15550100123').success).toBe(true);
+    expect(phoneSchema.safeParse('').success).toBe(false);
+    expect(phoneSchema.safeParse('12').success).toBe(false);
+    expect(phoneLoginSchema.safeParse({ phone: '+15550100' }).success).toBe(true);
   });
 });

@@ -2,9 +2,9 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "auth-schemas",
   "type": "registry:component",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "title": "Auth Schemas",
-  "description": "Shared Zod field and screen schemas for sign-in, sign-up, and OTP verification. Compose via form-adapter; never validate in UI with if/else.",
+  "description": "Shared Zod schemas for sign-in, sign-up, OTP, and phone login. Compose via form-adapter; never validate in UI with if/else.",
   "platforms": ["ios", "android", "web"],
   "compatibility": {
     "expo": ">=57 <58",

@@ -47,7 +47,12 @@ import {
   SignInDemo,
   SignUpDemo,
 } from './screens';
-import { AuthenticatedHomeDemo } from './flows';
+import {
+  AuthenticatedHomeDemo,
+  EmailAuthDemo,
+  OnboardingDemo,
+  PhoneAuthDemo,
+} from './flows';
 
 const demos: Record<string, () => ReactNode> = {
   // primitives
@@ -101,6 +106,9 @@ const demos: Record<string, () => ReactNode> = {
 
   // flows
   'authenticated-home': () => <AuthenticatedHomeDemo />,
+  'email-auth': () => <EmailAuthDemo />,
+  'phone-auth': () => <PhoneAuthDemo />,
+  onboarding: () => <OnboardingDemo />,
 };
 
 export function renderDemo(itemId: string): ReactNode {

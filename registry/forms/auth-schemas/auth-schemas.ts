@@ -27,6 +27,19 @@ export const nameSchema = z
 
 export const otpCodeSchema = z.string().regex(/^\d{6}$/, 'Enter the 6-digit code');
 
+/**
+ * E.164-ish phone: optional leading +, 8–15 digits after stripping spaces/dashes.
+ * Host may replace with a region-specific schema.
+ */
+export const phoneSchema = z
+  .string()
+  .trim()
+  .min(1, 'Phone number is required')
+  .transform((value) => value.replace(/[\s()-]/g, ''))
+  .refine((value) => /^\+?\d{8,15}$/.test(value), {
+    message: 'Enter a valid phone number',
+  });
+
 export const signInSchema = z.object({
   email: emailSchema,
   password: signInPasswordSchema,
@@ -42,6 +55,11 @@ export const otpVerifySchema = z.object({
   code: otpCodeSchema,
 });
 
+export const phoneLoginSchema = z.object({
+  phone: phoneSchema,
+});
+
 export type SignInValues = z.infer<typeof signInSchema>;
 export type SignUpValues = z.infer<typeof signUpSchema>;
 export type OtpVerifyValues = z.infer<typeof otpVerifySchema>;
+export type PhoneLoginValues = z.infer<typeof phoneLoginSchema>;

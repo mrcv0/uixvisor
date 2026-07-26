@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "onboarding",
+  "type": "registry:flow",
+  "version": "0.1.0",
+  "title": "Onboarding Flow",
+  "description": "Linear onboarding pager with progress dots, next/done, and optional skip. Host supplies step copy.",
+  "platforms": ["ios", "android", "web"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": [],
+  "registryDependencies": ["button", "heading", "text", "theme"],
+  "files": [
+    {
+      "source": "onboarding.tsx",
+      "target": "components/flows/onboarding.tsx"
+    }
+  ]
+}

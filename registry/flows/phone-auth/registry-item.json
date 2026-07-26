@@ -1,0 +1,32 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "phone-auth",
+  "type": "registry:flow",
+  "version": "0.1.0",
+  "title": "Phone Auth Flow",
+  "description": "Phone number entry then OTP verification. Host sends SMS and verifies codes.",
+  "platforms": ["ios", "android", "web"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": ["react-hook-form", "zod", "@hookform/resolvers"],
+  "registryDependencies": [
+    "app-header",
+    "auth-schemas",
+    "button",
+    "form-adapter",
+    "heading",
+    "input",
+    "keyboard-aware-form",
+    "otp-verify",
+    "text",
+    "theme"
+  ],
+  "files": [
+    {
+      "source": "phone-auth.tsx",
+      "target": "components/flows/phone-auth.tsx"
+    }
+  ]
+}

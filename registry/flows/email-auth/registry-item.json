@@ -1,0 +1,27 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "email-auth",
+  "type": "registry:flow",
+  "version": "0.1.0",
+  "title": "Email Auth Flow",
+  "description": "Multi-step email authentication: sign-in, sign-up, optional OTP. Host adapters own the backend.",
+  "platforms": ["ios", "android", "web"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": ["react-hook-form", "zod", "@hookform/resolvers"],
+  "registryDependencies": [
+    "auth-schemas",
+    "otp-verify",
+    "sign-in",
+    "sign-up",
+    "theme"
+  ],
+  "files": [
+    {
+      "source": "email-auth.tsx",
+      "target": "components/flows/email-auth.tsx"
+    }
+  ]
+}
