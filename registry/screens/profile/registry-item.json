@@ -2,22 +2,16 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "profile",
   "type": "registry:screen",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "title": "Profile Screen",
-  "description": "Profile screen with avatar, name, email, and optional bio.",
-  "platforms": [
-    "ios",
-    "android",
-    "web"
-  ],
+  "description": "Avatar, name, email, optional bio, and host-owned actions slot with optional AppHeader.",
+  "platforms": ["ios", "android", "web"],
   "compatibility": {
     "expo": ">=57 <58",
     "nativewind": ">=4 <5"
   },
   "dependencies": [],
-  "registryDependencies": [
-    "avatar"
-  ],
+  "registryDependencies": ["app-header", "avatar", "heading", "text", "theme"],
   "files": [
     {
       "source": "profile.tsx",

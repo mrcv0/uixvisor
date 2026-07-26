@@ -2,22 +2,23 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "settings",
   "type": "registry:screen",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "title": "Settings Screen",
-  "description": "Settings screen with notification and biometric toggles built on the list-item block.",
-  "platforms": [
-    "ios",
-    "android",
-    "web"
-  ],
+  "description": "Controlled-first notification and biometric toggles on ListItem groups; children slot for extra rows.",
+  "platforms": ["ios", "android", "web"],
   "compatibility": {
     "expo": ">=57 <58",
     "nativewind": ">=4 <5"
   },
   "dependencies": [],
   "registryDependencies": [
+    "app-header",
+    "heading",
     "list-item",
-    "switch"
+    "separator",
+    "switch",
+    "text",
+    "theme"
   ],
   "files": [
     {

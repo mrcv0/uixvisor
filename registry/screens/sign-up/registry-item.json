@@ -2,9 +2,9 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "sign-up",
   "type": "registry:screen",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "title": "Sign Up Screen",
-  "description": "Validated name/email/password sign-up: Zod schema, RHF adapter, keyboard-aware layout, focus-first-error.",
+  "description": "Validated sign-up with optional sign-in link, social slot, and AppHeader chrome.",
   "platforms": ["ios", "android", "web"],
   "compatibility": {
     "expo": ">=57 <58",
@@ -12,12 +12,15 @@
   },
   "dependencies": ["react-hook-form", "zod", "@hookform/resolvers"],
   "registryDependencies": [
+    "app-header",
+    "auth-schemas",
     "button",
     "form-adapter",
-    "auth-schemas",
+    "heading",
     "input",
     "keyboard-aware-form",
-    "text"
+    "text",
+    "theme"
   ],
   "files": [
     {
