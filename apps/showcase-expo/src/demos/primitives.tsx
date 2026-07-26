@@ -316,25 +316,68 @@ export function TextareaDemo() {
 
 export function CheckboxDemo() {
   const [agreed, setAgreed] = useState(false);
-  return <Checkbox checked={agreed} onCheckedChange={setAgreed} label="I agree to the terms" />;
+  const [partial, setPartial] = useState(true);
+
+  return (
+    <View className="gap-3">
+      <Checkbox checked={agreed} onCheckedChange={setAgreed} label="I agree to the terms" />
+      <Checkbox
+        checked={false}
+        indeterminate={partial}
+        onCheckedChange={(next) => {
+          setPartial(false);
+          // First tap leaves indeterminate into a firm true.
+          setAgreed(next);
+        }}
+        label="Select all (indeterminate)"
+      />
+      <Checkbox checked={false} onCheckedChange={() => {}} label="Disabled" disabled />
+      <View className="flex-row items-center gap-3">
+        <Checkbox
+          checked={agreed}
+          onCheckedChange={setAgreed}
+          accessibilityLabel="Unlabeled checkbox"
+        />
+        <Text variant="muted" size="sm">
+          Unlabeled control still keeps a 48pt hit area.
+        </Text>
+      </View>
+    </View>
+  );
 }
 
 export function RadioGroupDemo() {
   const [plan, setPlan] = useState('monthly');
   return (
-    <RadioGroup value={plan} onValueChange={setPlan}>
-      <RadioGroupItem value="monthly" label="Monthly" />
-      <RadioGroupItem value="yearly" label="Yearly" />
-    </RadioGroup>
+    <View className="gap-4">
+      <RadioGroup value={plan} onValueChange={setPlan}>
+        <RadioGroupItem value="monthly" label="Monthly" />
+        <RadioGroupItem value="yearly" label="Yearly" />
+        <RadioGroupItem value="lifetime" label="Lifetime (disabled)" disabled />
+      </RadioGroup>
+      <RadioGroup value="a" onValueChange={() => {}} disabled>
+        <RadioGroupItem value="a" label="Group disabled" />
+        <RadioGroupItem value="b" label="Also disabled" />
+      </RadioGroup>
+    </View>
   );
 }
 
 export function SwitchDemo() {
   const [on, setOn] = useState(true);
+  const [wifi, setWifi] = useState(false);
+
   return (
-    <View className="h-12 flex-row items-center justify-between">
-      <Text>Push notifications</Text>
-      <Switch checked={on} onCheckedChange={setOn} />
+    <View className="gap-3">
+      <Switch label="Push notifications" checked={on} onCheckedChange={setOn} />
+      <Switch label="Wi‑Fi" checked={wifi} onCheckedChange={setWifi} />
+      <Switch label="Disabled setting" checked disabled onCheckedChange={() => {}} />
+      <View className="flex-row items-center justify-between">
+        <Text variant="muted" size="sm">
+          Bare switch (no label prop)
+        </Text>
+        <Switch checked={on} onCheckedChange={setOn} accessibilityLabel="Bare switch" />
+      </View>
     </View>
   );
 }
