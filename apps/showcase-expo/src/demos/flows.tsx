@@ -7,6 +7,10 @@ function delay(ms: number) {
   });
 }
 
+/**
+ * Flows are multi-step skeletons with adapter callbacks.
+ * Live fullscreen preview — navigate/sign-out fire toasts instead of a router.
+ */
 export function AuthenticatedHomeDemo() {
   const toast = useToast();
 

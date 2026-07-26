@@ -16,7 +16,11 @@ function delay(ms: number) {
   });
 }
 
-/** Fullscreen demos fill the remaining viewport under chrome (or as full root). */
+/**
+ * Screens are fullscreen live previews under the showcase chrome.
+ * Callbacks are mocked with toast so you can exercise the UI without a backend.
+ */
+
 export function SignInDemo() {
   const toast = useToast();
   return (
@@ -71,7 +75,7 @@ export function DashboardDemo() {
         { id: 'conv', title: 'Conversion', value: '3.8%' },
       ]}
     >
-      <Button variant="secondary" onPress={() => {}}>
+      <Button className="w-full" variant="secondary" onPress={() => {}}>
         View reports
       </Button>
     </DashboardScreen>
@@ -88,8 +92,10 @@ export function ProfileDemo() {
       bio="Mathematician. Writer of the first algorithm intended for a machine."
     >
       <View className="w-full gap-2 pt-2">
-        <Button onPress={() => toast.show('Edit profile')}>Edit profile</Button>
-        <Button variant="outline" onPress={() => toast.show('Share')}>
+        <Button className="w-full" onPress={() => toast.show('Edit profile')}>
+          Edit profile
+        </Button>
+        <Button className="w-full" variant="outline" onPress={() => toast.show('Share')}>
           Share
         </Button>
       </View>

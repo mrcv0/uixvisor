@@ -13,27 +13,32 @@ import { Switch } from '@registry/switch/switch';
 import { useThemeColor } from '@registry/theme/theme';
 import { useToast } from '@registry/toast/toast';
 
-import { Specimen } from '../shell/Specimen';
+import { DocIntro, DocSection } from '../shell/DocSection';
 
 export function AppHeaderDemo() {
   const toast = useToast();
   const foreground = useThemeColor('foreground');
 
   return (
-    <View className="gap-4">
-      <Specimen label="Title only">
+    <View className="gap-6">
+      <DocIntro
+        title="App header"
+        description="Top bar for stack screens: title, optional back, optional trailing actions. Previewed inside a clipped frame so the bar reads as a real chrome strip."
+      />
+
+      <DocSection title="Title only">
         <View className="overflow-hidden rounded-lg border border-border">
           <AppHeader title="Inbox" />
         </View>
-      </Specimen>
+      </DocSection>
 
-      <Specimen label="With back action">
+      <DocSection title="With back" description="onBack wires navigation.pop in a real stack.">
         <View className="overflow-hidden rounded-lg border border-border">
           <AppHeader title="Message" onBack={() => toast.show('Back pressed')} />
         </View>
-      </Specimen>
+      </DocSection>
 
-      <Specimen label="With trailing action">
+      <DocSection title="Trailing action" description="Pass icon buttons or any node in trailing.">
         <View className="overflow-hidden rounded-lg border border-border">
           <AppHeader
             title="Account"
@@ -49,15 +54,20 @@ export function AppHeaderDemo() {
             }
           />
         </View>
-      </Specimen>
+      </DocSection>
     </View>
   );
 }
 
 export function ButtonGroupDemo() {
   return (
-    <View className="gap-4">
-      <Specimen label="Primary pair">
+    <View className="gap-6">
+      <DocIntro
+        title="Button group"
+        description="Horizontal wrap of related actions. Prefer sm buttons so pairs and tool strips stay compact."
+      />
+
+      <DocSection title="Primary pair" description="Cancel + confirm is the usual pattern.">
         <ButtonGroup>
           <Button variant="outline" size="sm" onPress={() => {}}>
             Cancel
@@ -66,9 +76,9 @@ export function ButtonGroupDemo() {
             Save
           </Button>
         </ButtonGroup>
-      </Specimen>
+      </DocSection>
 
-      <Specimen label="Wraps on narrow widths">
+      <DocSection title="Wrap" description="Extra actions flow to the next line on narrow widths.">
         <ButtonGroup>
           <Button variant="secondary" size="sm" onPress={() => {}}>
             Edit
@@ -83,7 +93,7 @@ export function ButtonGroupDemo() {
             Delete
           </Button>
         </ButtonGroup>
-      </Specimen>
+      </DocSection>
     </View>
   );
 }
@@ -93,20 +103,30 @@ export function FormFieldDemo() {
   const [email, setEmail] = useState('not-an-email');
 
   return (
-    <View className="gap-4">
-      <FormField label="Display name" hint="Shown on your public profile">
-        <Input label="" value={name} onChangeText={setName} accessibilityLabel="Display name" />
-      </FormField>
-      <FormField label="Email" error="Enter a valid email address">
-        <Input
-          label=""
-          value={email}
-          onChangeText={setEmail}
-          autoCapitalize="none"
-          keyboardType="email-address"
-          accessibilityLabel="Email"
-        />
-      </FormField>
+    <View className="gap-6">
+      <DocIntro
+        title="Form field"
+        description="Label, control slot, hint, and error around any control. Pair with Input (label empty) when the field owns the label."
+      />
+
+      <DocSection title="Hint" description="Hint shows when there is no error.">
+        <FormField label="Display name" hint="Shown on your public profile">
+          <Input label="" value={name} onChangeText={setName} accessibilityLabel="Display name" />
+        </FormField>
+      </DocSection>
+
+      <DocSection title="Error" description="Error replaces hint and surfaces to assistive tech.">
+        <FormField label="Email" error="Enter a valid email address">
+          <Input
+            label=""
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+            keyboardType="email-address"
+            accessibilityLabel="Email"
+          />
+        </FormField>
+      </DocSection>
     </View>
   );
 }
@@ -117,30 +137,43 @@ export function ListItemDemo() {
   const muted = useThemeColor('muted-foreground');
 
   return (
-    <View className="gap-2">
-      <ListItem
-        title="Profile"
-        description="Name, photo, and bio"
-        leading={<Avatar size="sm" fallback="AL" />}
-        trailing={<Icon name="chevron-right" size={18} color={muted} />}
-        onPress={() => toast.show('Profile')}
+    <View className="gap-6">
+      <DocIntro
+        title="List item"
+        description="Pressable row with leading, title, description, and trailing slots. Building block for settings and menus."
       />
-      <ListItem
-        title="Security alerts"
-        description="Email me about unusual sign-ins"
-        trailing={
-          <Switch
-            checked={alerts}
-            onCheckedChange={setAlerts}
-            accessibilityLabel="Toggle security alerts"
-          />
-        }
-      />
-      <ListItem
-        title="Sign out"
-        description="End this session on this device"
-        onPress={() => toast.show('Signed out')}
-      />
+
+      <DocSection title="Navigation row">
+        <ListItem
+          title="Profile"
+          description="Name, photo, and bio"
+          leading={<Avatar size="sm" fallback="AL" />}
+          trailing={<Icon name="chevron-right" size={18} color={muted} />}
+          onPress={() => toast.show('Profile')}
+        />
+      </DocSection>
+
+      <DocSection title="With switch" description="Trailing can host Switch or other controls.">
+        <ListItem
+          title="Security alerts"
+          description="Email me about unusual sign-ins"
+          trailing={
+            <Switch
+              checked={alerts}
+              onCheckedChange={setAlerts}
+              accessibilityLabel="Toggle security alerts"
+            />
+          }
+        />
+      </DocSection>
+
+      <DocSection title="Destructive action">
+        <ListItem
+          title="Sign out"
+          description="End this session on this device"
+          onPress={() => toast.show('Signed out')}
+        />
+      </DocSection>
     </View>
   );
 }

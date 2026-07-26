@@ -33,25 +33,25 @@ export const CATEGORIES: CategoryMeta[] = [
   {
     id: 'primitives',
     title: 'Primitives',
-    description: 'Foundational controls and surfaces.',
+    description: 'Foundation: theme, type, controls, surfaces.',
     icon: 'stack',
   },
   {
     id: 'mobile',
     title: 'Mobile',
-    description: 'Behaviours that only make sense on a device.',
+    description: 'Device behaviours: keyboard, gesture, sheets.',
     icon: 'device',
   },
   {
     id: 'blocks',
     title: 'Blocks',
-    description: 'Composed pieces for real screens.',
+    description: 'Composed pieces used inside screens.',
     icon: 'package',
   },
   {
     id: 'screens',
     title: 'Screens',
-    description: 'Full-page layouts ready to own.',
+    description: 'Full-page layouts — live preview.',
     icon: 'window',
   },
   {
@@ -184,139 +184,139 @@ export const CATALOG: CatalogItem[] = [
     presentation: 'inline',
   },
 
-  // Mobile
+  // Mobile — device behaviours
   {
     id: 'otp-input',
     title: 'OTP input',
-    description: 'Six-digit code entry.',
+    description: 'Digit cells for one-time codes.',
     category: 'mobile',
     presentation: 'inline',
   },
   {
     id: 'search-bar',
     title: 'Search bar',
-    description: 'Query field with clear affordance.',
+    description: 'Query field with clear control.',
     category: 'mobile',
     presentation: 'inline',
   },
   {
     id: 'toast',
     title: 'Toast',
-    description: 'Transient feedback messages.',
+    description: 'Bottom snackbars with status variants.',
     category: 'mobile',
     presentation: 'inline',
   },
   {
     id: 'empty-state',
     title: 'Empty state',
-    description: 'No-results composition.',
+    description: 'No-results layout with optional action.',
     category: 'mobile',
     presentation: 'inline',
   },
   {
     id: 'error-state',
     title: 'Error state',
-    description: 'Retryable failure composition.',
+    description: 'Failure layout with retry.',
     category: 'mobile',
     presentation: 'inline',
   },
   {
     id: 'bottom-sheet',
     title: 'Bottom sheet',
-    description: 'Modal sheet over content.',
+    description: 'Modal surface from the bottom edge.',
     category: 'mobile',
     presentation: 'inline',
   },
   {
     id: 'swipeable-row',
     title: 'Swipeable row',
-    description: 'Swipe left to reveal delete.',
+    description: 'Swipe left for destructive action.',
     category: 'mobile',
     presentation: 'inline',
   },
   {
     id: 'keyboard-aware-form',
     title: 'Keyboard-aware form',
-    description: 'Full-screen form that tracks the keyboard.',
+    description: 'Scrolls focused fields above the keyboard.',
     category: 'mobile',
     presentation: 'inline',
   },
 
-  // Blocks
+  // Blocks — compositions
   {
     id: 'app-header',
     title: 'App header',
-    description: 'Top bar with optional back and trailing slots.',
+    description: 'Stack chrome: title, back, trailing.',
     category: 'blocks',
     presentation: 'inline',
   },
   {
     id: 'button-group',
     title: 'Button group',
-    description: 'Horizontal wrap of actions.',
+    description: 'Horizontal wrap of related actions.',
     category: 'blocks',
     presentation: 'inline',
   },
   {
     id: 'form-field',
     title: 'Form field',
-    description: 'Label, control, hint, and error.',
+    description: 'Label, control slot, hint, and error.',
     category: 'blocks',
     presentation: 'inline',
   },
   {
     id: 'list-item',
     title: 'List item',
-    description: 'Pressable row with leading and trailing slots.',
+    description: 'Row with leading, title, and trailing.',
     category: 'blocks',
     presentation: 'inline',
   },
 
-  // Screens — full viewport
+  // Screens — live full preview
   {
     id: 'sign-in',
     title: 'Sign in',
-    description: 'Email and password credentials.',
+    description: 'Email and password credentials screen.',
     category: 'screens',
     presentation: 'fullscreen',
   },
   {
     id: 'sign-up',
     title: 'Sign up',
-    description: 'Create account form.',
+    description: 'Create account form screen.',
     category: 'screens',
     presentation: 'fullscreen',
   },
   {
     id: 'otp-verify',
     title: 'OTP verify',
-    description: 'Six-digit verification screen.',
+    description: 'Code entry and resend screen.',
     category: 'screens',
     presentation: 'fullscreen',
   },
   {
     id: 'dashboard',
     title: 'Dashboard',
-    description: 'Greeting plus highlight cards.',
+    description: 'Greeting and highlight metrics.',
     category: 'screens',
     presentation: 'fullscreen',
   },
   {
     id: 'profile',
     title: 'Profile',
-    description: 'Avatar, name, bio, and actions.',
+    description: 'Avatar, bio, and action slots.',
     category: 'screens',
     presentation: 'fullscreen',
   },
   {
     id: 'settings',
     title: 'Settings',
-    description: 'Notification and biometric toggles.',
+    description: 'Toggle rows for preferences.',
     category: 'screens',
     presentation: 'fullscreen',
   },
 
-  // Flows
+  // Flows — multi-step skeletons
   {
     id: 'authenticated-home',
     title: 'Authenticated home',
