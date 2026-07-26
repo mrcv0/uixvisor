@@ -2,7 +2,7 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "toast",
   "type": "registry:component",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "title": "Toast",
   "description": "ToastProvider and useToast hook for transient status messages in Expo applications.",
   "platforms": ["ios", "android"],
