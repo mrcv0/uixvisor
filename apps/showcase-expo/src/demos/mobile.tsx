@@ -33,11 +33,15 @@ export function ToastDemo() {
   return (
     <View className="gap-2">
       <Text variant="muted" size="sm">
-        Toasts are provided at the app root. Trigger a few to stack feedback.
+        Toasts sit above the safe area. Default, success and destructive each
+        keep readable contrast in light and dark mode.
       </Text>
-      <Button onPress={() => toast.show('Saved successfully')}>Show toast</Button>
-      <Button variant="secondary" onPress={() => toast.show('Something went wrong')}>
-        Show another
+      <Button onPress={() => toast.show('Saved successfully')}>Default</Button>
+      <Button variant="secondary" onPress={() => toast.show('Payment confirmed', 'success')}>
+        Success
+      </Button>
+      <Button variant="destructive" onPress={() => toast.show('Something went wrong', 'destructive')}>
+        Destructive
       </Button>
     </View>
   );
