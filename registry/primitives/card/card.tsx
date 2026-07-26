@@ -57,7 +57,11 @@ CardContent.displayName = 'CardContent';
 
 export const CardFooter = forwardRef<ComponentRef<typeof View>, CardSectionProps>(
   ({ className, ...props }, ref) => (
-    <View ref={ref} className={cn('flex-row items-center gap-2', className)} {...props} />
+    <View
+      ref={ref}
+      className={cn('flex-row flex-wrap items-center justify-end gap-2', className)}
+      {...props}
+    />
   ),
 );
 CardFooter.displayName = 'CardFooter';

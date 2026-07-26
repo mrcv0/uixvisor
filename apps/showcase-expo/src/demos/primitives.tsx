@@ -275,22 +275,22 @@ export function ButtonDemo() {
 
       <DocSection title="Variants" description="primary · secondary · outline · ghost · destructive · link">
         <View className="gap-2">
-          <Button variant="primary" onPress={() => toast.show('Primary pressed')}>
+          <Button className="w-full" variant="primary" onPress={() => toast.show('Primary pressed')}>
             Primary
           </Button>
-          <Button variant="secondary" onPress={() => {}}>
+          <Button className="w-full" variant="secondary" onPress={() => {}}>
             Secondary
           </Button>
-          <Button variant="outline" onPress={() => {}}>
+          <Button className="w-full" variant="outline" onPress={() => {}}>
             Outline
           </Button>
-          <Button variant="ghost" onPress={() => {}}>
+          <Button className="w-full" variant="ghost" onPress={() => {}}>
             Ghost
           </Button>
-          <Button variant="destructive" onPress={() => {}}>
+          <Button className="w-full" variant="destructive" onPress={() => {}}>
             Destructive
           </Button>
-          <Button variant="link" onPress={() => {}}>
+          <Button className="w-full" variant="link" onPress={() => {}}>
             Link
           </Button>
         </View>
@@ -298,13 +298,13 @@ export function ButtonDemo() {
 
       <DocSection title="Sizes" description="sm · default · lg for labels; keep labels short on sm.">
         <View className="gap-2">
-          <Button size="sm" variant="secondary" onPress={() => {}}>
+          <Button className="w-full" size="sm" variant="secondary" onPress={() => {}}>
             Small
           </Button>
-          <Button size="default" variant="secondary" onPress={() => {}}>
+          <Button className="w-full" size="default" variant="secondary" onPress={() => {}}>
             Default
           </Button>
-          <Button size="lg" variant="secondary" onPress={() => {}}>
+          <Button className="w-full" size="lg" variant="secondary" onPress={() => {}}>
             Large
           </Button>
         </View>
@@ -316,12 +316,14 @@ export function ButtonDemo() {
       >
         <View className="gap-2">
           <Button
+            className="w-full"
             startIcon={<Icon name="plus" size={18} color={onPrimary} />}
             onPress={() => {}}
           >
             Add item
           </Button>
           <Button
+            className="w-full"
             variant="outline"
             endIcon={<Icon name="chevron-right" size={18} color={foreground} />}
             onPress={() => {}}
@@ -375,10 +377,10 @@ export function ButtonDemo() {
 
       <DocSection title="States" description="loading keeps the accessible name; disabled blocks press.">
         <View className="gap-2">
-          <Button loading onPress={() => {}}>
+          <Button className="w-full" loading onPress={() => {}}>
             Loading
           </Button>
-          <Button disabled onPress={() => {}}>
+          <Button className="w-full" disabled onPress={() => {}}>
             Disabled
           </Button>
         </View>

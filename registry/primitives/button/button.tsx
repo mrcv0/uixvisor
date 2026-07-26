@@ -136,13 +136,10 @@ export const Button = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
     const a11yLabel = accessibilityLabel ?? children;
     const glyph = icon ?? startIcon;
 
+    // Default is content-sized (works in CardFooter rows). Pass className="w-full"
+    // when the button should span a vertical stack.
     return (
-      <Animated.View
-        style={[
-          { alignSelf: iconOnly ? 'flex-start' : 'stretch' },
-          feedback.style,
-        ]}
-      >
+      <Animated.View style={[{ alignSelf: 'flex-start' }, feedback.style]}>
         <Pressable
           ref={ref}
           disabled={isDisabled}
@@ -153,7 +150,6 @@ export const Button = forwardRef<ComponentRef<typeof Pressable>, ButtonProps>(
           onPressOut={press.onPressOut}
           className={cn(
             'flex-row items-center justify-center',
-            !iconOnly && 'w-full',
             variant === 'link' && !iconOnly ? 'h-auto px-0' : sizing.container,
             styles.container,
             isDisabled && 'opacity-50',
