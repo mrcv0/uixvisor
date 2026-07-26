@@ -10,36 +10,50 @@ import { Icon } from '@registry/icon/icon';
 import { Input } from '@registry/input/input';
 import { ListItem } from '@registry/list-item/list-item';
 import { Switch } from '@registry/switch/switch';
+import { Text } from '@registry/text/text';
 import { useThemeColor } from '@registry/theme/theme';
 import { useToast } from '@registry/toast/toast';
 
-import { DocIntro, DocSection } from '../shell/DocSection';
+import { DocIntro } from '../shell/DocSection';
+
+/**
+ * Blocks demos: full-width, no card frames — headers and list rows read as real chrome.
+ */
 
 export function AppHeaderDemo() {
   const toast = useToast();
   const foreground = useThemeColor('foreground');
 
   return (
-    <View className="gap-6">
+    <View className="w-full gap-6">
       <DocIntro
         title="App header"
-        description="Top bar for stack screens: title, optional back, optional trailing actions. Previewed inside a clipped frame so the bar reads as a real chrome strip."
+        description="Stack chrome: title, optional back, optional trailing. Shown full width."
       />
 
-      <DocSection title="Title only">
-        <View className="overflow-hidden rounded-lg border border-border">
+      <View className="w-full gap-4">
+        <View className="w-full gap-1">
+          <Text size="xs" variant="muted" weight="medium">
+            Title only
+          </Text>
           <AppHeader title="Inbox" />
         </View>
-      </DocSection>
 
-      <DocSection title="With back" description="onBack wires navigation.pop in a real stack.">
-        <View className="overflow-hidden rounded-lg border border-border">
-          <AppHeader title="Message" onBack={() => toast.show('Back pressed')} />
+        <View className="w-full gap-1">
+          <Text size="xs" variant="muted" weight="medium">
+            Back + subtitle
+          </Text>
+          <AppHeader
+            title="Message"
+            subtitle="Ada Lovelace"
+            onBack={() => toast.show('Back pressed')}
+          />
         </View>
-      </DocSection>
 
-      <DocSection title="Trailing action" description="Pass icon buttons or any node in trailing.">
-        <View className="overflow-hidden rounded-lg border border-border">
+        <View className="w-full gap-1">
+          <Text size="xs" variant="muted" weight="medium">
+            Back + trailing
+          </Text>
           <AppHeader
             title="Account"
             onBack={() => toast.show('Back pressed')}
@@ -54,21 +68,24 @@ export function AppHeaderDemo() {
             }
           />
         </View>
-      </DocSection>
+      </View>
     </View>
   );
 }
 
 export function ButtonGroupDemo() {
   return (
-    <View className="gap-6">
+    <View className="w-full gap-6">
       <DocIntro
         title="Button group"
-        description="Horizontal wrap of related actions. Prefer sm buttons so pairs and tool strips stay compact."
+        description="Related actions in a row or column. Horizontal wraps; vertical stacks full-width buttons."
       />
 
-      <DocSection title="Primary pair" description="Cancel + confirm is the usual pattern.">
-        <ButtonGroup>
+      <View className="w-full gap-1">
+        <Text size="xs" variant="muted" weight="medium">
+          Pair · end aligned
+        </Text>
+        <ButtonGroup align="end">
           <Button variant="outline" size="sm" onPress={() => {}}>
             Cancel
           </Button>
@@ -76,9 +93,12 @@ export function ButtonGroupDemo() {
             Save
           </Button>
         </ButtonGroup>
-      </DocSection>
+      </View>
 
-      <DocSection title="Wrap" description="Extra actions flow to the next line on narrow widths.">
+      <View className="w-full gap-1">
+        <Text size="xs" variant="muted" weight="medium">
+          Wrap
+        </Text>
         <ButtonGroup>
           <Button variant="secondary" size="sm" onPress={() => {}}>
             Edit
@@ -93,7 +113,21 @@ export function ButtonGroupDemo() {
             Delete
           </Button>
         </ButtonGroup>
-      </DocSection>
+      </View>
+
+      <View className="w-full gap-1">
+        <Text size="xs" variant="muted" weight="medium">
+          Vertical
+        </Text>
+        <ButtonGroup orientation="vertical">
+          <Button className="w-full" onPress={() => {}}>
+            Continue
+          </Button>
+          <Button className="w-full" variant="outline" onPress={() => {}}>
+            Not now
+          </Button>
+        </ButtonGroup>
+      </View>
     </View>
   );
 }
@@ -103,30 +137,26 @@ export function FormFieldDemo() {
   const [email, setEmail] = useState('not-an-email');
 
   return (
-    <View className="gap-6">
+    <View className="w-full gap-6">
       <DocIntro
         title="Form field"
-        description="Label, control slot, hint, and error around any control. Pair with Input (label empty) when the field owns the label."
+        description="Label, control, hint, and error around any child. Use Input with an empty label when FormField owns the label."
       />
 
-      <DocSection title="Hint" description="Hint shows when there is no error.">
-        <FormField label="Display name" hint="Shown on your public profile">
-          <Input label="" value={name} onChangeText={setName} accessibilityLabel="Display name" />
-        </FormField>
-      </DocSection>
+      <FormField label="Display name" hint="Shown on your public profile" required>
+        <Input label="" value={name} onChangeText={setName} accessibilityLabel="Display name" />
+      </FormField>
 
-      <DocSection title="Error" description="Error replaces hint and surfaces to assistive tech.">
-        <FormField label="Email" error="Enter a valid email address">
-          <Input
-            label=""
-            value={email}
-            onChangeText={setEmail}
-            autoCapitalize="none"
-            keyboardType="email-address"
-            accessibilityLabel="Email"
-          />
-        </FormField>
-      </DocSection>
+      <FormField label="Email" error="Enter a valid email address" required>
+        <Input
+          label=""
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          accessibilityLabel="Email"
+        />
+      </FormField>
     </View>
   );
 }
@@ -137,23 +167,23 @@ export function ListItemDemo() {
   const muted = useThemeColor('muted-foreground');
 
   return (
-    <View className="gap-6">
+    <View className="w-full gap-4">
       <DocIntro
         title="List item"
-        description="Pressable row with leading, title, description, and trailing slots. Building block for settings and menus."
+        description="Full-width rows for settings and menus. Stack several for a grouped list."
       />
 
-      <DocSection title="Navigation row">
+      {/* Negative horizontal margin is not used — list is already edge-aware via PageBody padding.
+          Rows use full width of the content column with hairline separators. */}
+      <View className="w-full overflow-hidden rounded-xl border border-border">
         <ListItem
           title="Profile"
           description="Name, photo, and bio"
-          leading={<Avatar size="sm" fallback="AL" />}
+          leading={<Avatar size="sm" fallback="Ada Lovelace" />}
           trailing={<Icon name="chevron-right" size={18} color={muted} />}
           onPress={() => toast.show('Profile')}
+          className="border-b border-border"
         />
-      </DocSection>
-
-      <DocSection title="With switch" description="Trailing can host Switch or other controls.">
         <ListItem
           title="Security alerts"
           description="Email me about unusual sign-ins"
@@ -164,16 +194,15 @@ export function ListItemDemo() {
               accessibilityLabel="Toggle security alerts"
             />
           }
+          className="border-b border-border"
         />
-      </DocSection>
-
-      <DocSection title="Destructive action">
         <ListItem
           title="Sign out"
           description="End this session on this device"
           onPress={() => toast.show('Signed out')}
+          className="border-b-0"
         />
-      </DocSection>
+      </View>
     </View>
   );
 }

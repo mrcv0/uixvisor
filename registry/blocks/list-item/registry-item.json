@@ -2,20 +2,16 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "list-item",
   "type": "registry:block",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "title": "List Item",
-  "description": "Reusable pressable row with leading, trailing, title, and description slots.",
-  "platforms": [
-    "ios",
-    "android",
-    "web"
-  ],
+  "description": "Pressable full-width row with leading, trailing, title, and description slots.",
+  "platforms": ["ios", "android", "web"],
   "compatibility": {
     "expo": ">=57 <58",
     "nativewind": ">=4 <5"
   },
   "dependencies": [],
-  "registryDependencies": [],
+  "registryDependencies": ["text", "theme"],
   "files": [
     {
       "source": "list-item.tsx",
