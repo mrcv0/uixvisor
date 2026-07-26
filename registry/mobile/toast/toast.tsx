@@ -20,6 +20,7 @@ import {
 import { Platform, Text, View, type TextStyle, type ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { Icon, type IconName } from '@registry/icon/icon';
 import { useThemeMode } from '@registry/theme/theme';
 
 type ToastVariant = 'default' | 'success' | 'destructive';
@@ -47,6 +48,12 @@ const SUCCESS_LIGHT = { background: '#16a34a', foreground: '#ffffff' } as const;
 const SUCCESS_DARK = { background: '#166534', foreground: '#dcfce7' } as const;
 const DESTRUCTIVE = { background: '#dc2626', foreground: '#fafafa' } as const;
 
+const VARIANT_ICON: Record<ToastVariant, IconName> = {
+  default: 'info',
+  success: 'success',
+  destructive: 'error',
+};
+
 function toastColors(
   variant: ToastVariant,
   mode: 'light' | 'dark',
@@ -68,12 +75,16 @@ function toastColors(
 function ToastBubble({ message, variant }: { message: string; variant: ToastVariant }) {
   const mode = useThemeMode();
   const colors = toastColors(variant, mode);
+  const iconName = VARIANT_ICON[variant];
 
   const containerStyle: ViewStyle = {
     width: '100%',
     maxWidth: 384,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
     borderRadius: 12,
-    paddingHorizontal: 16,
+    paddingHorizontal: 14,
     paddingVertical: 12,
     backgroundColor: colors.background,
     borderWidth: colors.borderColor ? 1 : 0,
@@ -93,6 +104,7 @@ function ToastBubble({ message, variant }: { message: string; variant: ToastVari
   };
 
   const textStyle: TextStyle = {
+    flex: 1,
     color: colors.foreground,
     fontSize: 14,
     lineHeight: 20,
@@ -105,6 +117,9 @@ function ToastBubble({ message, variant }: { message: string; variant: ToastVari
       accessibilityRole="text"
       style={containerStyle}
     >
+      <View style={{ width: 20, height: 20, alignItems: 'center', justifyContent: 'center' }}>
+        <Icon name={iconName} size={18} color={colors.foreground} weight="bold" />
+      </View>
       <Text style={textStyle}>{message}</Text>
     </View>
   );
