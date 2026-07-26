@@ -17,7 +17,6 @@ import { Textarea } from '@registry/textarea/textarea';
 import { useThemeColor } from '@registry/theme/theme';
 import { useToast } from '@registry/toast/toast';
 
-import { SPACE_X } from '../layout';
 import { DocIntro } from '../shell/DocSection';
 
 /** Thin label above a full-width specimen (no card frame). */
@@ -32,18 +31,10 @@ function Sample({ label, children }: { label: string; children: React.ReactNode 
   );
 }
 
-/**
- * Settings-style group that bleeds to the page edges (cancels PageBody gutter)
- * so the list does not sit in a double-inset “narrow card”.
- */
+/** Grouped settings surface for list rows. */
 function ListGroup({ children }: { children: React.ReactNode }) {
   return (
-    <View
-      className="overflow-hidden border-y border-border bg-card"
-      style={{ marginHorizontal: -SPACE_X }}
-    >
-      {children}
-    </View>
+    <View className="w-full overflow-hidden rounded-xl border border-border bg-card">{children}</View>
   );
 }
 

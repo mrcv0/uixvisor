@@ -25,7 +25,7 @@ export const SettingsScreen = forwardRef<ScrollView, SettingsScreenProps>(
         {...props}
       >
         <Text className="text-2xl font-semibold text-foreground">Settings</Text>
-        <View className="overflow-hidden rounded-xl border border-border bg-card">
+        <View className="gap-2">
           <ListItem
             title="Push notifications"
             description="Receive product updates and security alerts"
@@ -40,7 +40,6 @@ export const SettingsScreen = forwardRef<ScrollView, SettingsScreenProps>(
               />
             }
           />
-          <View className="h-px bg-border ml-4" />
           <ListItem
             title="Biometric authentication"
             description="Use fingerprint or face ID to sign in"
