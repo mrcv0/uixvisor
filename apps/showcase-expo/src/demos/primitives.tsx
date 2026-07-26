@@ -33,8 +33,7 @@ import {
 } from '@registry/theme/theme';
 import { useToast } from '@registry/toast/toast';
 
-import { DocIntro, DocLabel, DocSection } from '../shell/DocSection';
-import { Section } from '../shell/Section';
+import { DocIntro, DocSection } from '../shell/DocSection';
 
 type SwatchGroup = { title: string; description: string; names: ThemeColorName[] };
 
@@ -271,7 +270,7 @@ export function ButtonDemo() {
     <View className="gap-6">
       <DocIntro
         title="Button"
-        description="One component for labelled actions and icon toolbars. Icon-only uses size icon / icon-sm / icon-lg (no separate IconButton primitive)."
+        description="One component for labelled actions and icon toolbars. Icon-only uses size icon, icon-sm, or icon-lg."
       />
 
       <DocSection title="Variants" description="primary · secondary · outline · ghost · destructive · link">
@@ -313,7 +312,7 @@ export function ButtonDemo() {
 
       <DocSection
         title="With icons"
-        description="startIcon / endIcon for labelled buttons — same pattern as shadcn icon+label."
+        description="startIcon and endIcon for labelled actions."
       >
         <View className="gap-2">
           <Button
@@ -389,7 +388,6 @@ export function ButtonDemo() {
 }
 
 export function IconDemo() {
-  const foreground = useThemeColor('foreground');
   const names = [
     'check',
     'close',
@@ -412,17 +410,46 @@ export function IconDemo() {
   ] as const;
 
   return (
-    <View className="flex-row flex-wrap gap-3">
-      {names.map((name) => (
-        <View key={name} className="w-[22%] min-w-[64px] items-center gap-1.5 py-1">
-          <View className="h-11 w-11 items-center justify-center rounded-xl bg-muted">
-            <Icon name={name} size={22} color={foreground} weight="regular" />
-          </View>
-          <Text size="xs" variant="muted" numberOfLines={1}>
-            {name}
-          </Text>
+    <View className="gap-6">
+      <DocIntro
+        title="Icon"
+        description="Semantic names, not library glyphs. Components call Icon by name; one adapter file maps them to Phosphor so the library can change without touching every screen."
+      />
+
+      <DocSection
+        title="Vocabulary"
+        description="Colour defaults to theme foreground. Pass color when the icon sits on a filled surface (for example primary buttons)."
+      >
+        <View className="flex-row flex-wrap gap-3">
+          {names.map((name) => (
+            <View key={name} className="w-[22%] min-w-[64px] items-center gap-1.5 py-1">
+              <View className="h-11 w-11 items-center justify-center rounded-xl bg-muted">
+                <Icon name={name} size={22} weight="regular" />
+              </View>
+              <Text size="xs" variant="muted" numberOfLines={1}>
+                {name}
+              </Text>
+            </View>
+          ))}
         </View>
-      ))}
+      </DocSection>
+
+      <DocSection title="Weights" description="regular and bold cover most UI. Decorative icons stay unlabelled for assistive tech.">
+        <View className="flex-row items-center gap-4">
+          <View className="items-center gap-1">
+            <Icon name="check" size={28} weight="regular" />
+            <Text size="xs" variant="muted">
+              regular
+            </Text>
+          </View>
+          <View className="items-center gap-1">
+            <Icon name="check" size={28} weight="bold" />
+            <Text size="xs" variant="muted">
+              bold
+            </Text>
+          </View>
+        </View>
+      </DocSection>
     </View>
   );
 }
@@ -433,52 +460,85 @@ export function InputDemo() {
   const mutedForeground = useThemeColor('muted-foreground');
 
   return (
-    <View className="gap-3">
-      <Input
-        label="Email"
-        value={email}
-        onChangeText={setEmail}
-        placeholder="you@example.com"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        hint="We'll never share your email."
+    <View className="gap-6">
+      <DocIntro
+        title="Input"
+        description="Single-line field with label, hint, error, and optional icon slots. Focus ring and destructive border follow the theme tokens."
       />
-      <Input
-        label="Password"
-        placeholder="••••••••"
-        secureTextEntry={!passwordVisible}
-        endIcon={
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            accessibilityLabel={passwordVisible ? 'Hide password' : 'Show password'}
-            icon={
-              <Icon
-                name={passwordVisible ? 'eye-off' : 'eye'}
-                size={18}
-                color={mutedForeground}
-              />
-            }
-            onPress={() => setPasswordVisible((visible) => !visible)}
-          />
-        }
-      />
-      <Input label="With error" value="not-an-email" error="Enter a valid email address" />
-      <Input label="Disabled" value="Locked value" disabled />
+
+      <DocSection title="Default" description="Label + hint under the field.">
+        <Input
+          label="Email"
+          value={email}
+          onChangeText={setEmail}
+          placeholder="you@example.com"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          hint="We'll never share your email."
+        />
+      </DocSection>
+
+      <DocSection title="With end icon" description="Compose a ghost icon button inside endIcon.">
+        <Input
+          label="Password"
+          placeholder="••••••••"
+          secureTextEntry={!passwordVisible}
+          endIcon={
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              accessibilityLabel={passwordVisible ? 'Hide password' : 'Show password'}
+              icon={
+                <Icon
+                  name={passwordVisible ? 'eye-off' : 'eye'}
+                  size={18}
+                  color={mutedForeground}
+                />
+              }
+              onPress={() => setPasswordVisible((visible) => !visible)}
+            />
+          }
+        />
+      </DocSection>
+
+      <DocSection title="Error" description="error replaces hint and is exposed to assistive tech.">
+        <Input label="With error" value="not-an-email" error="Enter a valid email address" />
+      </DocSection>
+
+      <DocSection title="Disabled" description="disabled (or editable=false) dims the control and blocks input.">
+        <Input label="Disabled" value="Locked value" disabled />
+      </DocSection>
     </View>
   );
 }
 
 export function TextareaDemo() {
   return (
-    <View className="gap-3">
-      <Textarea
-        label="Notes"
-        placeholder="Anything else we should know?"
-        hint="Optional — max a short paragraph."
+    <View className="gap-6">
+      <DocIntro
+        title="Textarea"
+        description="Same field contract as Input — label, hint, error, disabled — for multi-line copy."
       />
-      <Textarea label="With error" value="Too short" error="Please write at least 20 characters." />
-      <Textarea label="Disabled" value="Cannot edit" disabled />
+
+      <DocSection title="Default" description="Hint shows when there is no error.">
+        <Textarea
+          label="Notes"
+          placeholder="Anything else we should know?"
+          hint="Optional — keep it to a short paragraph."
+        />
+      </DocSection>
+
+      <DocSection title="Error">
+        <Textarea
+          label="With error"
+          value="Too short"
+          error="Please write at least 20 characters."
+        />
+      </DocSection>
+
+      <DocSection title="Disabled">
+        <Textarea label="Disabled" value="Cannot edit" disabled />
+      </DocSection>
     </View>
   );
 }
@@ -487,19 +547,35 @@ export function CheckboxDemo() {
   const [agreed, setAgreed] = useState(false);
 
   return (
-    <View className="gap-3">
-      <Checkbox checked={agreed} onCheckedChange={setAgreed} label="I agree to the terms" />
-      <Checkbox checked={false} onCheckedChange={() => {}} label="Disabled" disabled />
-      <View className="flex-row items-center gap-3">
-        <Checkbox
-          checked={agreed}
-          onCheckedChange={setAgreed}
-          accessibilityLabel="Unlabeled checkbox"
-        />
-        <Text variant="muted" size="sm">
-          Unlabeled control still keeps a 48pt hit area.
-        </Text>
-      </View>
+    <View className="gap-6">
+      <DocIntro
+        title="Checkbox"
+        description="Controlled boolean. Row height keeps a 48pt target even without a label."
+      />
+
+      <DocSection title="With label">
+        <Checkbox checked={agreed} onCheckedChange={setAgreed} label="I agree to the terms" />
+      </DocSection>
+
+      <DocSection title="Disabled">
+        <Checkbox checked={false} onCheckedChange={() => {}} label="Disabled" disabled />
+      </DocSection>
+
+      <DocSection
+        title="Unlabeled"
+        description="Pass accessibilityLabel when there is no visible label."
+      >
+        <View className="flex-row items-center gap-3">
+          <Checkbox
+            checked={agreed}
+            onCheckedChange={setAgreed}
+            accessibilityLabel="Unlabeled checkbox"
+          />
+          <Text variant="muted" size="sm" className="flex-1">
+            Hit area stays at least 48×48.
+          </Text>
+        </View>
+      </DocSection>
     </View>
   );
 }
@@ -507,16 +583,26 @@ export function CheckboxDemo() {
 export function RadioGroupDemo() {
   const [plan, setPlan] = useState('monthly');
   return (
-    <View className="gap-4">
-      <RadioGroup value={plan} onValueChange={setPlan}>
-        <RadioGroupItem value="monthly" label="Monthly" />
-        <RadioGroupItem value="yearly" label="Yearly" />
-        <RadioGroupItem value="lifetime" label="Lifetime (disabled)" disabled />
-      </RadioGroup>
-      <RadioGroup value="a" onValueChange={() => {}} disabled>
-        <RadioGroupItem value="a" label="Group disabled" />
-        <RadioGroupItem value="b" label="Also disabled" />
-      </RadioGroup>
+    <View className="gap-6">
+      <DocIntro
+        title="Radio group"
+        description="Single selection. Items inherit group disabled, or take their own disabled flag."
+      />
+
+      <DocSection title="Options" description="Selection haptic matches Checkbox.">
+        <RadioGroup value={plan} onValueChange={setPlan}>
+          <RadioGroupItem value="monthly" label="Monthly" />
+          <RadioGroupItem value="yearly" label="Yearly" />
+          <RadioGroupItem value="lifetime" label="Lifetime (disabled)" disabled />
+        </RadioGroup>
+      </DocSection>
+
+      <DocSection title="Group disabled">
+        <RadioGroup value="a" onValueChange={() => {}} disabled>
+          <RadioGroupItem value="a" label="Group disabled" />
+          <RadioGroupItem value="b" label="Also disabled" />
+        </RadioGroup>
+      </DocSection>
     </View>
   );
 }
@@ -526,159 +612,270 @@ export function SwitchDemo() {
   const [wifi, setWifi] = useState(false);
 
   return (
-    <View className="gap-3">
-      <Switch label="Push notifications" checked={on} onCheckedChange={setOn} />
-      <Switch label="Wi‑Fi" checked={wifi} onCheckedChange={setWifi} />
-      <Switch label="Disabled setting" checked disabled onCheckedChange={() => {}} />
-      <View className="flex-row items-center justify-between">
-        <Text variant="muted" size="sm">
-          Bare switch (no label prop)
-        </Text>
-        <Switch checked={on} onCheckedChange={setOn} accessibilityLabel="Bare switch" />
-      </View>
+    <View className="gap-6">
+      <DocIntro
+        title="Switch"
+        description="On/off control. Optional label makes the whole row pressable and names the control for assistive tech."
+      />
+
+      <DocSection title="With label">
+        <View className="gap-1">
+          <Switch label="Push notifications" checked={on} onCheckedChange={setOn} />
+          <Switch label="Wi‑Fi" checked={wifi} onCheckedChange={setWifi} />
+        </View>
+      </DocSection>
+
+      <DocSection title="Disabled">
+        <Switch label="Disabled setting" checked disabled onCheckedChange={() => {}} />
+      </DocSection>
+
+      <DocSection
+        title="Bare control"
+        description="No label prop — pair with your own layout and accessibilityLabel."
+      >
+        <View className="flex-row items-center justify-between">
+          <Text variant="muted" size="sm">
+            Compact row
+          </Text>
+          <Switch checked={on} onCheckedChange={setOn} accessibilityLabel="Bare switch" />
+        </View>
+      </DocSection>
     </View>
   );
 }
 
 export function CardDemo() {
   return (
-    <View className="gap-4">
-      <Card>
-        <CardHeader>
-          <CardTitle>Account</CardTitle>
-          <CardDescription>Manage your profile settings</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Text size="sm">
-            Depth is mode dependent because shadows do not read on a dark background.
-          </Text>
-        </CardContent>
-        <CardFooter>
-          <Button variant="outline" size="sm" onPress={() => {}}>
-            Cancel
-          </Button>
-          <Button size="sm" onPress={() => {}}>
-            Save
-          </Button>
-        </CardFooter>
-      </Card>
-      <Card elevation="surface">
-        <CardHeader>
-          <CardTitle>Flat card</CardTitle>
-          <CardDescription>elevation=&quot;surface&quot; — no raised shadow</CardDescription>
-        </CardHeader>
-      </Card>
+    <View className="gap-6">
+      <DocIntro
+        title="Card"
+        description="Elevated surface with header, content, and footer slots. Light mode uses shadow; dark mode uses a lifted surface colour plus border."
+      />
+
+      <DocSection title="Composition" description="CardTitle and CardDescription sit in the header.">
+        <Card>
+          <CardHeader>
+            <CardTitle>Account</CardTitle>
+            <CardDescription>Manage your profile settings</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Text size="sm">
+              Depth is mode dependent because shadows do not read on a dark background.
+            </Text>
+          </CardContent>
+          <CardFooter>
+            <Button variant="outline" size="sm" onPress={() => {}}>
+              Cancel
+            </Button>
+            <Button size="sm" onPress={() => {}}>
+              Save
+            </Button>
+          </CardFooter>
+        </Card>
+      </DocSection>
+
+      <DocSection
+        title="Flat elevation"
+        description='elevation="surface" drops the raised shadow for nested or dense layouts.'
+      >
+        <Card elevation="surface">
+          <CardHeader>
+            <CardTitle>Flat card</CardTitle>
+            <CardDescription>No raised shadow in light mode.</CardDescription>
+          </CardHeader>
+        </Card>
+      </DocSection>
     </View>
   );
 }
 
 export function AvatarDemo() {
   return (
-    <View className="gap-4">
-      <View className="flex-row items-center gap-3">
-        <Avatar size="sm" fallback="Ada Lovelace" />
-        <Avatar size="md" fallback="Ada Lovelace" />
-        <Avatar size="lg" fallback="Ada Lovelace" />
-      </View>
-      <View className="flex-row items-center gap-3">
-        <Avatar
-          size="md"
-          fallback="With photo"
-          source={{ uri: 'https://i.pravatar.cc/128?u=uixvisor' }}
-        />
-        <Avatar
-          size="md"
-          fallback="Broken image"
-          source={{ uri: 'https://example.invalid/missing.png' }}
-        />
-        <Avatar size="md" fallback="Single" initials="UX" />
-      </View>
-      <Text variant="muted" size="sm">
-        Multi-word fallback → initials; broken URI falls back to glyph.
-      </Text>
+    <View className="gap-6">
+      <DocIntro
+        title="Avatar"
+        description="Photo or initials. Multi-word fallbacks become first+last initials; broken images fall back to the glyph."
+      />
+
+      <DocSection title="Sizes" description="sm · md · lg">
+        <View className="flex-row items-center gap-3">
+          <Avatar size="sm" fallback="Ada Lovelace" />
+          <Avatar size="md" fallback="Ada Lovelace" />
+          <Avatar size="lg" fallback="Ada Lovelace" />
+        </View>
+      </DocSection>
+
+      <DocSection title="Image and fallback">
+        <View className="flex-row items-center gap-3">
+          <Avatar
+            size="md"
+            fallback="With photo"
+            source={{ uri: 'https://i.pravatar.cc/128?u=uixvisor' }}
+          />
+          <Avatar
+            size="md"
+            fallback="Broken image"
+            source={{ uri: 'https://example.invalid/missing.png' }}
+          />
+          <Avatar size="md" fallback="Single" initials="UX" />
+        </View>
+      </DocSection>
     </View>
   );
 }
 
 export function BadgeDemo() {
   return (
-    <View className="gap-3">
-      <View className="flex-row flex-wrap items-center gap-2">
-        <Badge>Default</Badge>
-        <Badge variant="secondary">Secondary</Badge>
-        <Badge variant="destructive">Destructive</Badge>
-        <Badge variant="success">Success</Badge>
-        <Badge variant="warning">Warning</Badge>
-      </View>
-      <View className="flex-row flex-wrap items-center gap-2">
-        <Badge appearance="soft">Soft</Badge>
-        <Badge appearance="soft" variant="destructive">
-          Soft destructive
-        </Badge>
-        <Badge appearance="soft" variant="success">
-          Soft success
-        </Badge>
-        <Badge appearance="soft" variant="warning">
-          Soft warning
-        </Badge>
-      </View>
+    <View className="gap-6">
+      <DocIntro
+        title="Badge"
+        description="Compact status label. Solid fills the chip; soft uses a tinted surface with coloured type."
+      />
+
+      <DocSection title="Solid" description="default · secondary · destructive · success · warning">
+        <View className="flex-row flex-wrap items-center gap-2">
+          <Badge>Default</Badge>
+          <Badge variant="secondary">Secondary</Badge>
+          <Badge variant="destructive">Destructive</Badge>
+          <Badge variant="success">Success</Badge>
+          <Badge variant="warning">Warning</Badge>
+        </View>
+      </DocSection>
+
+      <DocSection title="Soft" description='appearance="soft" for quieter chips on dense screens.'>
+        <View className="flex-row flex-wrap items-center gap-2">
+          <Badge appearance="soft">Soft</Badge>
+          <Badge appearance="soft" variant="destructive">
+            Soft destructive
+          </Badge>
+          <Badge appearance="soft" variant="success">
+            Soft success
+          </Badge>
+          <Badge appearance="soft" variant="warning">
+            Soft warning
+          </Badge>
+        </View>
+      </DocSection>
     </View>
   );
 }
 
 export function SeparatorDemo() {
   return (
-    <View className="gap-4">
-      <View className="gap-3">
-        <Text>Above</Text>
-        <Separator />
-        <Text>Below</Text>
-      </View>
-      <View className="h-12 flex-row items-center gap-3">
-        <Text>Left</Text>
-        <Separator orientation="vertical" />
-        <Text>Right</Text>
-        <Separator orientation="vertical" hairline />
-        <Text variant="muted" size="sm">
-          hairline
-        </Text>
-      </View>
+    <View className="gap-6">
+      <DocIntro
+        title="Separator"
+        description="Decorative divider. Hidden from assistive tech. Vertical needs a parent with a defined height."
+      />
+
+      <DocSection title="Horizontal">
+        <View className="gap-3">
+          <Text>Above</Text>
+          <Separator />
+          <Text>Below</Text>
+        </View>
+      </DocSection>
+
+      <DocSection title="Vertical" description="Use inside a row with fixed height.">
+        <View className="h-12 flex-row items-center gap-3">
+          <Text>Left</Text>
+          <Separator orientation="vertical" />
+          <Text>Right</Text>
+          <Separator orientation="vertical" hairline />
+          <Text variant="muted" size="sm">
+            hairline
+          </Text>
+        </View>
+      </DocSection>
     </View>
   );
 }
 
 export function SpinnerDemo() {
+  const foreground = useThemeColor('foreground');
+  const primary = useThemeColor('primary');
+
   return (
-    <View className="flex-row items-center gap-4">
-      <Spinner size="sm" />
-      <Spinner size="lg" />
+    <View className="gap-6">
+      <DocIntro
+        title="Spinner"
+        description="Loading indicator. Colour defaults to theme foreground; override for filled surfaces."
+      />
+
+      <DocSection title="Sizes" description="sm · lg">
+        <View className="flex-row items-center gap-6">
+          <View className="items-center gap-1">
+            <Spinner size="sm" />
+            <Text size="xs" variant="muted">
+              sm
+            </Text>
+          </View>
+          <View className="items-center gap-1">
+            <Spinner size="lg" />
+            <Text size="xs" variant="muted">
+              lg
+            </Text>
+          </View>
+        </View>
+      </DocSection>
+
+      <DocSection title="Custom colour">
+        <View className="flex-row items-center gap-4">
+          <Spinner size="lg" color={foreground} />
+          <Spinner size="lg" color={primary} />
+        </View>
+      </DocSection>
     </View>
   );
 }
 
 export function SkeletonDemo() {
   return (
-    <View className="gap-4">
-      <Skeleton />
-      <Skeleton className="h-24 w-full rounded-lg" />
-      <SkeletonCard />
-      <SkeletonText lines={3} />
+    <View className="gap-6">
+      <DocIntro
+        title="Skeleton"
+        description="Placeholder while content loads. Respects reduce motion (static block when motion is reduced). Bare Skeleton defaults to a full-width bar."
+      />
+
+      <DocSection title="Base">
+        <View className="gap-3">
+          <Skeleton />
+          <Skeleton className="h-24 w-full rounded-lg" />
+        </View>
+      </DocSection>
+
+      <DocSection title="Composed" description="SkeletonCard and SkeletonText for common layouts.">
+        <View className="gap-4">
+          <SkeletonCard />
+          <SkeletonText lines={3} />
+        </View>
+      </DocSection>
     </View>
   );
 }
 
 export function ProgressDemo() {
   return (
-    <View className="gap-4">
-      <Progress value={25} showValueLabel />
-      <Progress value={60} variant="success" size="lg" showValueLabel />
-      <Progress value={100} variant="destructive" size="sm" />
-      <View className="gap-1">
-        <Text size="sm" variant="muted">
-          Indeterminate
-        </Text>
+    <View className="gap-6">
+      <DocIntro
+        title="Progress"
+        description="Determinate 0–100 bar, or indeterminate while duration is unknown. Optional value label and status colours."
+      />
+
+      <DocSection title="Determinate" description="Animated fill when reduce motion is off.">
+        <View className="gap-4">
+          <Progress value={25} showValueLabel />
+          <Progress value={60} variant="success" size="lg" showValueLabel />
+          <Progress value={100} variant="destructive" size="sm" />
+        </View>
+      </DocSection>
+
+      <DocSection
+        title="Indeterminate"
+        description="Use when progress percentage is not available yet."
+      >
         <Progress indeterminate />
-      </View>
+      </DocSection>
     </View>
   );
 }

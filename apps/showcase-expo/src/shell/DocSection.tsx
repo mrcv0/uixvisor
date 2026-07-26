@@ -5,8 +5,8 @@ import { Heading } from '@registry/heading/heading';
 import { Text } from '@registry/text/text';
 
 /**
- * shadcn-docs inspired section: title + prose + bordered preview surface.
- * Used across primitive demos so every page reads like a mini documentation page.
+ * Documentation-style section: title + prose + bordered preview surface.
+ * Used across primitive demos so every page reads like a mini docs page.
  */
 export function DocSection({
   title,
