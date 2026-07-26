@@ -2,22 +2,19 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "sign-up",
   "type": "registry:screen",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "title": "Sign Up Screen",
-  "description": "Sign-up screen collecting name, email, and password with form-field block.",
-  "platforms": [
-    "ios",
-    "android",
-    "web"
-  ],
+  "description": "Name, email, and password sign-up with shared Zod schema and React Hook Form adapter.",
+  "platforms": ["ios", "android", "web"],
   "compatibility": {
     "expo": ">=57 <58",
     "nativewind": ">=4 <5"
   },
-  "dependencies": [],
+  "dependencies": ["react-hook-form", "zod", "@hookform/resolvers"],
   "registryDependencies": [
     "button",
-    "form-field",
+    "form-adapter",
+    "auth-schemas",
     "input",
     "text"
   ],

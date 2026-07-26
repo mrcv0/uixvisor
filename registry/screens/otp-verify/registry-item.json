@@ -2,21 +2,19 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "otp-verify",
   "type": "registry:screen",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "title": "OTP Verify Screen",
-  "description": "OTP entry screen that wraps registry OTPInput with submit and resend actions.",
-  "platforms": [
-    "ios",
-    "android",
-    "web"
-  ],
+  "description": "OTP entry with shared Zod schema and React Hook Form adapter; resend callback optional.",
+  "platforms": ["ios", "android", "web"],
   "compatibility": {
     "expo": ">=57 <58",
     "nativewind": ">=4 <5"
   },
-  "dependencies": [],
+  "dependencies": ["react-hook-form", "zod", "@hookform/resolvers"],
   "registryDependencies": [
     "button",
+    "form-adapter",
+    "auth-schemas",
     "otp-input",
     "text"
   ],

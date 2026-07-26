@@ -1,0 +1,21 @@
+{
+  "$schema": "https://uixvisor.dev/schema/registry-item.json",
+  "name": "form-adapter",
+  "type": "registry:component",
+  "version": "0.1.0",
+  "title": "Form Adapter",
+  "description": "React Hook Form + Zod bridge for registry FormField: useAppForm, ControlledFormField, and error helpers. Primitives stay library-agnostic.",
+  "platforms": ["ios", "android", "web"],
+  "compatibility": {
+    "expo": ">=57 <58",
+    "nativewind": ">=4 <5"
+  },
+  "dependencies": ["react-hook-form", "zod", "@hookform/resolvers"],
+  "registryDependencies": ["form-field"],
+  "files": [
+    {
+      "source": "form-adapter.tsx",
+      "target": "components/forms/form-adapter.tsx"
+    }
+  ]
+}

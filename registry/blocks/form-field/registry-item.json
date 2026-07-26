@@ -2,9 +2,9 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "form-field",
   "type": "registry:block",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "title": "Form Field",
-  "description": "Label, child control, and optional hint/error text with accessible live region.",
+  "description": "Label, child control, and optional hint/error text with accessible live region. Wrapper is not labeled — the control owns a11y name.",
   "platforms": ["ios", "android", "web"],
   "compatibility": {
     "expo": ">=57 <58",

@@ -6,6 +6,7 @@ import { Avatar } from '@registry/avatar/avatar';
 import { Badge } from '@registry/badge/badge';
 import { Button } from '@registry/button/button';
 import { ButtonGroup } from '@registry/button-group/button-group';
+import { ControlledFormField, useAppForm } from '@registry/form-adapter/form-adapter';
 import { FormField } from '@registry/form-field/form-field';
 import { Icon } from '@registry/icon/icon';
 import { Input } from '@registry/input/input';
@@ -16,8 +17,9 @@ import { Text } from '@registry/text/text';
 import { Textarea } from '@registry/textarea/textarea';
 import { useThemeColor } from '@registry/theme/theme';
 import { useToast } from '@registry/toast/toast';
+import { z } from 'zod';
 
-import { DocIntro } from '../shell/DocSection';
+import { DocIntro, DocSection } from '../shell/DocSection';
 
 /** Thin label above a full-width specimen (no card frame). */
 function Sample({ label, children }: { label: string; children: React.ReactNode }) {
@@ -199,54 +201,83 @@ export function ButtonGroupDemo() {
   );
 }
 
+const formFieldLiveSchema = z.object({
+  name: z.string().trim().min(1, 'Display name is required'),
+  email: z.string().trim().min(1, 'Email is required').email('Enter a valid email address'),
+  bio: z.string().optional(),
+});
+
 export function FormFieldDemo() {
-  const [name, setName] = useState('Ada');
-  const [email, setEmail] = useState('not-an-email');
-  const [bio, setBio] = useState('');
-  const [notes, setNotes] = useState('');
+  const [notes] = useState('');
+  const form = useAppForm({
+    schema: formFieldLiveSchema,
+    defaultValues: { name: 'Ada', email: 'not-an-email', bio: '' },
+  });
 
   return (
     <View className="w-full gap-6">
       <DocIntro
         title="Form field"
-        description="Wraps any control with Text label, hint, error, and required mark. Uses Input / Textarea primitives."
+        description="Label, control slot, hint, and error. With the form adapter, errors come from Zod on blur/submit — not hardcoded props."
       />
 
-      <FormField label="Display name" hint="Shown on your public profile" required>
-        <Input label="" value={name} onChangeText={setName} accessibilityLabel="Display name" />
-      </FormField>
+      <DocSection title="Live (adapter)" description="Submit to validate. Label lives on FormField; Input keeps label empty to avoid double chrome.">
+        <ControlledFormField
+          control={form.control}
+          name="name"
+          label="Display name"
+          hint="Shown on your public profile"
+          required
+        >
+          {(field) => (
+            <Input
+              label=""
+              value={field.value}
+              onChangeText={field.onChange}
+              onBlur={field.onBlur}
+              accessibilityLabel="Display name"
+            />
+          )}
+        </ControlledFormField>
+        <ControlledFormField control={form.control} name="email" label="Email" required>
+          {(field) => (
+            <Input
+              label=""
+              value={field.value}
+              onChangeText={field.onChange}
+              onBlur={field.onBlur}
+              autoCapitalize="none"
+              keyboardType="email-address"
+              accessibilityLabel="Email"
+            />
+          )}
+        </ControlledFormField>
+        <ControlledFormField control={form.control} name="bio" label="Bio" hint="Optional short intro">
+          {(field) => (
+            <Textarea
+              label=""
+              value={field.value ?? ''}
+              onChangeText={field.onChange}
+              onBlur={field.onBlur}
+              placeholder="Tell people about yourself"
+              accessibilityLabel="Bio"
+              rows={3}
+            />
+          )}
+        </ControlledFormField>
+        <Button onPress={form.handleSubmit(() => undefined)}>Validate fields</Button>
+      </DocSection>
 
-      <FormField label="Email" error="Enter a valid email address" required>
-        <Input
-          label=""
-          value={email}
-          onChangeText={setEmail}
-          autoCapitalize="none"
-          keyboardType="email-address"
-          accessibilityLabel="Email"
-        />
-      </FormField>
-
-      <FormField label="Bio" hint="Optional short intro">
-        <Textarea
-          label=""
-          value={bio}
-          onChangeText={setBio}
-          placeholder="Tell people about yourself"
-          accessibilityLabel="Bio"
-          rows={3}
-        />
-      </FormField>
-
-      <FormField label="Internal notes" error="Notes are required for review">
-        <Textarea
-          label=""
-          value={notes}
-          onChangeText={setNotes}
-          accessibilityLabel="Internal notes"
-          rows={3}
-        />
-      </FormField>
+      <DocSection title="Static error chrome" description="Without the adapter, pass error as a string prop (docs / design review).">
+        <FormField label="Internal notes" error="Notes are required for review">
+          <Textarea
+            label=""
+            value={notes}
+            accessibilityLabel="Internal notes"
+            rows={3}
+          />
+        </FormField>
+      </DocSection>
     </View>
   );
 }

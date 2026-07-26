@@ -3,7 +3,13 @@
  * When a new registry item lands, add a row here so it appears in the vitrine.
  */
 
-export type CatalogCategory = 'primitives' | 'mobile' | 'blocks' | 'screens' | 'flows';
+export type CatalogCategory =
+  | 'primitives'
+  | 'mobile'
+  | 'blocks'
+  | 'forms'
+  | 'screens'
+  | 'flows';
 
 export type Presentation = 'inline' | 'fullscreen';
 
@@ -20,7 +26,8 @@ export type CategoryIcon =
   | 'device'
   | 'package'
   | 'window'
-  | 'path';
+  | 'path'
+  | 'check';
 
 export interface CategoryMeta {
   id: CatalogCategory;
@@ -47,6 +54,12 @@ export const CATEGORIES: CategoryMeta[] = [
     title: 'Blocks',
     description: 'Composed pieces used inside screens.',
     icon: 'package',
+  },
+  {
+    id: 'forms',
+    title: 'Forms',
+    description: 'Shared Zod schemas and RHF adapter.',
+    icon: 'check',
   },
   {
     id: 'screens',
@@ -272,25 +285,41 @@ export const CATALOG: CatalogItem[] = [
     presentation: 'inline',
   },
 
+  // Forms — validation adapter + schemas
+  {
+    id: 'form-adapter',
+    title: 'Form adapter',
+    description: 'React Hook Form + Zod bridge for FormField.',
+    category: 'forms',
+    presentation: 'inline',
+  },
+  {
+    id: 'auth-schemas',
+    title: 'Auth schemas',
+    description: 'Shared Zod schemas for sign-in, sign-up, OTP.',
+    category: 'forms',
+    presentation: 'inline',
+  },
+
   // Screens — live full preview
   {
     id: 'sign-in',
     title: 'Sign in',
-    description: 'Email and password credentials screen.',
+    description: 'Validated email and password credentials.',
     category: 'screens',
     presentation: 'fullscreen',
   },
   {
     id: 'sign-up',
     title: 'Sign up',
-    description: 'Create account form screen.',
+    description: 'Validated create-account form.',
     category: 'screens',
     presentation: 'fullscreen',
   },
   {
     id: 'otp-verify',
     title: 'OTP verify',
-    description: 'Code entry and resend screen.',
+    description: 'Validated 6-digit code entry.',
     category: 'screens',
     presentation: 'fullscreen',
   },

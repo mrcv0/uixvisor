@@ -8,7 +8,8 @@
         "../../registry/mobile/*",
         "../../registry/blocks/*",
         "../../registry/screens/*",
-        "../../registry/flows/*"
+        "../../registry/flows/*",
+        "../../registry/forms/*"
       ]
     }
   }

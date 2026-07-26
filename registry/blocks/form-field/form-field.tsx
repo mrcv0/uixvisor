@@ -19,7 +19,8 @@ export const FormField = forwardRef<ComponentRef<typeof View>, FormFieldProps>(
   ({ label, hint, error, required, children, className, ...props }, ref) => (
     <View
       ref={ref}
-      accessibilityLabel={label}
+      // Label is visual chrome; the nested control owns accessibilityLabel.
+      accessible={false}
       className={cn('w-full gap-1.5', className)}
       {...props}
     >

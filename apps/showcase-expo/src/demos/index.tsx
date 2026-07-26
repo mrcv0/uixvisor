@@ -38,6 +38,7 @@ import {
   FormFieldDemo,
   ListItemDemo,
 } from './blocks';
+import { AuthSchemasDemo, FormAdapterDemo } from './forms';
 import {
   DashboardDemo,
   OtpVerifyDemo,
@@ -85,6 +86,10 @@ const demos: Record<string, () => ReactNode> = {
   'button-group': () => <ButtonGroupDemo />,
   'form-field': () => <FormFieldDemo />,
   'list-item': () => <ListItemDemo />,
+
+  // forms
+  'form-adapter': () => <FormAdapterDemo />,
+  'auth-schemas': () => <AuthSchemasDemo />,
 
   // screens
   'sign-in': () => <SignInDemo />,
