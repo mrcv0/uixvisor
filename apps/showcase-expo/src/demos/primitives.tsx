@@ -262,7 +262,7 @@ export function InputDemo() {
         endIcon={
           <IconButton
             variant="ghost"
-            className="h-8 w-8"
+            size="sm"
             accessibilityLabel={passwordVisible ? 'Hide password' : 'Show password'}
             icon={
               <Icon

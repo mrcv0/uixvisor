@@ -2,7 +2,7 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "button",
   "type": "registry:component",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "title": "Button",
   "description": "Accessible, themeable button primitive for Expo applications.",
   "platforms": ["ios", "android"],
@@ -11,7 +11,7 @@
     "nativewind": ">=4 <5"
   },
   "dependencies": [],
-  "registryDependencies": ["theme"],
+  "registryDependencies": ["theme", "spinner"],
   "files": [
     {
       "source": "button.tsx",

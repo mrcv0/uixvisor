@@ -8,16 +8,15 @@ import { IconButton } from '@registry/icon-button/icon-button';
 import { Text } from '@registry/text/text';
 import { useThemeColor } from '@registry/theme/theme';
 
-import { usePageLayout } from '../layout';
+import { CONTENT_MAX_WIDTH, SPACE_X } from '../layout';
 
 const ACTION_SIZE = 44;
 
 /**
  * Shared top chrome for every showcase route.
  *
- * Horizontal padding matches PageBody (`sideGutter`) so the home title lines
- * up with catalogue cards. No empty left slot when back is absent — that was
- * pushing "UIXVISOR" inward while the theme control sat tight on the right.
+ * Title row uses the same max-width column as PageBody so the heading lines up
+ * with catalogue cards and demo content on every page.
  */
 export function ScreenChrome({
   title,
@@ -31,7 +30,6 @@ export function ScreenChrome({
   children: ReactNode;
 }) {
   const insets = useSafeAreaInsets();
-  const { sideGutter } = usePageLayout();
   const { colorScheme, toggleColorScheme } = useColorScheme();
   const foreground = useThemeColor('foreground');
   const isDark = colorScheme === 'dark';
@@ -42,16 +40,52 @@ export function ScreenChrome({
         accessibilityRole="header"
         className="border-b border-border bg-background"
         style={{
-          minHeight: 56,
-          paddingLeft: sideGutter,
-          paddingRight: sideGutter,
-          paddingVertical: 8,
-          flexDirection: 'row',
+          width: '100%',
           alignItems: 'center',
-          gap: 12,
+          paddingVertical: 8,
         }}
       >
-        {onBack ? (
+        <View
+          style={{
+            width: '100%',
+            maxWidth: CONTENT_MAX_WIDTH,
+            minHeight: 56,
+            paddingHorizontal: SPACE_X,
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 12,
+          }}
+        >
+          {onBack ? (
+            <View
+              style={{
+                width: ACTION_SIZE,
+                height: ACTION_SIZE,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <IconButton
+                variant="ghost"
+                accessibilityLabel="Go back"
+                className="h-11 w-11 rounded-xl"
+                icon={<Icon name="chevron-left" size={22} color={foreground} weight="bold" />}
+                onPress={onBack}
+              />
+            </View>
+          ) : null}
+
+          <View className="min-w-0 flex-1 justify-center" style={{ gap: 2 }}>
+            <Text weight="semibold" size="lg" numberOfLines={1} accessibilityRole="header">
+              {title}
+            </Text>
+            {subtitle ? (
+              <Text variant="muted" size="xs" numberOfLines={2}>
+                {subtitle}
+              </Text>
+            ) : null}
+          </View>
+
           <View
             style={{
               width: ACTION_SIZE,
@@ -61,44 +95,20 @@ export function ScreenChrome({
             }}
           >
             <IconButton
-              variant="ghost"
-              accessibilityLabel="Go back"
+              variant="outline"
+              accessibilityLabel={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
               className="h-11 w-11 rounded-xl"
-              icon={<Icon name="chevron-left" size={22} color={foreground} weight="bold" />}
-              onPress={onBack}
+              icon={
+                <Icon
+                  name={isDark ? 'sun' : 'moon'}
+                  size={20}
+                  color={foreground}
+                  weight="regular"
+                />
+              }
+              onPress={toggleColorScheme}
             />
           </View>
-        ) : null}
-
-        {/* Title — starts at the same gutter as page content when there is no back */}
-        <View className="min-w-0 flex-1 justify-center" style={{ gap: 2 }}>
-          <Text weight="semibold" size="lg" numberOfLines={1} accessibilityRole="header">
-            {title}
-          </Text>
-          {subtitle ? (
-            <Text variant="muted" size="xs" numberOfLines={2}>
-              {subtitle}
-            </Text>
-          ) : null}
-        </View>
-
-        <View
-          style={{
-            width: ACTION_SIZE,
-            height: ACTION_SIZE,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <IconButton
-            variant="outline"
-            accessibilityLabel={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-            className="h-11 w-11 rounded-xl"
-            icon={
-              <Icon name={isDark ? 'sun' : 'moon'} size={20} color={foreground} weight="regular" />
-            }
-            onPress={toggleColorScheme}
-          />
         </View>
       </View>
 

@@ -8,7 +8,12 @@
 // transition that does not need a worklet, and keeping it dependency-free means
 // the primitives work in projects that never configure Reanimated.
 import { useCallback, useMemo, useRef } from 'react';
-import { Animated, Platform } from 'react-native';
+import {
+  Animated,
+  Platform,
+  type GestureResponderEvent,
+  type PressableProps,
+} from 'react-native';
 import * as Haptics from 'expo-haptics';
 
 /** Matches `motion.pressScale` / `motion.duration` in @uixvisor/tokens. */
@@ -82,4 +87,29 @@ export function usePressFeedback(options: PressFeedbackOptions = {}) {
   );
 
   return { onPressIn, onPressOut, style };
+}
+
+type PressHandlers = {
+  onPressIn?: PressableProps['onPressIn'];
+  onPressOut?: PressableProps['onPressOut'];
+};
+
+/**
+ * Merge internal press-feedback handlers with consumer handlers so
+ * `{...props}` never silently disables scale/haptics.
+ */
+export function composePressHandlers(
+  feedback: { onPressIn: () => void; onPressOut: () => void },
+  user?: PressHandlers,
+): Required<PressHandlers> {
+  return {
+    onPressIn: (event: GestureResponderEvent) => {
+      feedback.onPressIn();
+      user?.onPressIn?.(event);
+    },
+    onPressOut: (event: GestureResponderEvent) => {
+      feedback.onPressOut();
+      user?.onPressOut?.(event);
+    },
+  };
 }

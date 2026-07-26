@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react';
 import { ScrollView, View, type StyleProp, type ViewStyle } from 'react-native';
 
-import { usePageLayout } from '../layout';
+import { CONTENT_MAX_WIDTH, SPACE_X, usePageLayout } from '../layout';
 
 /**
- * Consistent padded body for catalogue-style pages.
- * Centers content on wide screens and applies one shared bottom safe-area pad.
+ * Shared body for Home, Category, and inline Demo pages.
+ *
+ * Outer scroll is full-bleed; an inner column is max-width capped and centred
+ * so every page’s content sits on the same vertical axis as the header title.
  */
 export function PageBody({
   children,
@@ -19,21 +21,22 @@ export function PageBody({
   /** Override default row gap between children. */
   gap?: number;
 }) {
-  const { sideGutter, contentPaddingTop, contentPaddingBottom, rowGap } = usePageLayout();
+  const { contentPaddingTop, contentPaddingBottom, rowGap } = usePageLayout();
 
-  const paddingStyle: ViewStyle = {
-    paddingHorizontal: sideGutter,
+  const columnStyle: ViewStyle = {
+    width: '100%',
+    maxWidth: CONTENT_MAX_WIDTH,
+    alignSelf: 'center',
+    paddingHorizontal: SPACE_X,
     paddingTop: contentPaddingTop,
     paddingBottom: contentPaddingBottom,
     gap: gap ?? rowGap,
-    flexGrow: 1,
-    width: '100%',
   };
 
   if (!scroll) {
     return (
-      <View className="flex-1" style={[paddingStyle, contentStyle]}>
-        {children}
+      <View className="flex-1" style={{ width: '100%' }}>
+        <View style={[columnStyle, { flex: 1 }, contentStyle]}>{children}</View>
       </View>
     );
   }
@@ -43,9 +46,13 @@ export function PageBody({
       className="flex-1"
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={[paddingStyle, contentStyle]}
+      contentContainerStyle={{
+        flexGrow: 1,
+        width: '100%',
+        alignItems: 'center',
+      }}
     >
-      {children}
+      <View style={[columnStyle, contentStyle]}>{children}</View>
     </ScrollView>
   );
 }

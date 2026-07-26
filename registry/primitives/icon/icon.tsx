@@ -14,6 +14,8 @@
 import { forwardRef, type ComponentType } from 'react';
 import { View } from 'react-native';
 
+import { useThemeColor } from '@registry/theme/theme';
+
 // Deep imports keep the Metro graph per-icon (barrel import pulls the whole set).
 // Import the module namespace first, then pick the named export — some Metro
 // resolutions on Windows return a module object where a direct named import
@@ -150,8 +152,9 @@ export interface IconProps {
   /** Defaults to 20, which sits comfortably against the 16px base type step. */
   size?: number;
   /**
-   * Icons render as SVG and cannot inherit a NativeWind text colour, so callers
-   * pass a resolved value - usually from `useThemeColor`.
+   * Icons render as SVG and cannot inherit a NativeWind text colour.
+   * Defaults to the active theme foreground so dark mode is safe without
+   * every call site passing `useThemeColor`.
    */
   color?: string;
   weight?: IconWeight;
@@ -163,7 +166,9 @@ export interface IconProps {
 }
 
 export const Icon = forwardRef<View, IconProps>(
-  ({ name, size = 20, color = '#000000', weight = 'regular', accessibilityLabel }, ref) => {
+  ({ name, size = 20, color, weight = 'regular', accessibilityLabel }, ref) => {
+    const foreground = useThemeColor('foreground');
+    const resolvedColor = color ?? foreground;
     const Glyph = glyphs[name];
     const labelled = Boolean(accessibilityLabel);
 
@@ -185,7 +190,7 @@ export const Icon = forwardRef<View, IconProps>(
         // Explicit size so the glyph's layout box is stable without NativeWind.
         style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}
       >
-        <Glyph size={size} color={color} weight={weight} />
+        <Glyph size={size} color={resolvedColor} weight={weight} />
       </View>
     );
   },

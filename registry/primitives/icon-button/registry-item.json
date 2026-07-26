@@ -2,7 +2,7 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "icon-button",
   "type": "registry:component",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "title": "Icon Button",
   "description": "Square, icon-only pressable primitive for Expo applications.",
   "platforms": [
@@ -15,7 +15,8 @@
   },
   "dependencies": [],
   "registryDependencies": [
-    "theme"
+    "theme",
+    "spinner"
   ],
   "files": [
     {

@@ -2,7 +2,7 @@
   "$schema": "https://uixvisor.dev/schema/registry-item.json",
   "name": "theme",
   "type": "registry:primitive",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "title": "Theme",
   "description": "Runtime token access for the things NativeWind classes cannot express: icon colours, native colour props, shadows, and press feedback.",
   "platforms": ["ios", "android", "web"],
@@ -16,6 +16,10 @@
     {
       "source": "theme.tsx",
       "target": "components/ui/theme.tsx"
+    },
+    {
+      "source": "cn.ts",
+      "target": "components/ui/cn.ts"
     },
     {
       "source": "press-feedback.tsx",

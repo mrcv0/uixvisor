@@ -12,9 +12,9 @@ describe('Button', () => {
     expect(onPress).toHaveBeenCalledTimes(1);
   });
 
-  test('exposes disabled state while loading', async () => {
+  test('exposes disabled state while loading and keeps the accessible name', async () => {
     const screen = await render(<Button loading>Continue</Button>);
-    const button = screen.getByRole('button');
+    const button = screen.getByRole('button', { name: 'Continue' });
 
     expect(button.props.accessibilityState).toEqual({ disabled: true, busy: true });
     expect(screen.queryByText('Continue')).toBeNull();

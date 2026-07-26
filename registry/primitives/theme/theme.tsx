@@ -10,6 +10,8 @@
 import { useColorScheme } from 'nativewind';
 import type { ViewStyle } from 'react-native';
 
+export { cn } from './cn';
+
 export type ThemeMode = 'light' | 'dark';
 
 export type ThemeColorName =
