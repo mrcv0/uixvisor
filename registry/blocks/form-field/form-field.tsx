@@ -14,7 +14,7 @@ export const FormField = forwardRef<ComponentRef<typeof View>, FormFieldProps>(
   ({ label, hint, error, children, className, ...props }, ref) => (
     <View
       ref={ref}
-      accessibilityRole="form"
+      accessibilityLabel={label}
       className={`gap-1.5${className ? ` ${className}` : ''}`}
       {...props}
     >

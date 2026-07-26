@@ -16,7 +16,8 @@
   },
   "dependencies": [],
   "registryDependencies": [
-    "list-item"
+    "list-item",
+    "switch"
   ],
   "files": [
     {

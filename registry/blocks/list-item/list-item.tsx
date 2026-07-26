@@ -1,6 +1,6 @@
 // UIXVISOR — https://uixvisor.dev/blocks/list-item
 import { forwardRef, type ComponentRef, type ReactNode } from 'react';
-import { Pressable, View, type PressableProps } from 'react-native';
+import { Pressable, Text, View, type PressableProps } from 'react-native';
 
 export interface ListItemProps extends Omit<PressableProps, 'children' | 'style'> {
   title: string;
@@ -23,10 +23,10 @@ export const ListItem = forwardRef<ComponentRef<typeof Pressable>, ListItemProps
       {...props}
     >
       {leading ? <View className="items-center justify-center">{leading}</View> : null}
-      <View className="flex-1">
-        <View className="text-sm font-medium text-foreground">{title}</View>
+      <View className="flex-1 gap-0.5 py-3">
+        <Text className="text-sm font-medium text-foreground">{title}</Text>
         {description ? (
-          <View className="text-xs text-muted-foreground">{description}</View>
+          <Text className="text-xs text-muted-foreground">{description}</Text>
         ) : null}
       </View>
       {trailing ? <View className="items-center justify-center">{trailing}</View> : null}

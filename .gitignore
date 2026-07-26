@@ -45,3 +45,8 @@ npm-debug.log*
 
 # TypeScript
 *.tsbuildinfo
+
+.wrongstack/
+!/.wrongstack/
+/.wrongstack/*
+!/.wrongstack/project.json

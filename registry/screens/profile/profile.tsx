@@ -1,24 +1,24 @@
 // UIXVISOR — https://uixvisor.dev/screens/profile
-import { forwardRef, type ComponentRef, type ReactNode } from 'react';
-import { ScrollView, Text, View, type ViewProps } from 'react-native';
+import { forwardRef, type ReactNode } from 'react';
+import { ScrollView, Text, View, type ScrollViewProps } from 'react-native';
 
 import { Avatar } from '@registry/avatar/avatar';
 
-export interface ProfileScreenProps extends ViewProps {
+export interface ProfileScreenProps extends ScrollViewProps {
   name: string;
   email: string;
   bio?: string;
   children?: ReactNode;
 }
 
-export const ProfileScreen = forwardRef<ComponentRef<typeof View>, ProfileScreenProps>(
+export const ProfileScreen = forwardRef<ScrollView, ProfileScreenProps>(
   ({ name, email, bio, children, className, ...props }, ref) => (
     <ScrollView
-      ref={ref as unknown as React.ComponentRef<typeof ScrollView>}
+      ref={ref}
       accessibilityLabel="Profile"
       className={`flex-1 bg-background${className ? ` ${className}` : ''}`}
       contentContainerClassName="items-center gap-4 p-6"
-      {...(props as unknown as ScrollView['props'])}
+      {...props}
     >
       <Avatar fallback={name} accessibilityLabel={`${name} avatar`} size="lg" />
       <View className="items-center gap-1">

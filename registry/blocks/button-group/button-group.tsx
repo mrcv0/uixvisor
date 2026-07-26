@@ -11,7 +11,8 @@ export const ButtonGroup = forwardRef<ComponentRef<typeof View>, ButtonGroupProp
   ({ children, className, ...props }, ref) => (
     <View
       ref={ref}
-      accessibilityRole="group"
+      accessible
+      accessibilityLabel="Button group"
       className={`flex-row flex-wrap gap-2${className ? ` ${className}` : ''}`}
       {...props}
     >

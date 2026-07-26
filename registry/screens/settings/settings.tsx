@@ -1,27 +1,28 @@
 // UIXVISOR — https://uixvisor.dev/screens/settings
-import { forwardRef, useState, type ComponentRef } from 'react';
-import { ScrollView, Switch, Text, View, type ViewProps } from 'react-native';
+import { forwardRef, useState } from 'react';
+import { ScrollView, Text, View, type ScrollViewProps } from 'react-native';
 
 import { ListItem } from '@registry/list-item/list-item';
+import { Switch } from '@registry/switch/switch';
 
-export interface SettingsScreenProps extends ViewProps {
+export interface SettingsScreenProps extends ScrollViewProps {
   initialNotifications: boolean;
   initialBiometrics: boolean;
   onChange: (settings: { notifications: boolean; biometrics: boolean }) => void;
 }
 
-export const SettingsScreen = forwardRef<ComponentRef<typeof View>, SettingsScreenProps>(
+export const SettingsScreen = forwardRef<ScrollView, SettingsScreenProps>(
   ({ initialNotifications, initialBiometrics, onChange, className, ...props }, ref) => {
     const [notifications, setNotifications] = useState(initialNotifications);
     const [biometrics, setBiometrics] = useState(initialBiometrics);
 
     return (
       <ScrollView
-        ref={ref as unknown as React.ComponentRef<typeof ScrollView>}
+        ref={ref}
         accessibilityLabel="Settings"
         className={`flex-1 bg-background${className ? ` ${className}` : ''}`}
         contentContainerClassName="gap-4 p-6"
-        {...(props as unknown as ScrollView['props'])}
+        {...props}
       >
         <Text className="text-2xl font-semibold text-foreground">Settings</Text>
         <View className="gap-2">

@@ -19,6 +19,8 @@ export const semanticIconNames = [
   'search',
   'eye',
   'eye-off',
+  'sun',
+  'moon',
   'info',
   'warning',
   'error',
@@ -30,6 +32,11 @@ export const semanticIconNames = [
   'settings',
   'refresh',
   'inbox',
+  'stack',
+  'device',
+  'package',
+  'window',
+  'path',
 ] as const;
 
 export type SemanticIconName = (typeof semanticIconNames)[number];
