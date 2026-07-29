@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@uixvisor/registry-schema": "0.0.0",
-    "next": "16.2.10",
+    "next": "16.2.11",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "server-only": "^0.0.1"
@@ -24,7 +24,7 @@
     "@types/react-dom": "^19",
     "@uixvisor/eslint-config": "^0.0.0",
     "eslint": "^9",
-    "eslint-config-next": "16.2.10",
+    "eslint-config-next": "16.2.11",
     "tailwindcss": "^4",
     "tsx": "^4.23.1",
     "typescript": "^5"
