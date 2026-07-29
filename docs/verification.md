@@ -15,11 +15,21 @@ npm run build --workspace @uixvisor/showcase-expo
 
 ## Maestro akışları
 
-`.maestro/*.yml` dosyaları cihaz/maestro sürümü 1.30+ ile uyumludur. Cihazınız hazır olduğunda:
+Maestro akışları `apps/test-harness/.maestro/` altındadır ve testten önce Release native
+uygulamasının seçilen cihaza kurulması gerekir.
 
 ```bash
-npx maestro test .maestro/bottom-sheet.yml
-npx maestro test .maestro/otp-input.yml
+cd apps/test-harness
+
+# Android
+maestro start-device --platform android
+npm exec expo -- run:android --variant release --no-bundler
+maestro test .maestro
+
+# iOS (yalnız macOS)
+maestro start-device --platform ios
+npm exec expo -- run:ios --configuration Release --no-bundler
+maestro test .maestro
 ```
 
-CI için: `.github/workflows/maestro.yml` yönergelerine bakın; `workflow_dispatch` ile elle tetiklenir.
+CI için `.github/workflows/maestro.yml` dosyasındaki `workflow_dispatch` akışını kullanın.
