@@ -1,18 +1,34 @@
 {
   "name": "@uixvisor/registry",
   "version": "0.0.0",
-  "private": true,
   "description": "Registry resolution: dependency graph, fetch, checksum verification",
   "license": "MIT",
   "type": "module",
+  "files": [
+    "dist",
+    "HOSTED.md"
+  ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@uixvisor/registry-schema": "0.0.0"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "lint": "eslint src",
+    "prepack": "npm run build",
     "test": "npm run build && node --test dist/index.test.js dist/hosted.test.js",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   }

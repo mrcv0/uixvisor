@@ -1,12 +1,26 @@
 {
   "name": "@uixvisor/testing",
   "version": "0.0.0",
-  "private": true,
   "description": "Shared Jest/RNTL test utilities and fixtures",
   "license": "MIT",
   "type": "module",
+  "files": [
+    "dist"
+  ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "peerDependencies": {
     "@testing-library/react-native": ">=14.0.0",
     "react": ">=19.0.0",
@@ -16,6 +30,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "lint": "eslint src",
+    "prepack": "npm run build",
     "test": "npm run build && node --test dist/index.test.js",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   }
