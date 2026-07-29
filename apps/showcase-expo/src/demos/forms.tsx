@@ -124,7 +124,7 @@ export function FormAdapterDemo() {
 }
 
 export function AuthSchemasDemo() {
-  const samples: Array<{ label: string; ok: boolean; detail: string }> = [
+  const samples: { label: string; ok: boolean; detail: string }[] = [
     {
       label: 'emailSchema',
       ok: emailSchema.safeParse('ada@example.com').success,
