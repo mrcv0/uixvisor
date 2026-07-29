@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, rename, rm, stat, writeFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { dirname, join, posix, resolve } from 'node:path';
 
@@ -157,8 +157,67 @@ export class HostedRegistrySource {
     }
   }
 
+  private snapshotPrefix(): string {
+    return `snapshot-${sha256(`${this.baseUrl.href}\0${this.cacheVersion}`)}-`;
+  }
+
+  private async isCompleteSnapshot(directory: string, digest: string): Promise<boolean> {
+    try {
+      const [marker, registryStats] = await Promise.all([
+        readFile(join(directory, '.complete'), 'utf-8'),
+        stat(join(directory, 'registry')),
+      ]);
+      return marker.trim() === digest && registryStats.isDirectory();
+    } catch {
+      return false;
+    }
+  }
+
+  private async findCachedRegistry(): Promise<string | undefined> {
+    const prefix = this.snapshotPrefix();
+    let entries;
+    try {
+      entries = await readdir(this.cacheDirectory, { withFileTypes: true });
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+        return undefined;
+      }
+      throw error;
+    }
+
+    const candidates: { directory: string; modifiedAt: number }[] = [];
+    for (const entry of entries) {
+      if (!entry.isDirectory() || !entry.name.startsWith(prefix)) {
+        continue;
+      }
+      const digest = entry.name.slice(prefix.length);
+      if (!/^[a-f0-9]{64}$/i.test(digest)) {
+        continue;
+      }
+      const directory = join(this.cacheDirectory, entry.name);
+      if (!(await this.isCompleteSnapshot(directory, digest))) {
+        continue;
+      }
+      candidates.push({
+        directory,
+        modifiedAt: (await stat(join(directory, '.complete'))).mtimeMs,
+      });
+    }
+
+    candidates.sort(
+      (left, right) =>
+        right.modifiedAt - left.modifiedAt || right.directory.localeCompare(left.directory),
+    );
+    const latest = candidates[0];
+    return latest ? join(latest.directory, 'registry') : undefined;
+  }
+
   async materialize(): Promise<string> {
     if (this.offline) {
+      const cachedRegistry = await this.findCachedRegistry();
+      if (cachedRegistry) {
+        return cachedRegistry;
+      }
       throw new RegistryNetworkError('Hosted registry offline mode is enabled but no cache exists');
     }
     const [indexBytes, checksumBytes] = await Promise.all([
@@ -173,12 +232,14 @@ export class HostedRegistrySource {
       throw new RegistryIntegrityError(error instanceof Error ? error.message : String(error));
     }
 
-    const finalDirectory = join(this.cacheDirectory, `${this.cacheVersion}-${indexDigest}`);
+    const finalDirectory = join(
+      this.cacheDirectory,
+      `${this.snapshotPrefix()}${indexDigest}`,
+    );
     const finalRegistry = join(finalDirectory, 'registry');
-    try {
-      await readFile(join(finalDirectory, '.complete'));
+    if (await this.isCompleteSnapshot(finalDirectory, indexDigest)) {
       return finalRegistry;
-    } catch {}
+    }
 
     const index = parseHostedIndex(indexBytes);
     const stagingDirectory = join(this.cacheDirectory, `.staging-${randomUUID()}`);
@@ -242,7 +303,8 @@ export class HostedRegistrySource {
       try {
         await rename(stagingDirectory, finalDirectory);
       } catch (error) {
-        if ((error as NodeJS.ErrnoException).code !== 'EEXIST') {
+        const code = (error as NodeJS.ErrnoException).code;
+        if (code !== 'EEXIST' && code !== 'ENOTEMPTY') {
           throw error;
         }
       }

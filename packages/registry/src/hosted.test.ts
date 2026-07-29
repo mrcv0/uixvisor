@@ -116,3 +116,52 @@ test('rejects offline mode when no cache is available', async () => {
     /offline mode is enabled but no cache exists/,
   );
 });
+
+test('loads the latest verified cache in offline mode without fetching', async () => {
+  await withTempDir(async (cacheDirectory) => {
+    const fixture = hostedFixture();
+    const online = new HostedRegistrySource({
+      baseUrl: 'https://stable.registry.example.test/',
+      cacheDirectory,
+      fetchImpl: createFetch(fixture.responses),
+    });
+    await online.materialize();
+
+    let fetchCount = 0;
+    const offline = new HostedRegistrySource({
+      baseUrl: 'https://stable.registry.example.test/',
+      cacheDirectory,
+      offline: true,
+      fetchImpl: (async () => {
+        fetchCount += 1;
+        throw new Error('offline mode must not fetch');
+      }) as typeof fetch,
+    });
+
+    const index = await offline.loadIndex();
+    const entry = index.get('button');
+    assert.ok(entry);
+    assert.match((await offline.readItemFile(entry, 'button.tsx')).toString('utf-8'), /button/);
+    assert.equal(fetchCount, 0);
+  });
+});
+
+test('does not reuse an offline cache from another registry URL', async () => {
+  await withTempDir(async (cacheDirectory) => {
+    const fixture = hostedFixture();
+    const online = new HostedRegistrySource({
+      baseUrl: 'https://stable.registry.example.test/',
+      cacheDirectory,
+      fetchImpl: createFetch(fixture.responses),
+    });
+    await online.materialize();
+
+    const offline = new HostedRegistrySource({
+      baseUrl: 'https://preview.registry.example.test/',
+      cacheDirectory,
+      offline: true,
+    });
+
+    await assert.rejects(offline.materialize(), /offline mode is enabled but no cache exists/);
+  });
+});
