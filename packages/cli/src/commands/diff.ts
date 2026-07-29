@@ -3,7 +3,7 @@ import { readFile, stat } from 'node:fs/promises';
 import { loadRegistryIndex } from '../registry-source.js';
 import { buildRegistryImportTargets, rewriteRegistryImports } from '../rewrite-imports.js';
 import { diffLines } from '../diff.js';
-import { resolveFileWithinRoot } from '../path-safety.js';
+import { resolveFileWithinRealRoot } from '../path-safety.js';
 
 export interface DiffOptions {
   registryRoot: string;
@@ -35,8 +35,12 @@ export async function runDiff(names: string[], options: DiffOptions): Promise<bo
     }
 
     for (const file of entry.item.files) {
-      const sourcePath = resolveFileWithinRoot(entry.dir, file.source, 'source');
-      const targetPath = resolveFileWithinRoot(options.targetRoot, file.target, 'target');
+      const sourcePath = await resolveFileWithinRealRoot(entry.dir, file.source, 'source');
+      const targetPath = await resolveFileWithinRealRoot(
+        options.targetRoot,
+        file.target,
+        'target',
+      );
 
       const source = await readFile(sourcePath, 'utf-8');
       const expected = rewriteRegistryImports(source, file.target, dependencyTargets);

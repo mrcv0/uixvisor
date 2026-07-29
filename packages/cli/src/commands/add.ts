@@ -9,7 +9,7 @@ import {
   collectNpmDependencies,
   formatNpmDependencyReport,
 } from '../registry-dependencies.js';
-import { resolveFileWithinRoot } from '../path-safety.js';
+import { resolveFileWithinRealRoot } from '../path-safety.js';
 
 export { resolveFileWithinRoot } from '../path-safety.js';
 
@@ -151,8 +151,8 @@ export async function runAdd(names: string[], options: AddOptions): Promise<void
     }
 
     for (const file of entry.item.files) {
-      const sourcePath = resolveFileWithinRoot(entry.dir, file.source, 'source');
-      const targetPath = resolveFileWithinRoot(targetRoot, file.target, 'target');
+      const sourcePath = await resolveFileWithinRealRoot(entry.dir, file.source, 'source');
+      const targetPath = await resolveFileWithinRealRoot(targetRoot, file.target, 'target');
       const targetKey = process.platform === 'win32' ? targetPath.toLowerCase() : targetPath;
 
       if (seenTargets.has(targetKey)) {
@@ -205,6 +205,7 @@ export async function runAdd(names: string[], options: AddOptions): Promise<void
       }
 
       await mkdir(dirname(planned.targetPath), { recursive: true });
+      await resolveFileWithinRealRoot(targetRoot, planned.displayPath, 'target');
       applied.push(planned);
       await writeTarget(planned.targetPath, planned.content);
     }

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -52,6 +52,42 @@ test('rejects duplicate item names', async () => {
     await writeItem(root, 'second', 'duplicate');
 
     await assert.rejects(new LocalRegistrySource(root).loadIndex(), /Duplicate registry item name/);
+  });
+});
+
+test('rejects a local registry source whose linked parent escapes the item root', async () => {
+  await withTempDir(async (root) => {
+    const itemDirectory = join(root, 'secret');
+    const outsideDirectory = join(root, 'outside');
+    await mkdir(itemDirectory);
+    await mkdir(outsideDirectory);
+    await writeFile(join(outsideDirectory, 'secret.tsx'), 'export const secret = true;\n');
+    await symlink(
+      outsideDirectory,
+      join(itemDirectory, 'linked'),
+      process.platform === 'win32' ? 'junction' : 'dir',
+    );
+    await writeFile(
+      join(itemDirectory, 'registry-item.json'),
+      JSON.stringify({
+        name: 'secret',
+        type: 'registry:component',
+        version: '0.1.0',
+        platforms: ['ios'],
+        compatibility: {},
+        dependencies: [],
+        registryDependencies: [],
+        files: [{ source: 'linked/secret.tsx', target: 'components/secret.tsx' }],
+      }),
+    );
+
+    const source = new LocalRegistrySource(root);
+    const entry = (await source.loadIndex()).get('secret');
+    assert.ok(entry);
+    await assert.rejects(
+      source.readItemFile(entry, 'linked/secret.tsx'),
+      /resolved path escapes the real root/,
+    );
   });
 });
 

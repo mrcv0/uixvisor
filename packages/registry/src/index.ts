@@ -1,8 +1,10 @@
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { readdir, readFile, stat } from 'node:fs/promises';
-import { isAbsolute, join, relative, resolve, sep } from 'node:path';
+import { join, resolve } from 'node:path';
 
 import { validateRegistryItem, type RegistryItem } from '@uixvisor/registry-schema';
+
+import { resolveFileWithinRealRoot } from './path-safety.js';
 
 export {
   HostedRegistrySource,
@@ -13,6 +15,7 @@ export {
   type HostedRegistryItem,
   type HostedRegistryOptions,
 } from './hosted.js';
+export { resolveFileWithinRealRoot, resolveFileWithinRoot } from './path-safety.js';
 
 export interface RegistryEntry {
   item: RegistryItem;
@@ -52,23 +55,6 @@ async function findItemDirectories(directory: string): Promise<string[]> {
   return directories;
 }
 
-function resolveWithinRoot(root: string, path: string): string {
-  const resolvedRoot = resolve(root);
-  const resolvedPath = resolve(resolvedRoot, path.replace(/\\/g, '/'));
-  const pathFromRoot = relative(resolvedRoot, resolvedPath);
-
-  if (
-    pathFromRoot === '' ||
-    pathFromRoot === '..' ||
-    pathFromRoot.startsWith(`..${sep}`) ||
-    isAbsolute(pathFromRoot)
-  ) {
-    throw new Error(`Registry file path escapes its item directory: ${path}`);
-  }
-
-  return resolvedPath;
-}
-
 export class LocalRegistrySource {
   readonly root: string;
 
@@ -102,7 +88,7 @@ export class LocalRegistrySource {
   }
 
   async readItemFile(entry: RegistryEntry, source: string): Promise<Buffer> {
-    return readFile(resolveWithinRoot(entry.directory, source));
+    return readFile(await resolveFileWithinRealRoot(entry.directory, source, 'source'));
   }
 }
 

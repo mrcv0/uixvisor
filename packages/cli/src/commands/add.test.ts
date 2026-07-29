@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { access, mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { access, mkdtemp, mkdir, readFile, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 
@@ -110,6 +110,36 @@ test('rejects the root itself as a file path', () => {
   const root = resolve('project');
 
   assert.throws(() => resolveFileWithinRoot(root, '.', 'target'), /Invalid target path/);
+});
+
+test('rejects a target path whose linked parent escapes the project root', async () => {
+  await withTempDir(async (dir) => {
+    const registryRoot = join(dir, 'registry');
+    const targetRoot = join(dir, 'project');
+    const outsideRoot = join(dir, 'outside');
+    await mkdir(targetRoot);
+    await mkdir(outsideRoot);
+    await symlink(
+      outsideRoot,
+      join(targetRoot, 'linked'),
+      process.platform === 'win32' ? 'junction' : 'dir',
+    );
+    await writeRegistryItem(registryRoot, 'button', [
+      { source: 'button.tsx', target: 'linked/button.tsx', content: 'export const Button = 1;\n' },
+    ]);
+
+    await assert.rejects(
+      withoutConsole(() =>
+        runAdd(['button'], {
+          registryRoot,
+          targetRoot,
+          force: true,
+        }),
+      ),
+      /resolved path escapes the real root/,
+    );
+    assert.equal(await pathExists(join(outsideRoot, 'button.tsx')), false);
+  });
 });
 
 test('adds dependencies and rewrites registry imports', async () => {
