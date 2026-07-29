@@ -42,7 +42,13 @@ module.exports = function (api) {
       'nativewind/babel',
     ],
     plugins: [
-      ['module-resolver', { alias: registryAliases() }],
+      [
+        'module-resolver',
+        {
+          alias: registryAliases(),
+          extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+        },
+      ],
       // Must be listed last. Required by react-native-reanimated (which
       // NativeWind's react-native-css-interop depends on internally) even
       // though this project writes no worklets directly.

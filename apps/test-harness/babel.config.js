@@ -42,7 +42,13 @@ module.exports = function (api) {
       'nativewind/babel',
     ],
     plugins: [
-      ['module-resolver', { alias: registryAliases() }],
+      [
+        'module-resolver',
+        {
+          alias: registryAliases(),
+          extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+        },
+      ],
       'react-native-worklets/plugin',
     ],
   };
