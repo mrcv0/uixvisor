@@ -3,6 +3,8 @@ import 'server-only';
 import { resolveUixvisorUrls } from '@uixvisor/registry-schema';
 
 export const CHANNEL = process.env.UIXVISOR_REGISTRY_CHANNEL ?? 'stable';
+export const PUBLIC_ENDPOINTS_AVAILABLE =
+  process.env.UIXVISOR_PUBLIC_ENDPOINTS_AVAILABLE === 'true';
 
 export const {
   siteUrl: SITE_URL,

@@ -14,7 +14,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "UIXVISOR",
-  description: "Open-source Expo/NativeWind UI registry - primitives, mobile components, blocks, screens, and flows.",
+  description:
+    "Expo ve NativeWind için copy-and-own primitive, component, block, screen ve flow registry sistemi.",
 };
 
 export default function RootLayout({
@@ -24,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="tr"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>

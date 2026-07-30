@@ -4,12 +4,12 @@
 
 *Expo-first • NativeWind-first • Mobile-behavior-first*
 
-| **Doküman sürümü**   | 1.0                                  |
+| **Doküman sürümü**   | 1.1                                  |
 |----------------------|--------------------------------------|
-| **Doğrulama tarihi** | 17 Temmuz 2026                       |
-| **Ürün aşaması**     | MVP / Foundation                     |
+| **Doğrulama tarihi** | 30 Temmuz 2026                       |
+| **Ürün aşaması**     | MVP / Release candidate              |
 | **Teknik hedef**     | Expo SDK 57                          |
-| **Durum**            | Karar ve uygulama başlangıç dokümanı |
+| **Durum**            | Uygulama ve release hardening        |
 
 Bu paket; Master Product PRD, Teknik Mimari PRD, Design System PRD, Bileşen ve Akış PRD, CLI & Registry PRD, Kalite/Uyumluluk PRD ve MVP Yol Haritasını tek bir yönetilebilir belgede birleştirir.
 

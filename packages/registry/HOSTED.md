@@ -1,10 +1,14 @@
 # Hosted registry
 
-The UIXVISOR hosted registry is published at a single canonical base URL:
+The UIXVISOR hosted registry is designed for a single canonical base URL:
 
 ```
 https://registry.uixvisor.dev
 ```
+
+This domain has not been acquired or deployed yet. Until production hosting is
+available, use a local registry path or an explicitly configured HTTPS preview
+endpoint. Do not treat the canonical URL as live.
 
 ## Channels
 
@@ -34,4 +38,4 @@ match the declared digest. Local cache keys are content-addressed under
 - `https://uixvisor.dev/schema/config.json` – user config contract.
 
 Canonical copies of these JSON Schemas are published from
-`apps/docs/public/schemas/*.json` on every release.
+`apps/docs/public/schema/*.json` on every release.
