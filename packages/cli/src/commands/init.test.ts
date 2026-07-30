@@ -67,6 +67,25 @@ test('records the chosen icon library and font', async () => {
   });
 });
 
+test('records a configured preview schema base URL', async () => {
+  await withTempDir(async (dir) => {
+    await withoutConsole(() =>
+      runInit({
+        projectRoot: dir,
+        registry: '../registry',
+        force: false,
+        schemaBaseUrl: 'https://uixvisor-preview.example.test/contracts/',
+      }),
+    );
+
+    const config = JSON.parse(await readFile(join(dir, 'uixvisor.config.json'), 'utf-8'));
+    assert.equal(
+      config.$schema,
+      'https://uixvisor-preview.example.test/contracts/config.json',
+    );
+  });
+});
+
 test('preserves an existing config without force', async () => {
   await withTempDir(async (dir) => {
     const configPath = join(dir, 'uixvisor.config.json');

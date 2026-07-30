@@ -1,3 +1,4 @@
+// UIXVISOR — https://uixvisor.dev/mobile/swipeable-row
 /** @jsxImportSource react */
 // Isolated from NativeWind's JSX transform on purpose: NativeWind's babel
 // plugin wrapping react-native-gesture-handler's native view components

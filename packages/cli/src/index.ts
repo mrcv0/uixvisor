@@ -101,6 +101,7 @@ program
         force: opts.force,
         icons,
         font,
+        schemaBaseUrl: process.env.UIXVISOR_SCHEMA_BASE_URL,
       });
     } catch (error) {
       fail(error);

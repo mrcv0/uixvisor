@@ -1,8 +1,9 @@
 import { readdir, readFile } from 'node:fs/promises';
-import { join, dirname } from 'node:path';
+import { join, dirname, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { validateRegistryItem } from './validate.js';
+import { DEFAULT_UIXVISOR_URLS } from './urls.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const registryRoot = join(here, '..', '..', '..', 'registry');
@@ -70,6 +71,36 @@ async function checkDeclaredDependencies(
   return problems;
 }
 
+async function checkPublicUrlContract(
+  itemPath: string,
+  item: { name: string; $schema?: string; files: { source: string }[] },
+): Promise<string[]> {
+  const problems: string[] = [];
+
+  if (item.$schema !== DEFAULT_UIXVISOR_URLS.registryItemSchemaUrl) {
+    problems.push(
+      `uses schema "${item.$schema ?? 'missing'}"; expected "${DEFAULT_UIXVISOR_URLS.registryItemSchemaUrl}"`,
+    );
+  }
+
+  const relativeDirectory = relative(registryRoot, dirname(itemPath));
+  const [category] = relativeDirectory.split(sep);
+  const expectedAttribution =
+    `// UIXVISOR — ${DEFAULT_UIXVISOR_URLS.siteUrl}/${category}/${item.name}`;
+
+  for (const file of item.files) {
+    const source = await readFile(join(dirname(itemPath), file.source), 'utf-8');
+    const [firstLine] = source.split(/\r?\n/, 1);
+    if (firstLine !== expectedAttribution) {
+      problems.push(
+        `${file.source} must start with the canonical source note "${expectedAttribution}"`,
+      );
+    }
+  }
+
+  return problems;
+}
+
 async function main() {
   const itemFiles = await findRegistryItemFiles(registryRoot);
 
@@ -94,7 +125,10 @@ async function main() {
       continue;
     }
 
-    const problems = await checkDeclaredDependencies(filePath, result.data);
+    const problems = [
+      ...(await checkDeclaredDependencies(filePath, result.data)),
+      ...(await checkPublicUrlContract(filePath, result.data)),
+    ];
     if (problems.length > 0) {
       failures += 1;
       console.error(`FAIL  ${result.data.name}`);

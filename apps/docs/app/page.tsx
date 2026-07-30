@@ -1,5 +1,10 @@
 import { getRegistryItems } from '@/lib/registry';
-import { CHANNEL, REGISTRY_BASE_URL, SCHEMA_BASE_URL } from '@/lib/registry-contract';
+import {
+  CHANNEL,
+  REGISTRY_BASE_URL,
+  SCHEMA_BASE_URL,
+  SITE_URL,
+} from '@/lib/registry-contract';
 
 const TYPE_LABELS: Record<string, string> = {
   'registry:primitive': 'Primitive',
@@ -24,7 +29,11 @@ export default async function Home() {
           .
         </p>
         <p className="text-sm text-zinc-500 dark:text-zinc-400">
-          Channel: <code>{CHANNEL}</code> · Base URL:{' '}
+          Site:{' '}
+          <a className="underline" href={SITE_URL} rel="noreferrer noopener" target="_blank">
+            {SITE_URL}
+          </a>{' '}
+          · Channel: <code>{CHANNEL}</code> · Base URL:{' '}
           <a className="underline" href={REGISTRY_BASE_URL} rel="noreferrer noopener" target="_blank">
             {REGISTRY_BASE_URL}
           </a>{' '}
