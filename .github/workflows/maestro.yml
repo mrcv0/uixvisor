@@ -50,9 +50,10 @@ jobs:
 
       - name: Install Android system image
         if: inputs.platform == 'android'
-        run: >-
-          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
-          "system-images;android-33;google_apis;arm64-v8a"
+        run: |
+          printf 'y\n' | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
+            "system-images;android-33;google_apis;arm64-v8a"
+          test -d "$ANDROID_HOME/system-images/android-33/google_apis/arm64-v8a"
 
       - name: Start ${{ inputs.platform }} device
         run: maestro start-device --platform "${{ inputs.platform }}"
