@@ -1,11 +1,30 @@
 {
   "name": "@uixvisor/presets",
   "version": "0.0.0",
-  "description": "Theme presets (Default, Fintech, ...) built on @uixvisor/tokens",
+  "description": "Default and Fintech theme presets built on UIXVISOR semantic tokens",
+  "keywords": [
+    "design-tokens",
+    "expo",
+    "react-native",
+    "theme",
+    "preset",
+    "fintech"
+  ],
+  "homepage": "https://github.com/mrcv0/uixvisor#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrcv0/uixvisor.git",
+    "directory": "packages/presets"
+  },
+  "bugs": {
+    "url": "https://github.com/mrcv0/uixvisor/issues"
+  },
   "license": "MIT",
   "type": "module",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

@@ -1,11 +1,30 @@
 {
   "name": "@uixvisor/testing",
   "version": "0.0.0",
-  "description": "Shared Jest/RNTL test utilities and fixtures",
+  "description": "React Native Testing Library helpers and accessibility assertions for UIXVISOR",
+  "keywords": [
+    "testing",
+    "react-native",
+    "jest",
+    "accessibility",
+    "rntl",
+    "expo"
+  ],
+  "homepage": "https://github.com/mrcv0/uixvisor#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrcv0/uixvisor.git",
+    "directory": "packages/testing"
+  },
+  "bugs": {
+    "url": "https://github.com/mrcv0/uixvisor/issues"
+  },
   "license": "MIT",
   "type": "module",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

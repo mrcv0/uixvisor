@@ -1,11 +1,30 @@
 {
   "name": "@uixvisor/tokens",
   "version": "0.0.0",
-  "description": "Semantic design tokens (foundation/semantic/component/motion/elevation)",
+  "description": "Typed semantic color, typography, motion and elevation tokens for UIXVISOR",
+  "keywords": [
+    "design-tokens",
+    "expo",
+    "react-native",
+    "nativewind",
+    "theme",
+    "typescript"
+  ],
+  "homepage": "https://github.com/mrcv0/uixvisor#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrcv0/uixvisor.git",
+    "directory": "packages/tokens"
+  },
+  "bugs": {
+    "url": "https://github.com/mrcv0/uixvisor/issues"
+  },
   "license": "MIT",
   "type": "module",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

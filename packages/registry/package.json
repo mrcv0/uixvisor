@@ -1,12 +1,31 @@
 {
   "name": "@uixvisor/registry",
   "version": "0.0.0",
-  "description": "Registry resolution: dependency graph, fetch, checksum verification",
+  "description": "Secure local and hosted registry resolution for UIXVISOR",
+  "keywords": [
+    "expo",
+    "react-native",
+    "registry",
+    "checksum",
+    "offline",
+    "security"
+  ],
+  "homepage": "https://github.com/mrcv0/uixvisor#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrcv0/uixvisor.git",
+    "directory": "packages/registry"
+  },
+  "bugs": {
+    "url": "https://github.com/mrcv0/uixvisor/issues"
+  },
   "license": "MIT",
   "type": "module",
   "files": [
     "dist",
-    "HOSTED.md"
+    "HOSTED.md",
+    "README.md",
+    "LICENSE"
   ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

@@ -1,11 +1,30 @@
 {
   "name": "@uixvisor/registry-schema",
   "version": "0.0.0",
-  "description": "Zod/TS registry item schema and validation",
+  "description": "Zod schemas and validation contracts for UIXVISOR registries",
+  "keywords": [
+    "zod",
+    "schema",
+    "validation",
+    "expo",
+    "react-native",
+    "registry"
+  ],
+  "homepage": "https://github.com/mrcv0/uixvisor#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrcv0/uixvisor.git",
+    "directory": "packages/registry-schema"
+  },
+  "bugs": {
+    "url": "https://github.com/mrcv0/uixvisor/issues"
+  },
   "license": "MIT",
   "type": "module",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

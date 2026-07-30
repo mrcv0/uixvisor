@@ -1,11 +1,30 @@
 {
   "name": "uixvisor",
   "version": "0.0.0",
-  "description": "UIXVISOR CLI - init/add/list/diff/doctor",
+  "description": "Copy-and-own UI registry CLI for Expo and NativeWind projects",
+  "keywords": [
+    "expo",
+    "react-native",
+    "nativewind",
+    "ui",
+    "registry",
+    "cli"
+  ],
+  "homepage": "https://github.com/mrcv0/uixvisor#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrcv0/uixvisor.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/mrcv0/uixvisor/issues"
+  },
   "license": "MIT",
   "type": "module",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "bin": {
     "uixvisor": "./dist/index.js"
