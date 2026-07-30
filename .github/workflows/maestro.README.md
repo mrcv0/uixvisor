@@ -3,9 +3,10 @@
 `apps/test-harness/.maestro/` içindeki akışlar `dev.uixvisor.testharness` appId’ine göre
 tanımlıdır.
 
-Workflow `workflow_dispatch` ile iOS veya Android için elle tetiklenir. macOS runner üzerinde:
+Workflow `workflow_dispatch` ile iOS veya Android için elle tetiklenir:
 
-1. Maestro seçilen simulator/emulator’ü başlatır.
+1. Android, Ubuntu/KVM ve `android-emulator-runner`; iOS, macOS ve Maestro
+   `start-device` üzerinde cihazı başlatır.
 2. Expo CLI harness uygulamasını Release modunda derler, bundle’ı native binary’ye gömer ve
    cihaza kurar.
 3. Maestro doğru device ID ile `apps/test-harness/.maestro` akışlarını çalıştırır.
