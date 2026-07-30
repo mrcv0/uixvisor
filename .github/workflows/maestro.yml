@@ -65,14 +65,10 @@ jobs:
           arch: x86_64
           profile: pixel_6
           working-directory: apps/test-harness
-          script: |
-            DEVICE_ID="$(adb devices | awk 'NR > 1 && $2 == "device" { print $1; exit }')"
-            if [[ -z "$DEVICE_ID" ]]; then
-              echo "No booted Android emulator found" >&2
-              exit 1
-            fi
-            npm exec expo -- run:android --variant release --no-bundler --device "$DEVICE_ID"
-            maestro --device "$DEVICE_ID" test .maestro
+          script: >-
+            npm exec expo -- run:android --variant release --no-bundler
+            --device emulator-5554 &&
+            maestro --device emulator-5554 test .maestro
 
       - name: Start iOS device
         if: inputs.platform == 'ios'
