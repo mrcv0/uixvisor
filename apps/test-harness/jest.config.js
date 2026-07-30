@@ -2,6 +2,9 @@ module.exports = {
   preset: 'jest-expo',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testMatch: ['<rootDir>/__tests__/**/*-test.ts?(x)'],
+  moduleNameMapper: {
+    '\\.css$': '<rootDir>/jest-style-mock.js',
+  },
   // jest-expo's transform is slow to warm up, and turbo runs this suite
   // alongside every other workspace task. The default 5s budget was being
   // exceeded under that contention, which showed up as an intermittent failure

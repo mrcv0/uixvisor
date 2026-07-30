@@ -1,7 +1,12 @@
 appId: dev.uixvisor.testharness
 ---
-- launchApp
+- launchApp:
+    clearState: true
 - assertVisible: UIXVISOR test harness
+- scrollUntilVisible:
+    element:
+      id: open-sheet
+    direction: DOWN
 - tapOn:
     id: open-sheet
 - assertVisible: Sheet title

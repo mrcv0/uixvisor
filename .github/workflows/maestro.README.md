@@ -14,3 +14,10 @@ Akışlar:
 
 - `.maestro/bottom-sheet.yml` – modal açılışı ve kapanışı.
 - `.maestro/otp-input.yml` – OTP girişi ve yeniden gönderme.
+- `.maestro/email-auth.yml` – email/parola girişi, OTP adımı ve tamamlanma callback'i.
+- `.maestro/phone-auth.yml` – telefon girişi, OTP adımı ve tamamlanma callback'i.
+- `.maestro/onboarding.yml` – üç onboarding adımının sıralı tamamlanması.
+
+Her akış uygulamayı `clearState: true` ile başlatır. Auth adapter'ları test harness
+içinde deterministik ve ağsızdır; Maestro gerçek registry ekranları ile form
+doğrulamasını, adım geçişlerini ve host callback sonucunu cihaz üzerinde sınar.

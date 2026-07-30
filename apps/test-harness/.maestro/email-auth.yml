@@ -1,0 +1,22 @@
+appId: dev.uixvisor.testharness
+name: Email auth completes with OTP
+---
+- launchApp:
+    clearState: true
+- assertVisible: UIXVISOR test harness
+- tapOn:
+    id: flow-email-auth
+- assertVisible: Sign in
+- tapOn: Email
+- inputText: ada@example.com
+- tapOn: Password
+- inputText: secret123
+- hideKeyboard
+- tapOn: Continue
+- assertVisible: Verify your code
+- tapOn: Verification code
+- inputText: 123456
+- hideKeyboard
+- tapOn: Verify
+- assertVisible: Email auth complete
+- assertVisible: Completed sign-in with OTP verification.

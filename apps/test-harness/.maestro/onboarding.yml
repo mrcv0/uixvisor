@@ -1,0 +1,16 @@
+appId: dev.uixvisor.testharness
+name: Onboarding completes all steps
+---
+- launchApp:
+    clearState: true
+- assertVisible: UIXVISOR test harness
+- tapOn:
+    id: flow-onboarding
+- assertVisible: Welcome to UIXVISOR
+- tapOn: Continue
+- assertVisible: Choose your theme
+- tapOn: Continue
+- assertVisible: Ready to ship
+- tapOn: Get started
+- assertVisible: Onboarding complete
+- assertVisible: Completed all three onboarding steps.

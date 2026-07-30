@@ -34,6 +34,25 @@ maestro test .maestro
 
 CI için `.github/workflows/maestro.yml` dosyasındaki `workflow_dispatch` akışını kullanın.
 
+Mevcut cihaz akışları:
+
+| Akış | Doğrulanan davranış |
+|---|---|
+| `bottom-sheet.yml` | Modal açma ve kapatma |
+| `otp-input.yml` | Sayısal OTP girişi ve resend |
+| `email-auth.yml` | Email/parola → OTP → tamamlanma |
+| `phone-auth.yml` | Telefon → OTP → tamamlanma |
+| `onboarding.yml` | Üç adım → tamamlanma |
+
+Akışlar her çalışmada uygulama state'ini temizler. Email ve telefon adapter'ları
+test harness içinde ağ kullanmayan deterministik sonuçlar döndürür; böylece cihaz
+testi yalnız UI, form doğrulama ve akış state geçişlerine odaklanır.
+
+Windows geliştirme ortamında native Maestro CLI bulunmadığında yapısal doğrulama
+Jest entegrasyon testi, TypeScript ve üç platform `expo export` ile yapılır. Gerçek
+Android/iOS sonucu için yukarıdaki native komutlar veya manual GitHub Actions
+workflow'u çalıştırılmalıdır.
+
 ## Temiz Expo SDK 57 CLI kabul testi
 
 Son doğrulama: **30 Temmuz 2026**

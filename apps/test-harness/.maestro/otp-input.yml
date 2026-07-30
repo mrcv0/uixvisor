@@ -1,6 +1,10 @@
 appId: dev.uixvisor.testharness
 ---
-- launchApp
+- launchApp:
+    clearState: true
+- scrollUntilVisible:
+    element: Verification code
+    direction: DOWN
 - tapOn: Verification code
 - inputText: 123456
 - assertVisible: Resend
