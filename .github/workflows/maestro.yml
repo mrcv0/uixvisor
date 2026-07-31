@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       platform:
-        description: 'android or ios'
+        description: "android or ios"
         required: true
-        default: 'android'
+        default: "android"
         type: choice
         options:
           - android
@@ -20,7 +20,7 @@ jobs:
     permissions:
       contents: read
     env:
-      MAESTRO_CLI_NO_ANALYTICS: '1'
+      MAESTRO_CLI_NO_ANALYTICS: "1"
 
     steps:
       - uses: actions/checkout@v5
@@ -38,7 +38,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: "17"
 
       - name: Install dependencies
         run: npm ci
@@ -66,8 +66,7 @@ jobs:
           profile: pixel_6
           working-directory: apps/test-harness
           script: >-
-            npm exec expo -- run:android --variant release --no-bundler
-            --device emulator-5554 &&
+            npm exec expo -- run:android --variant release --no-bundler &&
             maestro --device emulator-5554 test .maestro
 
       - name: Start iOS device
