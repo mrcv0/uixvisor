@@ -7,5 +7,6 @@ appId: dev.uixvisor.testharness
     direction: DOWN
 - tapOn: Verification code
 - inputText: 123456
-- assertVisible: Resend
-- tapOn: Resend
+- hideKeyboard
+- assertVisible: Resend code
+- tapOn: Resend code
