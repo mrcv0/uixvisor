@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { CodeBlock, DocsShell, GuideSection, Notice } from '@/components/docs-shell';
+import { CodeBlock, DocsShell, GuideSection } from '@/components/docs-shell';
 
 export const metadata: Metadata = {
   title: 'Uyumluluk · UIXVISOR',
@@ -23,11 +23,6 @@ export default function CompatibilityPage() {
       title="Uyumluluk ve kalite"
       description="Stable kabul edilen sürümler ve her release candidate’ın geçmesi gereken doğrulamalar."
     >
-      <Notice>
-        NativeWind v5 stable kanalında değildir. Domain, hosted registry ve ilk npm release’i de
-        henüz production kapısından geçmemiştir.
-      </Notice>
-
       <GuideSection title="Stable hedef matrisi">
         <div className="overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
           <table className="w-full text-left text-sm">
@@ -52,11 +47,12 @@ npm run verify:build
 npm run verify:tokens`}</CodeBlock>
       </GuideSection>
 
-      <GuideSection title="Native E2E">
-        <p>
-          Android ve iOS Release uygulamaları kurulup <code>apps/test-harness/.maestro</code>
-          akışları çalıştırılır. Bu workflow manuel <code>workflow_dispatch</code> kapısıdır.
-        </p>
+      <GuideSection title="Platform doğrulaması">
+        <ul className="list-disc space-y-2 pl-6">
+          <li>Registry manifestleri schema ve bağımlılık bütünlüğü açısından doğrulanır.</li>
+          <li>CLI kurulum, ekleme, karşılaştırma ve güvenli dosya yazma akışları test edilir.</li>
+          <li>Temel kullanıcı akışları Android ve iOS release build’lerinde doğrulanır.</li>
+        </ul>
       </GuideSection>
     </DocsShell>
   );

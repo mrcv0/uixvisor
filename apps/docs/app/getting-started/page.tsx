@@ -1,23 +1,18 @@
 import type { Metadata } from 'next';
 
-import { CodeBlock, DocsShell, GuideSection, Notice } from '@/components/docs-shell';
+import { CodeBlock, DocsShell, GuideSection } from '@/components/docs-shell';
 
 export const metadata: Metadata = {
   title: 'Başlangıç · UIXVISOR',
-  description: 'UIXVISOR kaynak kodunu local registry ile bir Expo SDK 57 projesinde kullanın.',
+  description: 'UIXVISOR’u bir Expo SDK 57 ve NativeWind 4 projesine ekleyin.',
 };
 
 export default function GettingStartedPage() {
   return (
     <DocsShell
       title="Başlangıç"
-      description="UIXVISOR kaynak kodunu local registry ile bir Expo SDK 57 ve NativeWind 4 projesine ekleyin."
+      description="UIXVISOR’u kurun, projenizi doğrulayın ve ilk component’inizi birkaç komutla ekleyin."
     >
-      <Notice>
-        Domain, hosted registry ve npm paketleri henüz canlı değildir. Bu sayfa bugün çalışan
-        kaynak-kod akışını gösterir; production adresi varsaymaz.
-      </Notice>
-
       <GuideSection title="Gereksinimler">
         <ul className="list-disc space-y-2 pl-6">
           <li>Node.js 22.13 veya üzeri</li>
@@ -26,30 +21,32 @@ export default function GettingStartedPage() {
         </ul>
       </GuideSection>
 
-      <GuideSection title="Repository’yi hazırlayın">
-        <CodeBlock>{`git clone https://github.com/mrcv0/uixvisor.git
-cd uixvisor
-npm ci
-npm run build --workspace uixvisor`}</CodeBlock>
+      <GuideSection title="UIXVISOR’u başlatın">
+        <CodeBlock>{`cd /path/to/your-expo-app
+npx uixvisor@latest init`}</CodeBlock>
+        <p>
+          <code>init</code> proje yapınızı algılar, registry ayarını oluşturur ve gerekli dosyaları
+          hazırlar.
+        </p>
       </GuideSection>
 
-      <GuideSection title="Expo projenizi başlatın">
-        <CodeBlock>{`cd /path/to/your-expo-app
-node /path/to/uixvisor/packages/cli/dist/index.js init \\
-  --registry /path/to/uixvisor/registry
-node /path/to/uixvisor/packages/cli/dist/index.js doctor
-node /path/to/uixvisor/packages/cli/dist/index.js add button`}</CodeBlock>
+      <GuideSection title="İlk component’i ekleyin">
+        <CodeBlock>{`npx uixvisor@latest doctor
+npx uixvisor@latest add button`}</CodeBlock>
         <p>
           CLI gerekli registry item’larını önce çözer, dosyaları projeye kopyalar ve kurulması
           gereken npm bağımlılıklarını işlem sonunda bildirir.
         </p>
       </GuideSection>
 
-      <GuideSection title="Public release sonrası">
-        <CodeBlock>{`npx uixvisor init --registry <hosted-registry-url>
-npx uixvisor doctor
-npx uixvisor add button`}</CodeBlock>
-        <p>Bu komutlar ilk npm sürümü ve hosted registry yayınlandıktan sonra varsayılan olur.</p>
+      <GuideSection title="Bir flow ile devam edin">
+        <CodeBlock>{`npx uixvisor@latest list
+npx uixvisor@latest add email-auth
+npx uixvisor@latest diff email-auth`}</CodeBlock>
+        <p>
+          Flow item’ları ihtiyaç duydukları primitive, component, block ve screen kaynaklarını
+          otomatik olarak birlikte getirir.
+        </p>
       </GuideSection>
     </DocsShell>
   );

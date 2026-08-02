@@ -14,7 +14,7 @@ export default function ThemingPage() {
       description="NativeWind class’larını semantic token’larla, native renk ve elevation helper’larıyla tamamlayın."
     >
       <GuideSection title="Theme item’ı">
-        <CodeBlock>{`uixvisor add theme
+        <CodeBlock>{`npx uixvisor@latest add theme
 npx expo install @expo-google-fonts/inter expo-font expo-haptics`}</CodeBlock>
         <p>
           Theme item’ı renk çözümleme, elevation, press feedback, className birleştirme ve isteğe

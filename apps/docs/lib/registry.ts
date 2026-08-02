@@ -51,3 +51,8 @@ export async function getRegistryItems(): Promise<RegistryItem[]> {
 
   return items.sort((a, b) => a.name.localeCompare(b.name));
 }
+
+export async function getRegistryItem(name: string): Promise<RegistryItem | undefined> {
+  const items = await getRegistryItems();
+  return items.find((item) => item.name === name);
+}

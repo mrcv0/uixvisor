@@ -29,11 +29,11 @@ export default function CliPage() {
       </GuideSection>
 
       <GuideSection title="Temel akış">
-        <CodeBlock>{`uixvisor init --registry ../uixvisor/registry
-uixvisor list
-uixvisor add email-auth
-uixvisor diff email-auth
-uixvisor doctor`}</CodeBlock>
+        <CodeBlock>{`npx uixvisor@latest init
+npx uixvisor@latest list
+npx uixvisor@latest add email-auth
+npx uixvisor@latest diff email-auth
+npx uixvisor@latest doctor`}</CodeBlock>
       </GuideSection>
 
       <GuideSection title="Dosya güvenliği">
@@ -46,9 +46,9 @@ uixvisor doctor`}</CodeBlock>
       </GuideSection>
 
       <GuideSection title="Offline ve exit code davranışı">
-        <CodeBlock>{`uixvisor list --offline
-uixvisor add button --offline
-uixvisor diff button`}</CodeBlock>
+        <CodeBlock>{`npx uixvisor@latest list --offline
+npx uixvisor@latest add button --offline
+npx uixvisor@latest diff button`}</CodeBlock>
         <p>
           Offline mod ağ isteği yapmaz ve yalnız doğrulanmış snapshot kullanır. Diff fark yoksa
           exit code 0, fark varsa 1 döndürür.
