@@ -7,16 +7,19 @@ name: Email auth completes with OTP
 - tapOn:
     id: flow-email-auth
 - assertVisible: Sign in
-- tapOn: Email
+- tapOn:
+    id: sign-in-email-input
 - inputText: ada@example.com
-- tapOn: Password
+- tapOn:
+    id: sign-in-password-input
 - inputText: secret123
 - hideKeyboard
 - waitForAnimationToEnd
 - tapOn:
     id: sign-in-continue
 - assertVisible: Verify your code
-- tapOn: Verification code
+- tapOn:
+    id: otp-code-input
 - inputText: 123456
 - hideKeyboard
 - tapOn: Verify

@@ -113,6 +113,7 @@ export const PhoneAuthFlow = forwardRef<ComponentRef<typeof View>, PhoneAuthFlow
                   return (
                     <Input
                       ref={inputRef}
+                      testID="phone-auth-phone-input"
                       label=""
                       {...inputProps}
                       keyboardType="phone-pad"

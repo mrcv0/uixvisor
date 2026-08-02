@@ -3,10 +3,13 @@ appId: dev.uixvisor.testharness
 - launchApp:
     clearState: true
 - scrollUntilVisible:
-    element: Verification code
+    element:
+      id: otp-code-input
     direction: DOWN
-- tapOn: Verification code
+- tapOn:
+    id: otp-code-input
 - inputText: 123456
 - hideKeyboard
+- assertVisible: "123456"
 - assertVisible: Resend code
 - tapOn: Resend code

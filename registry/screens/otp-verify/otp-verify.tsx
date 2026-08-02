@@ -108,6 +108,7 @@ export const OtpVerifyScreen = forwardRef<ComponentRef<typeof View>, OtpVerifySc
               return (
                 <OTPInput
                   ref={inputRef}
+                  testID="otp-code-input"
                   {...inputProps}
                   error={field.error}
                   onResend={handleResend || undefined}

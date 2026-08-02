@@ -109,7 +109,12 @@ export default function App() {
                   keyboardType="email-address"
                 />
 
-                <OTPInput value={code} onChangeText={setCode} onResend={() => setCode('')} />
+                <OTPInput
+                  testID="otp-code-input"
+                  value={code}
+                  onChangeText={setCode}
+                  onResend={() => setCode('')}
+                />
 
                 <Button testID="open-sheet" onPress={() => setSheetVisible(true)}>
                   Open sheet

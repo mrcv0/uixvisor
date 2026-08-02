@@ -13,7 +13,9 @@ describe('BottomSheet', () => {
     );
 
     expect(screen.getByText('Sheet content')).toBeTruthy();
-    await fireEvent.press(screen.getByLabelText('Close'));
+    await fireEvent.press(
+      screen.getByTestId('bottom-sheet-backdrop', { includeHiddenElements: true }),
+    );
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 });

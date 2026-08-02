@@ -92,6 +92,7 @@ export const SignInScreen = forwardRef<ComponentRef<typeof View>, SignInScreenPr
               return (
                 <Input
                   ref={inputRef}
+                  testID="sign-in-email-input"
                   label=""
                   {...inputProps}
                   autoCapitalize="none"
@@ -109,6 +110,7 @@ export const SignInScreen = forwardRef<ComponentRef<typeof View>, SignInScreenPr
               return (
                 <Input
                   ref={inputRef}
+                  testID="sign-in-password-input"
                   label=""
                   {...inputProps}
                   secureTextEntry
