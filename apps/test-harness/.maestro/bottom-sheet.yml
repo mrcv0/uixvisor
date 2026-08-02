@@ -7,8 +7,12 @@ appId: dev.uixvisor.testharness
     element:
       id: open-sheet
     direction: DOWN
+- waitForAnimationToEnd
 - tapOn:
     id: open-sheet
+- waitForAnimationToEnd
+- assertVisible:
+    id: bottom-sheet
 - assertVisible: Sheet title
 - tapOn: Close sheet
 - assertNotVisible: Sheet title

@@ -56,6 +56,17 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      - name: Cache iOS build
+        if: inputs.platform == 'ios'
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Caches/CocoaPods
+            ~/Library/Developer/Xcode/DerivedData
+          key: ${{ runner.os }}-ios-${{ hashFiles('package-lock.json', 'patches/**') }}
+          restore-keys: |
+            ${{ runner.os }}-ios-
+
       - name: Build and test on Android
         if: inputs.platform == 'android'
         env:
@@ -91,3 +102,11 @@ jobs:
         run: |
           npm exec expo -- run:ios --configuration Release --no-bundler --device "$IOS_DEVICE_ID"
           maestro --device "$IOS_DEVICE_ID" test .maestro
+
+      - name: Upload iOS Maestro diagnostics
+        if: failure() && inputs.platform == 'ios'
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-ios-diagnostics
+          path: ~/.maestro/tests
+          if-no-files-found: warn

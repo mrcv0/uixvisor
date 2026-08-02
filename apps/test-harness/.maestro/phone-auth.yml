@@ -10,7 +10,9 @@ name: Phone auth completes with OTP
 - tapOn: Phone number
 - inputText: 15550100
 - hideKeyboard
-- tapOn: Continue
+- waitForAnimationToEnd
+- tapOn:
+    id: phone-auth-continue
 - assertVisible: Verify your code
 - tapOn: Verification code
 - inputText: 654321

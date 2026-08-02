@@ -132,7 +132,11 @@ export const SignInScreen = forwardRef<ComponentRef<typeof View>, SignInScreenPr
             </Pressable>
           ) : null}
           {social}
-          <Button loading={pending} onPress={handleSubmit}>
+          <Button
+            testID="sign-in-continue"
+            loading={pending}
+            onPress={handleSubmit}
+          >
             Continue
           </Button>
           {onSignUpPress ? (

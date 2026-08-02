@@ -33,20 +33,30 @@ export function BottomSheet({ visible, onClose, children, className }: BottomShe
 
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
-      <Pressable
-        onPress={onClose}
-        accessibilityLabel="Close"
-        className="flex-1 justify-end bg-overlay/40"
-      >
-        <Animated.View style={{ transform: [{ translateY }] }}>
-          <Pressable onPress={() => {}}>
-            <View className={cn('gap-3 rounded-t-lg bg-sheet p-4 dark:border-t dark:border-border', className)}>
-              <View className="h-1 w-10 self-center rounded-full bg-border" />
-              {children}
-            </View>
-          </Pressable>
+      <View className="flex-1 justify-end">
+        <Pressable
+          testID="bottom-sheet-backdrop"
+          onPress={onClose}
+          accessibilityRole="button"
+          accessibilityLabel="Close"
+          className="absolute inset-0 bg-overlay/40"
+        />
+        <Animated.View
+          testID="bottom-sheet"
+          accessibilityViewIsModal
+          style={{ transform: [{ translateY }] }}
+        >
+          <View
+            className={cn(
+              'gap-3 rounded-t-lg bg-sheet p-4 dark:border-t dark:border-border',
+              className,
+            )}
+          >
+            <View className="h-1 w-10 self-center rounded-full bg-border" />
+            {children}
+          </View>
         </Animated.View>
-      </Pressable>
+      </View>
     </Modal>
   );
 }

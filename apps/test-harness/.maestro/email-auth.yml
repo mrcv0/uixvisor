@@ -12,7 +12,9 @@ name: Email auth completes with OTP
 - tapOn: Password
 - inputText: secret123
 - hideKeyboard
-- tapOn: Continue
+- waitForAnimationToEnd
+- tapOn:
+    id: sign-in-continue
 - assertVisible: Verify your code
 - tapOn: Verification code
 - inputText: 123456

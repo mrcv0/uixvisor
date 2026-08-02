@@ -124,7 +124,11 @@ export const PhoneAuthFlow = forwardRef<ComponentRef<typeof View>, PhoneAuthFlow
                   );
                 }}
               </ControlledFormField>
-              <Button loading={pending} onPress={handlePhoneSubmit}>
+              <Button
+                testID="phone-auth-continue"
+                loading={pending}
+                onPress={handlePhoneSubmit}
+              >
                 Continue
               </Button>
             </KeyboardAwareForm>
