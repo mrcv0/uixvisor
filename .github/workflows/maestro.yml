@@ -73,17 +73,21 @@ jobs:
 
       - name: Start iOS device
         if: inputs.platform == 'ios'
-        run: maestro start-device --platform ios
+        shell: bash
+        run: |
+          DEVICE_ID="$(xcrun simctl list devices available | awk -F '[()]' '/iPhone/ { print $2; exit }')"
+          if [[ -z "$DEVICE_ID" ]]; then
+            echo "No available iOS simulator found" >&2
+            exit 1
+          fi
+          xcrun simctl boot "$DEVICE_ID"
+          xcrun simctl bootstatus "$DEVICE_ID" -b
+          echo "IOS_DEVICE_ID=$DEVICE_ID" >> "$GITHUB_ENV"
 
       - name: Build and test on iOS
         if: inputs.platform == 'ios'
         working-directory: apps/test-harness
         shell: bash
         run: |
-          DEVICE_ID="$(xcrun simctl list devices booted | awk -F '[()]' '/Booted/ { print $2; exit }')"
-          if [[ -z "$DEVICE_ID" ]]; then
-            echo "No booted iOS simulator found" >&2
-            exit 1
-          fi
-          npm exec expo -- run:ios --configuration Release --no-bundler --device "$DEVICE_ID"
-          maestro --device "$DEVICE_ID" test .maestro
+          npm exec expo -- run:ios --configuration Release --no-bundler --device "$IOS_DEVICE_ID"
+          maestro --device "$IOS_DEVICE_ID" test .maestro
